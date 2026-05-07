@@ -54,8 +54,8 @@ export default function ContentSectionBlock({ block, index }: ContentSectionBloc
                   />
                   <CallBox
                     icon={Calendar}
-                    title="Schedule Now"
-                    subtitle="Free Consultation"
+                    title="Zakažite odmah"
+                    subtitle="Besplatne konsultacije"
                     link="/contact/"
                   />
                 </div>

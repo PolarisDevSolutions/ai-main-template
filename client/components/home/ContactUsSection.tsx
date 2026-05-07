@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Scale } from "lucide-react";
-import type { ContactContent } from "@/lib/cms/homePageTypes";
+import type { ContactContent } from "@site/lib/cms/homePageTypes";
 import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
 import { useSiteSettings } from "@site/contexts/SiteSettingsContext";
@@ -19,6 +19,8 @@ const defaultContent: ContactContent = {
   phoneLabel: "",
   address: "",
   formHeading: "Kontaktirajte nas danas",
+  image: "",
+  imageAlt: "",
 };
 
 const inputClass =

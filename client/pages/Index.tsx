@@ -23,7 +23,11 @@ const headlineVariants = {
 
 const wordVariant = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
 };
 
 export default function Index() {
@@ -52,7 +56,7 @@ export default function Index() {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative min-h-screen flex flex-col justify-center">
+      <section className="relative min-h-screen flex flex-col justify-center -mt-20">
         <HeroBackground />
 
         <div className="relative z-10 max-w-[1400px] mx-auto w-full px-6 lg:px-10 pt-28 pb-16">

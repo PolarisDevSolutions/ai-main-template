@@ -47,7 +47,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         {/* Category + Date */}
         <div className="flex items-center gap-3 mb-3 text-sm text-gray-500">
           {post.post_categories?.name && (
-            <span className="flex items-center gap-1 text-[#6b8d0c] font-medium">
+            <span className="flex items-center gap-1 text-brand-accent font-medium">
               <Tag className="h-3 w-3" />
               {post.post_categories.name}
             </span>

@@ -132,13 +132,13 @@ export default function BlogPost() {
                 <div
                   className="prose prose-lg max-w-none
                     prose-headings:font-semibold prose-headings:text-gray-900
-                    prose-a:text-[#183658] prose-a:underline hover:prose-a:text-[#6b8d0c]
-                    prose-blockquote:border-l-4 prose-blockquote:border-[#6b8d0c] prose-blockquote:text-gray-600
+                    prose-a:text-brand-accent prose-a:underline hover:prose-a:text-brand-accent-dark
+                    prose-blockquote:border-l-4 prose-blockquote:border-brand-accent prose-blockquote:text-gray-600
                     prose-img:rounded-lg prose-img:shadow-md"
                   dangerouslySetInnerHTML={{ __html: post.body }}
                 />
               ) : post.excerpt ? (
-                <p className="text-xl text-gray-600 leading-relaxed border-l-4 border-[#6b8d0c] pl-4">
+                <p className="text-xl text-gray-600 leading-relaxed border-l-4 border-brand-accent pl-4">
                   {post.excerpt}
                 </p>
               ) : (

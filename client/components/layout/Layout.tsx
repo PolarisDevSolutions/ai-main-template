@@ -12,7 +12,10 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col bg-brand-dark">
       <GlobalScripts />
       <Header />
-      <main className="flex-1 font-manrope">{children}</main>
+      <main className="flex-1 font-manrope">
+        <div className="h-20" aria-hidden="true" />
+        {children}
+      </main>
       <Footer />
     </div>
   );
