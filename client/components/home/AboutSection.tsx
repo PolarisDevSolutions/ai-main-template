@@ -116,16 +116,30 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
             />
           </AnimatedSection>
 
-          <AnimatedSection className="md:w-full space-y-6" delay={0.2}>
+          <AnimatedSection className="md:w-full flex flex-col gap-5" delay={0.2}>
             {features.map((feature, index) => (
-              <div key={index} className={index < features.length - 1 ? "pb-6 border-b border-brand-dark/10" : ""}>
-                <div className="flex gap-3 mb-2">
-                  <span className="font-grotesk text-[13px] font-semibold text-brand-accent">{feature.number}.</span>
-                  <h3 className="font-grotesk text-[20px] font-medium text-brand-dark">{feature.title}</h3>
-                </div>
+              <div
+                key={index}
+                className="group relative bg-white border border-brand-dark/8 hover:border-brand-accent/40 p-6 transition-all duration-300"
+              >
+                {/* Large background number */}
+                <span
+                  className="absolute top-3 right-4 font-grotesk text-[64px] font-light leading-none text-brand-dark/[0.04] select-none pointer-events-none"
+                  aria-hidden="true"
+                >
+                  {feature.number}
+                </span>
+                {/* Gold left border accent */}
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand-accent/0 group-hover:bg-brand-accent transition-all duration-300" />
+                <p className="font-manrope text-[11px] font-semibold tracking-[0.18em] uppercase text-brand-accent mb-2">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="font-grotesk text-[18px] font-medium text-brand-dark mb-2">
+                  {feature.title}
+                </h3>
                 <RichText
                   html={feature.description}
-                  className="font-manrope text-[15px] leading-relaxed text-brand-dark/60 pl-6"
+                  className="font-manrope text-[14px] leading-relaxed text-brand-dark/55"
                 />
               </div>
             ))}
@@ -134,15 +148,16 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
       </div>
 
       {/* Stats Section */}
-      <div className="border-t border-brand-dark/10 mt-12">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="border-t border-brand-dark/8 mt-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-14">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
             {stats.map((stat, index) => (
-              <AnimatedSection key={index} delay={index * 0.08} className="text-center">
-                <p className="font-grotesk text-[clamp(2rem,4vw,52px)] font-light text-brand-dark mb-2">
+              <AnimatedSection key={index} delay={index * 0.08} className="text-center w-full">
+                <p className="font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light text-brand-dark mb-1 tracking-tight">
                   {stat.value}
                 </p>
-                <p className="font-manrope text-[14px] text-brand-dark/50 leading-snug">
+                <div className="w-8 h-[2px] bg-brand-accent mx-auto mb-2" />
+                <p className="font-manrope text-[13px] text-brand-dark/50 leading-snug max-w-[160px] mx-auto">
                   {stat.label}
                 </p>
               </AnimatedSection>

@@ -10,7 +10,7 @@ const defaultContent: AwardsContent = {
   sectionLabel: "– Achievements",
   heading: "Awards & Membership",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   logos: [
     { src: "/images/awards/award-1.png", alt: "Award Logo" },
     { src: "/images/awards/award-2.png", alt: "Award Logo" },
@@ -25,48 +25,51 @@ const defaultContent: AwardsContent = {
 
 export default function AwardsSection({ content }: AwardsSectionProps) {
   const data = content || defaultContent;
-  const logos = data.logos || defaultContent.logos;
+  const logos = data.logos?.length ? data.logos : defaultContent.logos;
+  const doubledLogos = [...logos, ...logos];
 
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-        {/* Left Side - Text Content */}
-        <AnimatedSection className="lg:w-[380px] shrink-0" direction="left">
+        <AnimatedSection className="text-center mb-14">
           {data.sectionLabel && (
             <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
               {data.sectionLabel}
             </p>
           )}
-          <h2 className="font-grotesk text-[clamp(1.8rem,4vw,44px)] font-light leading-[1.15] text-brand-dark mb-6">
+          <h2 className="font-grotesk text-[clamp(1.8rem,4vw,44px)] font-light leading-[1.15] text-brand-dark mb-4">
             {data.heading}
           </h2>
-          <RichText
-            html={data.description}
-            className="font-manrope text-[15px] leading-relaxed text-brand-dark/60"
-          />
+          {data.description && (
+            <RichText
+              html={data.description}
+              className="font-manrope text-[15px] leading-relaxed text-brand-dark/60 max-w-2xl mx-auto"
+            />
+          )}
         </AnimatedSection>
+      </div>
 
-        {/* Right Side - Logo Grid */}
-        <AnimatedSection className="flex-1" delay={0.15}>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {logos.map((logo, index) => (
-              <div
-                key={index}
-                className="bg-[#f5f5f5] flex items-center justify-center p-6"
-              >
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={200}
-                  height={120}
-                  loading="lazy"
-                  className="max-w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-200"
-                />
-              </div>
-            ))}
-          </div>
-        </AnimatedSection>
+      {/* Full-width marquee strip */}
+      <div className="w-full overflow-hidden border-y border-brand-dark/8 py-8">
+        <div
+          className="flex animate-marquee whitespace-nowrap"
+          style={{ width: "max-content" }}
+        >
+          {doubledLogos.map((logo, index) => (
+            <div
+              key={index}
+              className="inline-flex items-center justify-center px-10 shrink-0"
+            >
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                width={160}
+                height={80}
+                loading="lazy"
+                className="h-[64px] w-auto object-contain opacity-50 hover:opacity-80 transition-opacity duration-200 grayscale hover:grayscale-0"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

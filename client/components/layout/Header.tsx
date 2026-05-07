@@ -51,7 +51,7 @@ export default function Header() {
                 <img
                   src={logoUrl}
                   alt={logoAlt}
-                  className="h-[40px] w-auto max-w-[200px] object-contain"
+                  className="h-[40px] w-auto max-w-[200px] object-contain brightness-0 invert"
                   height={40}
                 />
               ) : (

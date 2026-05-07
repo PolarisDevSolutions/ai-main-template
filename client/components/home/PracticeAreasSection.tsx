@@ -1,4 +1,4 @@
-import { Scale } from "lucide-react";
+import { Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { PracticeAreasIntroContent } from "@/lib/cms/homePageTypes";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
@@ -37,11 +37,11 @@ export default function PracticeAreasSection({ content }: PracticeAreasSectionPr
               className="flex items-center gap-4 bg-brand-accent p-5 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[320px]"
             >
               <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
-                <Scale className="w-6 h-6 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" />
+                <Layers className="w-6 h-6 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" />
               </div>
               <div>
                 <p className="font-manrope text-[13px] text-brand-dark/70 mb-0.5">Otkrijte</p>
-                <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">Sve oblasti prakse</p>
+                <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">Sve naše usluge</p>
               </div>
             </Link>
           </AnimatedSection>

@@ -19,7 +19,7 @@ export default function HomeEditor({ content, onChange }: HomeEditorProps) {
       <PracticeAreasIntroSection content={content} update={update} />
       <PracticeAreasItemsSection content={content} update={update} />
       <AwardsSection content={content} update={update} />
-      <TestimonialsSection content={content} update={update} />
+      {/* Testimonials section removed from frontend — keep data intact */}
       <ProcessSection content={content} update={update} />
       <GoogleReviewsSection content={content} update={update} />
       <FaqSectionEditor content={content} update={update} />
