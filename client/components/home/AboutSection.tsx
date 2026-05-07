@@ -150,9 +150,9 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
       {/* Stats Section */}
       <div className="border-t border-brand-dark/8 mt-16">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-14">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
+          <div className="flex flex-wrap justify-center gap-x-16 gap-y-10">
             {stats.map((stat, index) => (
-              <AnimatedSection key={index} delay={index * 0.08} className="text-center w-full">
+              <AnimatedSection key={index} delay={index * 0.08} className="text-center w-[180px]">
                 <p className="font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light text-brand-dark mb-1 tracking-tight">
                   {stat.value}
                 </p>

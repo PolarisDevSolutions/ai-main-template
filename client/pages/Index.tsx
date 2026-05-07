@@ -168,7 +168,7 @@ export default function Index() {
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  className="h-[50px] w-auto object-contain opacity-60 hover:opacity-100 transition-opacity duration-200"
+                  className="h-[44px] w-auto object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-300"
                   loading="lazy"
                 />
               </div>
