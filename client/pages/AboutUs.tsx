@@ -67,11 +67,11 @@ export default function AboutUs() {
             {/* Left Side - Heading */}
             <div className="lg:w-[65%]">
               {/* H1 Title - Section Label */}
-              <h1 className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]">
+              <h1 className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]">
                 {content.hero.sectionLabel}
               </h1>
               {/* Tagline - styled as large text but not H1 */}
-              <p className="font-playfair text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
+              <p className="font-grotesk text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
                 <span
                   dangerouslySetInnerHTML={{
                     __html: content.hero.tagline.replace(
@@ -83,7 +83,7 @@ export default function AboutUs() {
               </p>
               <RichText
                 html={content.hero.description}
-                className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
+                className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
               />
             </div>
 
@@ -107,11 +107,11 @@ export default function AboutUs() {
             {/* Left Side - Content */}
             <div>
               <div className="mb-[10px]">
-                <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
+                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
                   {content.story.sectionLabel}
                 </p>
               </div>
-              <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
+              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
                 {content.story.heading}
               </h2>
               <div className="space-y-[15px] md:space-y-[20px]">
@@ -119,7 +119,7 @@ export default function AboutUs() {
                   <RichText
                     key={index}
                     html={paragraph}
-                    className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black"
+                    className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black"
                   />
                 ))}
               </div>
@@ -150,23 +150,23 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[8%]">
             {/* Mission */}
             <div className="text-center lg:text-left">
-              <h2 className="font-playfair text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
+              <h2 className="font-grotesk text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
                 {content.missionVision.mission.heading}
               </h2>
               <RichText
                 html={content.missionVision.mission.text}
-                className="font-outfit text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
+                className="font-manrope text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
               />
             </div>
 
             {/* Vision */}
             <div className="text-center lg:text-left">
-              <h2 className="font-playfair text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
+              <h2 className="font-grotesk text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
                 {content.missionVision.vision.heading}
               </h2>
               <RichText
                 html={content.missionVision.vision.text}
-                className="font-outfit text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
+                className="font-manrope text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
               />
             </div>
           </div>
@@ -178,11 +178,11 @@ export default function AboutUs() {
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
           <div className="text-center mb-[30px] md:mb-[50px]">
             <div className="mb-[10px]">
-              <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
+              <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
                 {content.team.sectionLabel}
               </p>
             </div>
-            <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
+            <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
               {content.team.heading.split("\n").map((line, i) => (
                 <span key={i}>
                   {line}
@@ -207,15 +207,15 @@ export default function AboutUs() {
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
           <div className="text-center mb-[30px] md:mb-[50px]">
             <div className="mb-[10px]">
-              <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
+              <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
                 {content.values.sectionLabel}
               </p>
             </div>
-            <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white">
+            <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white">
               {content.values.heading}
             </h2>
             {content.values.subtitle && (
-              <p className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 mt-[15px]">
+              <p className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 mt-[15px]">
                 {content.values.subtitle}
               </p>
             )}
@@ -243,16 +243,16 @@ export default function AboutUs() {
             {/* Left Side - Heading + Image */}
             <div>
               <div className="mb-[10px]">
-                <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
+                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
                   {content.whyChooseUs.sectionLabel}
                 </p>
               </div>
-              <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
+              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
                 {content.whyChooseUs.heading}
               </h2>
               <RichText
                 html={content.whyChooseUs.description}
-                className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black mb-[30px]"
+                className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black mb-[30px]"
               />
               {/* Stock image */}
               {content.whyChooseUs.image && (
@@ -274,12 +274,12 @@ export default function AboutUs() {
               {whyChooseUs.map((feature, index) => (
                 <div key={index}>
                   <div className="mb-[15px] md:mb-[20px]">
-                    <h3 className="font-outfit text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-black pb-[10px]">
+                    <h3 className="font-manrope text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-black pb-[10px]">
                       {feature.number}. {feature.title}
                     </h3>
                     <RichText
                       html={feature.description}
-                      className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black"
+                      className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black"
                     />
                   </div>
                   {index < whyChooseUs.length - 1 && (
@@ -296,12 +296,12 @@ export default function AboutUs() {
       <div className="bg-brand-accent py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
           <div className="text-center mb-[30px] md:mb-[40px]">
-            <h2 className="font-playfair text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-black pb-[15px]">
+            <h2 className="font-grotesk text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-black pb-[15px]">
               {content.cta.heading}
             </h2>
             <RichText
               html={content.cta.description}
-              className="font-outfit text-[18px] md:text-[22px] leading-[26px] md:leading-[32px] text-black/80"
+              className="font-manrope text-[18px] md:text-[22px] leading-[26px] md:leading-[32px] text-black/80"
             />
           </div>
 

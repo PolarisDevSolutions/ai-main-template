@@ -52,17 +52,17 @@ export default function PracticeAreaCard({
 
         {/* Title and Description */}
         <div>
-          <h3 className="font-playfair text-[28px] md:text-[32px] leading-tight text-white pb-[15px] transition-all duration-300 group-hover:text-brand-accent">
+          <h3 className="font-grotesk text-[28px] md:text-[32px] leading-tight text-white pb-[15px] transition-all duration-300 group-hover:text-brand-accent">
             {title}
           </h3>
           <RichText
             html={description}
-            className="font-outfit text-[14px] md:text-[16px] leading-[22px] md:leading-[24px] text-white/90 mb-[15px]"
+            className="font-manrope text-[14px] md:text-[16px] leading-[22px] md:leading-[24px] text-white/90 mb-[15px]"
           />
 
           {/* Learn More Link */}
           <div className="flex items-center gap-2 text-brand-accent group-hover:text-white transition-colors duration-300">
-            <span className="font-outfit text-[14px] md:text-[16px]">
+            <span className="font-manrope text-[14px] md:text-[16px]">
               Learn More
             </span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

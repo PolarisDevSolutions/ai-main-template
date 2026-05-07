@@ -25,18 +25,18 @@ export default function PracticeAreaHero({
             <DynamicHeading
               tag={headingTags?.["hero.sectionLabel"]}
               defaultTag="h1"
-              className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]"
+              className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]"
             >
               {content.sectionLabel}
             </DynamicHeading>
 
-            <p className="font-playfair text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
+            <p className="font-grotesk text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
               {content.tagline}
             </p>
 
             <RichText
               html={content.description}
-              className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
+              className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
             />
           </div>
 

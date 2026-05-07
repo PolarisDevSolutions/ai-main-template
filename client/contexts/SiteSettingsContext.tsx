@@ -26,6 +26,8 @@ interface SiteSettings {
   }[];
   footerAboutLinks: { label: string; href?: string }[];
   footerPracticeLinks: { label: string; href?: string }[];
+  footerColumn1Label: string;
+  footerColumn2Label: string;
   footerTaglineHtml: string;
   addressLine1: string;
   addressLine2: string;
@@ -63,6 +65,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
   ],
   footerAboutLinks: [],
   footerPracticeLinks: [],
+  footerColumn1Label: "",
+  footerColumn2Label: "",
   footerTaglineHtml: "",
   addressLine1: "",
   addressLine2: "",
@@ -155,6 +159,8 @@ export function SiteSettingsProvider({ children }: SiteSettingsProviderProps) {
               row.footer_about_links || DEFAULT_SETTINGS.footerAboutLinks,
             footerPracticeLinks:
               row.footer_practice_links || DEFAULT_SETTINGS.footerPracticeLinks,
+            footerColumn1Label: row.footer_column1_label || DEFAULT_SETTINGS.footerColumn1Label,
+            footerColumn2Label: row.footer_column2_label || DEFAULT_SETTINGS.footerColumn2Label,
             addressLine1: row.address_line1 || DEFAULT_SETTINGS.addressLine1,
             addressLine2: row.address_line2 || DEFAULT_SETTINGS.addressLine2,
             mapEmbedUrl: row.map_embed_url || DEFAULT_SETTINGS.mapEmbedUrl,

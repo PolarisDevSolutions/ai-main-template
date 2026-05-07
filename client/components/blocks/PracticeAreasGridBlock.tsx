@@ -50,13 +50,13 @@ export default function PracticeAreasGridBlock({ block }: PracticeAreasGridBlock
       <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
         {/* Section Header */}
         <div className="text-center mb-[30px] md:mb-[50px]">
-          <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
+          <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
             {block.heading}
           </h2>
           {block.description && (
             <RichText
               html={block.description}
-              className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black/80 mt-[15px] max-w-[800px] mx-auto"
+              className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black/80 mt-[15px] max-w-[800px] mx-auto"
             />
           )}
         </div>

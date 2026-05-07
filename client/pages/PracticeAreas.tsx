@@ -78,11 +78,11 @@ export default function PracticeAreas() {
             {/* Left Side - Heading */}
             <div className="lg:w-[65%]">
               {/* H1 Title - Section Label */}
-              <h1 className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]">
+              <h1 className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]">
                 {content.hero.sectionLabel}
               </h1>
               {/* Tagline - styled as large text */}
-              <p className="font-playfair text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
+              <p className="font-grotesk text-[clamp(2.5rem,7vw,68.8px)] font-light leading-[1.2] text-white mb-[20px] md:mb-[30px]">
                 <span
                   dangerouslySetInnerHTML={{
                     __html: content.hero.tagline.replace(
@@ -94,7 +94,7 @@ export default function PracticeAreas() {
               </p>
               <RichText
                 html={content.hero.description}
-                className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
+                className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-white/90"
               />
             </div>
 
@@ -115,12 +115,12 @@ export default function PracticeAreas() {
       <div className="bg-white py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
           <div className="text-center mb-[30px] md:mb-[50px]">
-            <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
+            <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
               {content.grid.heading}
             </h2>
             <RichText
               html={content.grid.description}
-              className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black/80 mt-[15px] max-w-[800px] mx-auto"
+              className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black/80 mt-[15px] max-w-[800px] mx-auto"
             />
           </div>
 
@@ -139,21 +139,21 @@ export default function PracticeAreas() {
             {/* Left Side - Heading + Image */}
             <div>
               <div className="mb-[10px]">
-                <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
+                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
                   {content.whyChoose.sectionLabel}
                 </p>
               </div>
-              <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white pb-[20px]">
+              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white pb-[20px]">
                 {content.whyChoose.heading}
               </h2>
               {content.whyChoose.subtitle && (
-                <p className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 pb-[15px]">
+                <p className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 pb-[15px]">
                   {content.whyChoose.subtitle}
                 </p>
               )}
               <RichText
                 html={content.whyChoose.description}
-                className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/90 mb-[30px]"
+                className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/90 mb-[30px]"
               />
               {/* Section image (shared from About page) */}
               {content.whyChoose.image && (
@@ -175,12 +175,12 @@ export default function PracticeAreas() {
               {whyChooseOurPractice.map((feature, index) => (
                 <div key={index}>
                   <div className="mb-[15px] md:mb-[20px]">
-                    <h3 className="font-outfit text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-white pb-[10px]">
+                    <h3 className="font-manrope text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-white pb-[10px]">
                       {feature.number}. {feature.title}
                     </h3>
                     <RichText
                       html={feature.description}
-                      className="font-outfit text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80"
+                      className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80"
                     />
                   </div>
                   {index < whyChooseOurPractice.length - 1 && (
@@ -197,12 +197,12 @@ export default function PracticeAreas() {
       <div className="bg-brand-accent py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
           <div className="text-center mb-[30px] md:mb-[40px]">
-            <h2 className="font-playfair text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-black pb-[15px]">
+            <h2 className="font-grotesk text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-black pb-[15px]">
               {content.cta.heading}
             </h2>
             <RichText
               html={content.cta.description}
-              className="font-outfit text-[18px] md:text-[22px] leading-[26px] md:leading-[32px] text-black/80"
+              className="font-manrope text-[18px] md:text-[22px] leading-[26px] md:leading-[32px] text-black/80"
             />
           </div>
 

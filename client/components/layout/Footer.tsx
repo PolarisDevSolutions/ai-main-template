@@ -1,16 +1,7 @@
 import React from "react";
-
-import {
-  Facebook,
-  Instagram,
-  Youtube,
-  Linkedin,
-  Twitter,
-  Phone,
-} from "lucide-react";
+import { Facebook, Instagram, Youtube, Linkedin, Twitter, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSiteSettings } from "@site/contexts/SiteSettingsContext";
-
 
 const SOCIAL_ICON_MAP: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   facebook: Facebook,
@@ -20,233 +11,206 @@ const SOCIAL_ICON_MAP: Record<string, React.ComponentType<React.SVGProps<SVGSVGE
   twitter: Twitter,
 };
 
-const SOCIAL_LABEL_MAP: Record<string, string> = {
-  facebook: "Facebook",
-  instagram: "Instagram",
-  youtube: "Youtube",
-  linkedin: "LinkedIn",
-  twitter: "X",
-};
-
 export default function Footer() {
   const { settings } = useSiteSettings();
 
-const logoUrl = settings.logoUrl?.trim() || "";
-const logoAlt = settings.logoAlt?.trim() || settings.siteName?.trim() || "Logo";
-
-const phoneNumber = settings.phoneNumber?.trim() || "";
-const phoneDisplay = settings.phoneDisplay?.trim() || "";
-const phoneLabel = settings.phoneAvailability?.trim() || "";
-
-const copyrightRaw = settings.copyrightText?.trim() || "";
-const copyrightText = copyrightRaw.replace(/\{year\}/gi, String(new Date().getFullYear()));
-const mapEmbedUrl = settings.mapEmbedUrl?.trim() || "";
-
-const resourceLinks = settings.footerAboutLinks ?? [];
-const practiceLinks = settings.footerPracticeLinks ?? [];
-const footerTaglineHtml = settings.footerTaglineHtml || "";
-
-const enabledSocialLinks = (settings.socialLinks ?? []).filter((s) => s.enabled);
-
+  const logoUrl = settings.logoUrl?.trim() || "";
+  const logoAlt = settings.logoAlt?.trim() || settings.siteName?.trim() || "Logo";
+  const phoneNumber = settings.phoneNumber?.trim() || "";
+  const phoneDisplay = settings.phoneDisplay?.trim() || "";
+  const phoneLabel = settings.phoneAvailability?.trim() || "";
+  const copyrightRaw = settings.copyrightText?.trim() || "";
+  const copyrightText = copyrightRaw.replace(/\{year\}/gi, String(new Date().getFullYear()));
+  const mapEmbedUrl = settings.mapEmbedUrl?.trim() || "";
+  const resourceLinks = settings.footerAboutLinks ?? [];
+  const practiceLinks = settings.footerPracticeLinks ?? [];
+  const footerTaglineHtml = settings.footerTaglineHtml || "";
+  const col1Label = settings.footerColumn1Label?.trim() || "Resursi";
+  const col2Label = settings.footerColumn2Label?.trim() || "Usluge";
+  const enabledSocialLinks = (settings.socialLinks ?? []).filter((s) => s.enabled);
+  const addressParts = [settings.addressLine1, settings.addressLine2].filter(Boolean);
 
   return (
-    <footer className="bg-brand-dark relative">
-      {/* Top Section: Tagline and Call Box */}
-      <div className="max-w-[2560px] mx-auto w-[95%] py-[20px] md:py-[27px] flex flex-col lg:flex-row lg:items-center gap-8">
-        {/* Left: Tagline */}
-        <div className="lg:w-[75%]">
-          <div>
-{footerTaglineHtml ? (
-  <div
-    className="font-playfair text-[clamp(2rem,6vw,59.136px)] leading-tight md:leading-[70.9632px] font-light text-white"
-    dangerouslySetInnerHTML={{ __html: footerTaglineHtml }}
-  />
-) : (
-  <p className="font-playfair text-[clamp(2rem,6vw,59.136px)] leading-tight md:leading-[70.9632px] font-light text-white">
-    <span className="text-brand-accent">Your rights. Our mission.</span>
-    <br />
-    Backed by integrity and relentless representation.
-  </p>
-)}
-
+    <footer className="bg-brand-dark">
+      {/* Tagline + CTA Row */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-16 pb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-16">
+          {/* Tagline */}
+          <div className="flex-1">
+            {footerTaglineHtml ? (
+              <div
+                className="font-grotesk text-[clamp(2rem,5vw,52px)] font-light leading-[1.15] text-white [&_span]:text-brand-accent"
+                dangerouslySetInnerHTML={{ __html: footerTaglineHtml }}
+              />
+            ) : (
+              <p className="font-grotesk text-[clamp(2rem,5vw,52px)] font-light leading-[1.15] text-white">
+                <span className="text-brand-accent">Vaša vizija.</span>
+                <br />
+                Naša misija.
+              </p>
+            )}
           </div>
-        </div>
 
-        {/* Right: Call Us Box */}
-        <div className="lg:w-[25%]">
-          <a href={`tel:${phoneNumber.replace(/\D/g, "")}`}>
-            <div className="bg-brand-accent p-[8px] w-full ml-auto cursor-pointer transition-all duration-300 hover:bg-brand-accent-dark group">
-              <div className="table w-full mx-auto max-w-full flex-row-reverse">
-                <div className="table-cell w-[32px] leading-[0] mb-[30px]">
-                  <span className="m-auto">
-                    <span className="inline-block bg-white p-[15px] text-black group-hover:bg-black transition-colors duration-300">
-                      <Phone
-                        className="w-[31px] h-[31px] [&>*]:fill-none [&>*]:stroke-black group-hover:[&>*]:stroke-white transition-colors duration-300"
-                        strokeWidth={1.5}
-                      />
-                    </span>
-                  </span>
-                </div>
-                <div className="table-cell align-top pl-[15px]">
-                  <h4 className="font-outfit text-[16px] md:text-[18px] leading-tight text-black pb-[10px] group-hover:text-white transition-colors duration-300">
-                    {phoneLabel}
-                  </h4>
+          {/* Phone CTA */}
+          {phoneDisplay && (
+            <div className="lg:w-[300px] shrink-0">
+              <a
+                href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                className="block bg-brand-accent p-5 group hover:bg-brand-accent-dark transition-colors duration-300"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
+                    <Phone
+                      className="w-6 h-6 text-brand-accent group-hover:text-brand-dark transition-colors duration-300"
+                      strokeWidth={1.5}
+                    />
+                  </div>
                   <div>
-                    <p className="font-outfit text-[28px] md:text-[40px] leading-tight md:leading-[44px] text-black group-hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    {phoneLabel && (
+                      <p className="font-manrope text-[13px] text-brand-dark/70 group-hover:text-brand-dark transition-colors duration-300 mb-0.5">
+                        {phoneLabel}
+                      </p>
+                    )}
+                    <p className="font-grotesk text-[26px] font-medium text-brand-dark leading-tight group-hover:text-brand-dark transition-colors duration-300">
                       {phoneDisplay}
                     </p>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
-          </a>
+          )}
         </div>
       </div>
 
-      {/* Footer Links Section */}
-      <div className="border-t border-b border-[#838383] max-w-[2560px] mx-auto w-[95%] py-[20px] md:py-[27px] flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-[3%]">
-        {/* Logo Column */}
-        <div className="lg:w-[20%] lg:mr-[3%]">
-          <Link to="/" className="block">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={logoAlt}
-                className="w-[200px] max-w-full"
-                width={200}
-                height={33}
-              />
-            ) : (
-              <span className="font-outfit text-white text-[24px] leading-none">
-                {settings.siteName || " "}
-              </span>
+      {/* Divider */}
+      <div className="border-t border-brand-border/30" />
+
+      {/* Links + Map Row */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Logo + Address Column */}
+          <div className="flex flex-col gap-6">
+            <Link to="/" className="block">
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt={logoAlt}
+                  className="h-[36px] w-auto max-w-[160px] object-contain"
+                  height={36}
+                />
+              ) : (
+                <span className="font-grotesk text-white text-[20px] font-semibold leading-none">
+                  {settings.siteName || " "}
+                </span>
+              )}
+            </Link>
+
+            {addressParts.length > 0 && (
+              <div>
+                {addressParts.map((line, i) => (
+                  <p key={i} className="font-manrope text-[14px] text-white/50 leading-relaxed">
+                    {line}
+                  </p>
+                ))}
+              </div>
             )}
-          </Link>
 
-        </div>
-
-        {/* Resources Column */}
-        <div className="lg:w-[20%] lg:mr-[3%]">
-          <div className="font-outfit text-[18px] md:text-[24px] font-light leading-tight md:leading-[36px] text-white">
-            <h3 className="font-outfit text-[28px] md:text-[36px] leading-tight md:leading-[36px] text-white pb-[10px]">
-              Resources
-            </h3>
-              {resourceLinks.length > 0 ? (
-                <ul className="text-[18px] md:text-[24px] font-light leading-tight md:leading-[36px] space-y-1">
-                  {resourceLinks.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        to={link.href || "#"}
-                        className="hover:text-brand-accent transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-
+            {/* Social Icons */}
+            {enabledSocialLinks.length > 0 && (
+              <div className="flex items-center gap-3 flex-wrap">
+                {enabledSocialLinks.map((social) => {
+                  const Icon = SOCIAL_ICON_MAP[social.platform];
+                  if (!Icon) return null;
+                  return (
+                    <a
+                      key={social.platform}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 border border-brand-border/60 flex items-center justify-center text-white/60 hover:border-brand-accent hover:text-brand-accent transition-all duration-200"
+                      title={social.platform}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Practice Areas Column */}
-        <div className="lg:w-[20%] lg:mr-[3%]">
-          <div className="font-outfit text-[18px] md:text-[24px] font-light leading-tight md:leading-[36px] text-white">
-            <h3 className="font-outfit text-[28px] md:text-[36px] leading-tight md:leading-[36px] text-white pb-[10px]">
-              Practice Areas
-            </h3>
-              {practiceLinks.length > 0 ? (
-                <ul className="text-[18px] md:text-[24px] font-light leading-tight md:leading-[36px] space-y-1">
-                  {practiceLinks.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        to={link.href || "/practice-areas/"}
-                        className="hover:text-brand-accent transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+          {/* Column 1 Links */}
+          <div>
+            <h4 className="font-grotesk text-[13px] font-semibold tracking-widest uppercase text-brand-accent mb-5">
+              {col1Label}
+            </h4>
+            {resourceLinks.length > 0 ? (
+              <ul className="space-y-3">
+                {resourceLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.href || "#"}
+                      className="font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
-        </div>
 
-        {/* Map Column */}
-        <div className="lg:w-[40%] max-w-[900px]">
-          <div className="relative">
-            {mapEmbedUrl ? (
+          {/* Column 2 Links */}
+          <div>
+            <h4 className="font-grotesk text-[13px] font-semibold tracking-widest uppercase text-brand-accent mb-5">
+              {col2Label}
+            </h4>
+            {practiceLinks.length > 0 ? (
+              <ul className="space-y-3">
+                {practiceLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.href || "/"}
+                      className="font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+
+          {/* Map */}
+          {mapEmbedUrl ? (
+            <div>
+              <h4 className="font-grotesk text-[13px] font-semibold tracking-widest uppercase text-brand-accent mb-5">
+                Lokacija
+              </h4>
               <iframe
                 src={mapEmbedUrl}
                 width="100%"
-                height="250"
+                height="200"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-[250px]"
-                title="Office Location"
+                className="w-full border border-brand-border/30"
+                title="Lokacija kancelarije"
               />
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
-</div>
-      {/* Social Media Section */}
-      <SocialLinksSection />
+      </div>
 
-
-      {/* Copyright Section */}
-      <div className="border-t border-[#838383] max-w-[2560px] mx-auto w-full py-[10px] px-[30px]">
-        <div className="w-full mx-auto my-auto">
-          <div className="font-outfit text-[18px] font-light leading-[27px] text-white text-center">
-            {copyrightText ? <p>{copyrightText}</p> : null}
-          </div>
+      {/* Copyright Bar */}
+      <div className="border-t border-brand-border/20">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+          {copyrightText ? (
+            <p className="font-manrope text-[13px] text-white/40 text-center md:text-left">
+              {copyrightText}
+            </p>
+          ) : null}
         </div>
       </div>
     </footer>
-  );
-}
-
-/** Renders the social icon row; falls back to default set if CMS provides none */
-function SocialLinksSection() {
-  const { settings } = useSiteSettings();
-
-  const socialLinks =
-    settings.socialLinks?.filter((s) => s.enabled) ?? [];
-
-  if (socialLinks.length === 0) return null;
-
-  return (
-    <div className="max-w-[1080px] mx-auto w-[80%] py-[20px]">
-      <div className="w-full">
-        <ul className="text-center leading-[26px]">
-          {socialLinks.map((social, idx) => {
-            const Icon = SOCIAL_ICON_MAP[social.platform];
-            const label =
-              SOCIAL_LABEL_MAP[social.platform] || social.platform;
-
-            if (!Icon) return null;
-
-            const isLast = idx === socialLinks.length - 1;
-
-            return (
-              <li key={social.platform} className="inline-block mb-[8px]">
-                <a
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-block w-[52px] h-[52px] bg-[#142928] border border-[#616f6f] ${
-                    isLast ? "" : "mr-[8px]"
-                  } align-middle transition-all duration-300 hover:bg-brand-accent hover:border-brand-accent group flex items-center justify-center`}
-                  title={`Follow on ${label}`}
-                >
-                  <Icon className="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" />
-                  <span className="sr-only">Follow on {label}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
   );
 }

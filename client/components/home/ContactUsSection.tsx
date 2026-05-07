@@ -2,8 +2,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Scale } from "lucide-react";
-import type { ContactContent } from "@/lib/homePageTypes";
+import type { ContactContent } from "@/lib/cms/homePageTypes";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 import { useSiteSettings } from "@site/contexts/SiteSettingsContext";
 
 interface ContactUsSectionProps {
@@ -11,212 +12,151 @@ interface ContactUsSectionProps {
 }
 
 const defaultContent: ContactContent = {
-  sectionLabel: "– Contact Us",
-  heading: "Get your FREE case evaluation today.",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.",
+  sectionLabel: "– Kontaktirajte nas",
+  heading: "Zakažite besplatnu konsultaciju danas.",
+  description: "",
   phone: "",
   phoneLabel: "",
   address: "",
-  formHeading: "Contact Us Today To Schedule a Consultation",
+  formHeading: "Kontaktirajte nas danas",
 };
+
+const inputClass =
+  "bg-[#f7f7f7] border border-[#e0e0e0] text-[#333] placeholder:text-[#999] h-[46px] text-[15px] font-manrope focus-visible:ring-0 focus-visible:border-brand-accent transition-colors duration-200 rounded-none";
 
 export default function ContactUsSection({ content }: ContactUsSectionProps) {
   const data = content || defaultContent;
   const { settings } = useSiteSettings();
 
-  // Fall back to Site Settings address when CMS address is empty
-  const displayAddress = data.address ||
+  const displayAddress =
+    data.address ||
     [settings.addressLine1, settings.addressLine2].filter(Boolean).join(", ");
+
   return (
-    <div className="bg-white pt-[30px] md:pt-[54px] relative">
-      <div className="max-w-[1600px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] relative flex flex-col lg:flex-row gap-8 lg:gap-[3%]">
-        {/* Left Side */}
-        <div className="lg:w-[65.667%] relative">
-          {/* Top Heading Section */}
-          <div className="py-[4.2415%] relative w-full">
-            <div className="relative w-full">
-              <div className="mb-[10px]">
-                <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[#6b8d0c]">
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+          {/* Left Side: Text + Image */}
+          <AnimatedSection className="flex-1 min-w-0" direction="left">
+            <div className="mb-8">
+              {data.sectionLabel && (
+                <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
                   {data.sectionLabel}
                 </p>
-              </div>
-              <div>
-                <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
-                  {data.heading}
-                </h2>
+              )}
+              <h2 className="font-grotesk text-[clamp(2rem,4vw,48px)] font-light text-brand-dark leading-[1.15] mb-6">
+                {data.heading}
+              </h2>
+              {data.description && (
                 <RichText
                   html={data.description}
-                  className="font-outfit text-[16px] md:text-[24px] leading-[24px] md:leading-[36px] text-black"
+                  className="font-manrope text-[16px] leading-relaxed text-brand-dark/70"
                 />
-              </div>
-            </div>
-          </div>
-
-          {/* Background Image Section with Two Parts */}
-          <div
-            className="relative w-full flex flex-col sm:flex-row pr-0 sm:pr-[20px]"
-            style={{
-              backgroundImage: "url(/images/backgrounds/contact-us-bg.jpg)",
-              backgroundPosition: "50% 50%",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-            }}
-          >
-            {/* Left Image */}
-            <div className="sm:w-[45.758%] sm:mr-[8.483%] relative -mt-[30px] ml-auto text-right">
-              <img
-                src={data.image || "/images/team/attorney-2.png"}
-                alt={data.imageAlt || "Contact Us"}
-                width={338}
-                height={462}
-                loading="lazy"
-                className="inline-block max-w-full w-[338px]"
-              />
+              )}
+              {displayAddress && (
+                <p className="font-manrope text-[15px] text-brand-dark/60 mt-4">
+                  {displayAddress}
+                </p>
+              )}
             </div>
 
-            {/* Right Overlay Box */}
-            <div
-              className="sm:w-[45.758%] relative p-[30px] ml-auto"
-              style={{
-                backgroundColor: "rgba(29, 73, 70, 0.54)",
-              }}
-            >
-              <div className="relative mb-[10px]">
-                <div className="table w-full mx-auto max-w-full">
-                  <div className="table-cell w-[32px] leading-[0] mb-[30px]">
-                    <span className="m-auto">
-                      <span
-                        className="inline-block opacity-0 bg-[#baea0] p-[20px_30px] text-[30px] leading-[30px] font-black"
-                        style={{ fontFamily: "FontAwesome" }}
-                      ></span>
-                    </span>
-                  </div>
-                  <div className="table-cell align-top pl-[15px]"></div>
-                </div>
-              </div>
-
+            {data.image && (
               <div className="relative">
-                <div className="mx-auto max-w-full w-full text-center">
-                  <div className="text-left">
-                    <h4 className="font-playfair text-[22px] md:text-[28px] leading-tight md:leading-[36.4px] text-white pb-[10px]">
+                <img
+                  src={data.image}
+                  alt={data.imageAlt || "Kontaktirajte nas"}
+                  className="w-full max-w-[420px] h-auto object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-6 right-0 bg-brand-dark p-5 flex items-center gap-3">
+                  <div className="bg-brand-accent p-3">
+                    <Scale className="w-6 h-6 text-brand-dark" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="font-grotesk text-[16px] text-white font-medium leading-tight">
                       {data.formHeading}
-                    </h4>
-                    <div>
-                      <p className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[28px] text-white font-light">
-                        Our intake team is available 24 hours a day, seven days
-                        a week
-                      </p>
-                    </div>
-                    <div className="mt-[20px] md:mt-[30px] flex justify-start">
-                      <div className="bg-brand-accent p-[15px] inline-block">
-                        <Scale
-                          className="w-[40px] h-[40px] md:w-[50px] md:h-[50px] text-black"
-                          strokeWidth={1.5}
-                        />
-                      </div>
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            )}
 
-        {/* Right Side: Form */}
-        <div className="lg:w-[31.3333%] relative p-[30px] pt-[30px] shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)]">
-          <div className="relative">
+            {!data.image && (
+              <div className="bg-brand-dark p-6 flex items-center gap-4 max-w-[420px]">
+                <div className="bg-brand-accent p-4 shrink-0">
+                  <Scale className="w-8 h-8 text-brand-dark" strokeWidth={1.5} />
+                </div>
+                <p className="font-grotesk text-[18px] text-white font-light leading-snug">
+                  {data.formHeading}
+                </p>
+              </div>
+            )}
+          </AnimatedSection>
+
+          {/* Right Side: Form */}
+          <AnimatedSection className="lg:w-[420px] shrink-0" delay={0.15}>
             <form
               name="contact"
               method="POST"
               data-netlify="true"
               data-netlify-honeypot="bot-field"
-              className="p-[5px] mx-auto"
+              className="space-y-4"
             >
               <input type="hidden" name="form-name" value="contact" />
-              <div className="space-y-[25px]">
-                {/* First Name */}
-                <div className="relative">
-                  <Input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name *"
-                    required
-                    className="w-full h-[50px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                </div>
 
-                {/* Last Name */}
-                <div className="relative">
-                  <Input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name *"
-                    required
-                    className="w-full h-[50px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="relative">
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address *"
-                    required
-                    className="w-full h-[50px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div className="relative">
-                  <Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    className="w-full h-[50px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                </div>
-
-                {/* Message */}
-                <div className="relative">
-                  <Textarea
-                    name="message"
-                    placeholder="Message *"
-                    required
-                    className="w-full h-[200px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="relative">
-                  <Button
-                    type="submit"
-                    className="w-full bg-brand-accent-dark text-brand-accent border-brand-accent font-outfit text-[22px] h-[50px] hover:bg-brand-accent hover:text-black transition-all duration-300 rounded-none"
-                  >
-                    SUBMIT
-                  </Button>
-                </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  type="text"
+                  name="firstName"
+                  placeholder="Ime *"
+                  required
+                  className={inputClass}
+                />
+                <Input
+                  type="text"
+                  name="lastName"
+                  placeholder="Prezime *"
+                  required
+                  className={inputClass}
+                />
               </div>
 
-              {/* Netlify Honeypot Field */}
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email adresa *"
+                required
+                className={inputClass}
+              />
+
+              <Input
+                type="tel"
+                name="phone"
+                placeholder="Broj telefona"
+                className={inputClass}
+              />
+
+              <Textarea
+                name="message"
+                placeholder="Poruka *"
+                required
+                className={`${inputClass} h-auto min-h-[140px] resize-y`}
+              />
+
               <div className="absolute invisible" aria-hidden="true">
-                <label htmlFor="bot-field-contact">
-                  If you are a human seeing this field, please leave it empty.
-                  <Input
-                    type="text"
-                    id="bot-field-contact"
-                    name="bot-field"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    className="bg-white border-[0.8px] border-[#bbbbbb] text-[#4e4e4e] text-[13.3333px] p-[2px] invisible"
-                  />
-                </label>
+                <input type="text" name="bot-field" tabIndex={-1} autoComplete="off" />
               </div>
+
+              <Button
+                type="submit"
+                className="w-full border border-brand-accent text-brand-accent bg-transparent hover:bg-brand-accent hover:text-brand-dark font-manrope text-[14px] tracking-widest uppercase h-[46px] transition-all duration-200"
+              >
+                Pošalji
+              </Button>
             </form>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

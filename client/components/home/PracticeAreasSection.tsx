@@ -1,6 +1,7 @@
 import { Scale } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { PracticeAreasIntroContent } from "@/lib/cms/homePageTypes";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface PracticeAreasSectionProps {
   content?: PracticeAreasIntroContent;
@@ -16,44 +17,36 @@ export default function PracticeAreasSection({ content }: PracticeAreasSectionPr
   const data = content || defaultContent;
 
   return (
-    <div className="bg-brand-dark py-[15px] md:py-[20px]">
-      <div className="max-w-[2560px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] py-[20px] md:py-[27px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 md:gap-[5.5%]">
-          {/* Left Column - Section Label + Heading */}
-          <div className="md:w-full">
+    <section className="bg-brand-dark py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="flex flex-col md:flex-row md:items-end gap-10 md:gap-16">
+          <AnimatedSection className="flex-1" direction="left">
             {data.sectionLabel && (
-              <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent mb-[10px]">
+              <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
                 {data.sectionLabel}
               </p>
             )}
-            <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white pb-[10px]">
+            <h2 className="font-grotesk text-[clamp(2rem,5vw,56px)] font-light leading-[1.1] text-white">
               {data.heading}
             </h2>
-          </div>
+          </AnimatedSection>
 
-          {/* Right Column - Discover CTA */}
-          <div className="md:w-full flex items-center">
+          <AnimatedSection delay={0.15}>
             <Link
               to={data.buttonLink || "/practice-areas/"}
-              className="bg-brand-accent p-[8px] w-full max-w-[400px] mx-auto md:mx-auto cursor-pointer transition-all duration-300 hover:bg-brand-accent-dark group block"
+              className="flex items-center gap-4 bg-brand-accent p-5 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[320px]"
             >
-              <div className="flex items-start gap-4">
-                <div className="bg-white p-[15px] mt-1 flex items-center justify-center group-hover:bg-black transition-colors duration-300">
-                  <Scale className="w-8 h-8 text-black group-hover:text-white transition-colors duration-300" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-outfit text-[16px] md:text-[18px] leading-tight text-black pb-[10px] group-hover:text-white transition-colors duration-300">
-                    Discover
-                  </h4>
-                  <p className="font-outfit text-[18px] md:text-[24px] text-black leading-none group-hover:text-white transition-colors duration-300">
-                    All Practice Areas
-                  </p>
-                </div>
+              <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
+                <Scale className="w-6 h-6 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" />
+              </div>
+              <div>
+                <p className="font-manrope text-[13px] text-brand-dark/70 mb-0.5">Otkrijte</p>
+                <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">Sve oblasti prakse</p>
               </div>
             </Link>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

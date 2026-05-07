@@ -1,8 +1,9 @@
 import { Phone, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { AboutContent } from "@site/lib/cms/homePageTypes";
-import { useSiteSettings, useGlobalPhone } from "@/hooks/useSiteSettings";
+import { useGlobalPhone } from "@/hooks/useSiteSettings";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface AboutSectionProps {
   content?: AboutContent;
@@ -54,124 +55,101 @@ export default function AboutSection({ content }: AboutSectionProps) {
 const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPhone();
 
   return (
-    <div className="bg-white pt-[30px] md:pt-[54px]">
-      {/* Main Content Section */}
-      <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] pt-[20px] md:pt-[27px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-[5.5%]">
-          {/* Left Column - About Text and CTAs */}
-          <div className="md:w-full">
-            {/* About Us Label */}
-            <div className="text-[rgb(107,141,12)] font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] mb-[10px]">
-              {data.sectionLabel}
-            </div>
-
-            {/* Heading */}
-            <div className="mb-[20px] md:mb-[9.27%]">
-              <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
+          <AnimatedSection className="md:w-full" direction="left">
+            {data.sectionLabel && (
+              <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
+                {data.sectionLabel}
+              </p>
+            )}
+            <div className="mb-8">
+              <h2 className="font-grotesk text-[clamp(2rem,4vw,48px)] font-light leading-[1.15] text-brand-dark mb-6">
                 {data.heading}
               </h2>
               <RichText
                 html={data.description}
-                className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black"
+                className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black"
               />
             </div>
 
-            {/* Call Us 24/7 Box */}
-            <a href={`tel:${phoneNumber.replace(/\D/g, "")}`}>
-              <div className="bg-brand-accent p-[8px] w-full max-w-[400px] mb-[9.27%] cursor-pointer transition-all duration-300 hover:bg-brand-accent-dark group">
-                <div className="flex items-start gap-4">
-                  <div className="bg-white p-[15px] mt-1 flex items-center justify-center group-hover:bg-black transition-colors duration-300">
-                    <Phone
-                      className="w-8 h-8 [&>*]:fill-none [&>*]:stroke-black group-hover:[&>*]:stroke-white transition-colors duration-300"
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-outfit text-[16px] md:text-[18px] leading-tight text-black pb-[10px] group-hover:text-white transition-colors duration-300">
-                      {phoneLabel}
-                    </h4>
-                    <p className="font-outfit text-[28px] md:text-[40px] text-black leading-none group-hover:text-white transition-colors duration-300">
-                      {phoneDisplay}
-                    </p>
-                  </div>
+            {phoneDisplay && (
+              <a
+                href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[340px] mb-4"
+              >
+                <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
+                  <Phone className="w-5 h-5 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" strokeWidth={1.5} />
                 </div>
-              </div>
-            </a>
+                <div>
+                  {phoneLabel && <p className="font-manrope text-[12px] text-brand-dark/60 mb-0.5">{phoneLabel}</p>}
+                  <p className="font-grotesk text-[22px] font-medium text-brand-dark leading-tight">{phoneDisplay}</p>
+                </div>
+              </a>
+            )}
 
-            {/* Contact Us Box */}
-            <Link to="/contact/" className="bg-brand-accent p-[8px] w-full max-w-[400px] cursor-pointer transition-all duration-300 hover:bg-brand-accent-dark group block">
-              <div className="flex items-start gap-4">
-                <div className="bg-white p-[15px] mt-1 flex items-center justify-center group-hover:bg-black transition-colors duration-300">
-                  <MessageCircle
-                    className="w-8 h-8 [&>*]:fill-none [&>*]:stroke-black group-hover:[&>*]:stroke-white transition-colors duration-300"
-                    strokeWidth={1.5}
-                  />
+            {data.contactLabel && (
+              <Link
+                to="/contact/"
+                className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[340px]"
+              >
+                <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
+                  <MessageCircle className="w-5 h-5 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" strokeWidth={1.5} />
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-outfit text-[16px] md:text-[18px] leading-tight text-black pb-[10px] group-hover:text-white transition-colors duration-300">
-                    {data.contactLabel}
-                  </h4>
-                  <p className="font-outfit text-[18px] md:text-[24px] text-black leading-none group-hover:text-white transition-colors duration-300">
-                    {data.contactText}
-                  </p>
+                <div>
+                  <p className="font-manrope text-[12px] text-brand-dark/60 mb-0.5">{data.contactLabel}</p>
+                  <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">{data.contactText}</p>
                 </div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            )}
+          </AnimatedSection>
 
-          {/* Middle Column - Image */}
-          <div className="md:w-full flex justify-center md:justify-start">
+          <AnimatedSection className="md:w-full flex justify-center" delay={0.1}>
             <img
               src={data.attorneyImage}
               alt={data.attorneyImageAlt}
-              className="max-w-full w-auto h-auto object-contain"
+              className="max-w-full w-auto h-auto object-contain max-h-[600px]"
               width={462}
               height={631}
               loading="lazy"
             />
-          </div>
+          </AnimatedSection>
 
-          {/* Right Column - Features */}
-          <div className="md:w-full space-y-[20px] md:space-y-[30px]">
+          <AnimatedSection className="md:w-full space-y-6" delay={0.2}>
             {features.map((feature, index) => (
-              <div key={index}>
-                <div className="mb-[20px] md:mb-[30px]">
-                  <h3 className="font-outfit text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-black pb-[10px]">
-                    {feature.number}. {feature.title}
-                  </h3>
-                  <RichText
-                    html={feature.description}
-                    className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black"
-                  />
+              <div key={index} className={index < features.length - 1 ? "pb-6 border-b border-brand-dark/10" : ""}>
+                <div className="flex gap-3 mb-2">
+                  <span className="font-grotesk text-[13px] font-semibold text-brand-accent">{feature.number}.</span>
+                  <h3 className="font-grotesk text-[20px] font-medium text-brand-dark">{feature.title}</h3>
                 </div>
-                {index < features.length - 1 && (
-                  <div className="h-[23px]">
-                    <div className="inline-block w-full"></div>
-                  </div>
-                )}
+                <RichText
+                  html={feature.description}
+                  className="font-manrope text-[15px] leading-relaxed text-brand-dark/60 pl-6"
+                />
               </div>
             ))}
-          </div>
+          </AnimatedSection>
         </div>
       </div>
 
       {/* Stats Section */}
-      <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] py-[20px] md:py-[27px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-[3%]">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="max-w-[550px] mx-auto">
-                <h4 className="font-[Crimson_Pro,Georgia,Times_New_Roman,serif] text-[40px] md:text-[60px] leading-tight md:leading-[60px] text-black pb-[10px]">
+      <div className="border-t border-brand-dark/10 mt-12">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <AnimatedSection key={index} delay={index * 0.08} className="text-center">
+                <p className="font-grotesk text-[clamp(2rem,4vw,52px)] font-light text-brand-dark mb-2">
                   {stat.value}
-                </h4>
-                <div className="font-outfit text-[16px] md:text-[20px] font-light text-black text-center">
+                </p>
+                <p className="font-manrope text-[14px] text-brand-dark/50 leading-snug">
                   {stat.label}
-                </div>
-              </div>
-            </div>
-          ))}
+                </p>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

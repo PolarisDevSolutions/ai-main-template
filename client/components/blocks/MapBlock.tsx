@@ -12,14 +12,14 @@ export default function MapBlock({ block }: MapBlockProps) {
         {(block.heading || block.subtext) && (
           <div className="text-center mb-[20px] md:mb-[30px]">
             {block.heading && (
-              <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
+              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
                 {block.heading}
               </h2>
             )}
             {block.subtext && (
               <RichText
                 html={block.subtext}
-                className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black/80"
+                className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black/80"
               />
             )}
           </div>

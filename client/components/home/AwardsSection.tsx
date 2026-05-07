@@ -1,5 +1,6 @@
 import type { AwardsContent } from "@/lib/homePageTypes";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface AwardsSectionProps {
   content?: AwardsContent;
@@ -27,88 +28,47 @@ export default function AwardsSection({ content }: AwardsSectionProps) {
   const logos = data.logos || defaultContent.logos;
 
   return (
-    <div
-      className="relative pt-[30px] md:pt-[54px]"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgb(6, 29, 27) 54%, rgb(255, 255, 255) 54%)",
-      }}
-    >
-      <div className="max-w-[1640px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] flex flex-col lg:flex-row relative">
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
         {/* Left Side - Text Content */}
-        <div className="lg:w-1/3 lg:min-w-[40%] bg-[rgb(239,239,239)] p-[30px] md:p-[40px] relative z-[2]">
-          <div className="mb-[10px]">
-            <p
-              className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px]"
-              style={{ color: "#6b8d0c" }}
-            >
+        <AnimatedSection className="lg:w-[380px] shrink-0" direction="left">
+          {data.sectionLabel && (
+            <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
               {data.sectionLabel}
             </p>
-          </div>
-          <div>
-            <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
-              {data.heading}
-            </h2>
-            <RichText
-              html={data.description}
-              className="font-outfit text-[20px] leading-[30px] text-black"
-            />
-          </div>
-        </div>
+          )}
+          <h2 className="font-grotesk text-[clamp(1.8rem,4vw,44px)] font-light leading-[1.15] text-brand-dark mb-6">
+            {data.heading}
+          </h2>
+          <RichText
+            html={data.description}
+            className="font-manrope text-[15px] leading-relaxed text-brand-dark/60"
+          />
+        </AnimatedSection>
 
         {/* Right Side - Logo Grid */}
-        <div className="lg:w-2/3 bg-[rgb(239,239,239)] relative z-[2]">
-          {/* First Row */}
-          <div className="flex p-[50px] px-[30px] w-full">
-            {logos.slice(0, 4).map((logo, index) => (
+        <AnimatedSection className="flex-1" delay={0.15}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {logos.map((logo, index) => (
               <div
                 key={index}
-                className="bg-white flex-shrink-0"
-                style={{
-                  width: "21.574%",
-                  marginRight: index < 3 ? "4.569%" : "0",
-                }}
+                className="bg-[#f5f5f5] flex items-center justify-center p-6"
               >
-                <div className="text-center">
-                  <img
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={240}
-                    height={155}
-                    loading="lazy"
-                    className="max-w-full inline-block"
-                  />
-                </div>
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={200}
+                  height={120}
+                  loading="lazy"
+                  className="max-w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-200"
+                />
               </div>
             ))}
           </div>
-
-          {/* Second Row */}
-          <div className="flex p-[50px] px-[30px] w-full">
-            {logos.slice(4, 8).map((logo, index) => (
-              <div
-                key={index}
-                className="bg-white flex-shrink-0"
-                style={{
-                  width: "21.574%",
-                  marginRight: index < 3 ? "4.569%" : "0",
-                }}
-              >
-                <div className="text-center">
-                  <img
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={240}
-                    height={155}
-                    loading="lazy"
-                    className="max-w-full inline-block"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+        </AnimatedSection>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

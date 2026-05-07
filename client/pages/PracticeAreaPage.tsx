@@ -28,10 +28,10 @@ export default function PracticeAreaPage() {
       <Layout>
         <div className="bg-brand-dark py-[60px] md:py-[100px]">
           <div className="max-w-[800px] mx-auto text-center px-4">
-            <h1 className="font-playfair text-[36px] md:text-[48px] text-white mb-4">
+            <h1 className="font-grotesk text-[36px] md:text-[48px] text-white mb-4">
               Page Not Found
             </h1>
-            <p className="font-outfit text-[18px] text-white/80">
+            <p className="font-manrope text-[18px] text-white/80">
               The practice area page you're looking for doesn't exist or hasn't
               been published yet.
             </p>

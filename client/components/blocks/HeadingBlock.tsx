@@ -12,7 +12,7 @@ export default function HeadingBlock({ block }: HeadingBlockProps) {
         <DynamicHeading
           tag={`h${block.level}`}
           defaultTag="h2"
-          className="font-playfair text-[32px] md:text-[42px] lg:text-[48px] leading-tight text-black"
+          className="font-grotesk text-[32px] md:text-[42px] lg:text-[48px] leading-tight text-black"
         >
           {block.text}
         </DynamicHeading>

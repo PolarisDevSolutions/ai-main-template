@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { TestimonialsContent, TestimonialItem } from "@/lib/homePageTypes";
+import type { TestimonialsContent } from "@/lib/homePageTypes";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface TestimonialsSectionProps {
   content?: TestimonialsContent;
@@ -52,28 +53,20 @@ export default function TestimonialsSection({
   };
 
   return (
-    <div className="bg-white py-[30px] md:py-[54px]">
-      {/* Header Section */}
-      <div className="max-w-[1080px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] py-[20px] md:py-[27px]">
-        <div className="text-center mb-[10px]">
-          <p
-            className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px]"
-            style={{ color: "#6b8d0c" }}
-          >
+    <section className="bg-white py-20 md:py-28">
+      <AnimatedSection className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-12 text-center">
+        {data.sectionLabel && (
+          <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
             {data.sectionLabel}
           </p>
-        </div>
-        <div className="text-center">
-          <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
-            {data.heading}
-          </h2>
-        </div>
-      </div>
+        )}
+        <h2 className="font-grotesk text-[clamp(2rem,5vw,52px)] font-light leading-[1.1] text-brand-dark">
+          {data.heading}
+        </h2>
+      </AnimatedSection>
 
-      {/* Content Section */}
-      <div className="max-w-[1360px] mx-auto w-[90%] md:w-[85%] lg:w-[80%] py-[27px] flex flex-col lg:flex-row gap-8 lg:gap-[3%]">
-        {/* Left Side - Image */}
-        <div className="lg:w-[48.5%] flex items-center justify-center">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex flex-col lg:flex-row gap-10 lg:gap-16">
+        <AnimatedSection className="lg:w-[48.5%] flex items-center justify-center" direction="left">
           <img
             src={data.backgroundImage}
             alt={data.backgroundImageAlt || "Testimonials"}
@@ -82,10 +75,9 @@ export default function TestimonialsSection({
             loading="lazy"
             className="max-w-full"
           />
-        </div>
+        </AnimatedSection>
 
-        {/* Right Side - Carousel */}
-        <div className="lg:w-[48.5%] relative group">
+        <AnimatedSection className="lg:w-[48.5%] relative group" delay={0.15}>
           {/* Carousel Container */}
           <div className="relative min-h-[502px] overflow-hidden">
             <div
@@ -101,9 +93,9 @@ export default function TestimonialsSection({
                     <div className="w-full p-[30px]">
                       <RichText
                         html={testimonial.text}
-                        className="font-outfit text-[24px] leading-[31.2px] text-black pb-[10px] text-left"
+                        className="font-manrope text-[24px] leading-[31.2px] text-black pb-[10px] text-left"
                       />
-                      <div className="font-outfit text-[24px] font-semibold text-black text-left">
+                      <div className="font-manrope text-[24px] font-semibold text-black text-left">
                         <img
                           src={testimonial.ratingImage}
                           alt={testimonial.ratingImageAlt || "Rating"}
@@ -113,7 +105,7 @@ export default function TestimonialsSection({
                           className="max-w-full mb-1"
                         />
                         <br />
-                        Posted By {testimonial.author}
+                        Objavio {testimonial.author}
                       </div>
                     </div>
                   </div>
@@ -144,15 +136,15 @@ export default function TestimonialsSection({
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`inline-block w-[7px] h-[7px] bg-brand-accent-dark border border-brand-accent ${
+                className={`inline-block w-[8px] h-[8px] bg-brand-accent border border-brand-accent-dark ${
                   index === activeSlide ? "opacity-100" : "opacity-50"
                 } ${index < testimonials.length - 1 ? "mr-[10px]" : ""} cursor-pointer transition-opacity hover:opacity-100`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
-        </div>
+        </AnimatedSection>
       </div>
-    </div>
+    </section>
   );
 }

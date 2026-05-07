@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import type { FaqContent, FaqItem } from "@/lib/homePageTypes";
+import type { FaqContent } from "@/lib/homePageTypes";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface FaqSectionProps {
   content?: FaqContent;
@@ -49,66 +50,72 @@ export default function FaqSection({ content }: FaqSectionProps) {
   };
 
   return (
-    <div className="bg-white pt-[30px] md:pt-[54px]">
-      {/* Header Section */}
-      <div className="max-w-[1080px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] py-[20px] md:py-[27px]">
-        <div className="text-center">
-          <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <AnimatedSection className="text-center mb-14">
+          <h2 className="font-grotesk text-[clamp(2rem,5vw,52px)] font-light leading-[1.1] text-brand-dark mb-4">
             {data.heading}
           </h2>
-          <RichText
-            html={data.description}
-            className="font-outfit text-[16px] md:text-[24px] leading-[24px] md:leading-[36px] text-black text-center"
-          />
-        </div>
-      </div>
+          {data.description && (
+            <RichText
+              html={data.description}
+              className="font-manrope text-[16px] leading-relaxed text-brand-dark/60 max-w-2xl mx-auto"
+            />
+          )}
+        </AnimatedSection>
 
-      {/* Content Section */}
-      <div className="max-w-[1600px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] py-[20px] md:py-[27px] flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-[5.5%]">
-        {/* Left Side - Image */}
-        <div className="lg:w-[47.25%]">
-          <img
-            src={data.videoThumbnail}
-            alt={data.videoThumbnailAlt || "Frequently Asked Questions"}
-            className="w-full h-auto object-cover"
-            width={720}
-            height={480}
-            loading="lazy"
-          />
-        </div>
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
+          {/* Left Side - Image */}
+          {data.videoThumbnail && (
+            <AnimatedSection className="lg:w-[45%] shrink-0" direction="left">
+              <img
+                src={data.videoThumbnail}
+                alt={data.videoThumbnailAlt || "FAQ"}
+                className="w-full h-auto object-cover"
+                width={720}
+                height={480}
+                loading="lazy"
+              />
+            </AnimatedSection>
+          )}
 
-        {/* Right Side - Custom Accordion */}
-        <div className="lg:w-[47.25%]">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className={`border-[0.8px] border-[rgb(217,217,217)] ${
-                index < faqs.length - 1 ? "mb-[5.82%]" : ""
-              } ${openIndex === index ? "bg-brand-dark" : "bg-white"}`}
-            >
-              <button
-                onClick={() => toggleFaq(index)}
-                className={`w-full font-outfit text-[28px] leading-[28px] px-[20px] py-[20px] text-left flex items-center justify-between cursor-pointer ${
-                  openIndex === index ? "text-white" : "text-[rgb(67,67,67)]"
-                }`}
-              >
-                <span className="pr-[50px]">{faq.question}</span>
-                <ChevronDown
-                  className={`h-6 w-6 flex-shrink-0 transition-transform duration-200 ${
-                    openIndex === index ? "rotate-180" : ""
+          {/* Accordion */}
+          <AnimatedSection className="flex-1" delay={0.15}>
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`border border-brand-border/20 transition-all duration-200 ${
+                    openIndex === index
+                      ? "border-l-4 border-l-brand-accent bg-brand-dark"
+                      : "hover:border-brand-border/40"
                   }`}
-                />
-              </button>
-              {openIndex === index && (
-                <RichText
-                  html={faq.answer}
-                  className="font-outfit text-[22px] leading-[33px] font-light px-[20px] pb-[20px] pt-[20px] text-white"
-                />
-              )}
+                >
+                  <button
+                    onClick={() => toggleFaq(index)}
+                    className={`w-full font-manrope text-[18px] leading-snug px-5 py-5 text-left flex items-center justify-between cursor-pointer gap-4 ${
+                      openIndex === index ? "text-white" : "text-brand-dark"
+                    }`}
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`h-5 w-5 shrink-0 text-brand-accent transition-transform duration-200 ${
+                        openIndex === index ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {openIndex === index && (
+                    <RichText
+                      html={faq.answer}
+                      className="font-manrope text-[15px] leading-relaxed font-light px-5 pb-5 text-white/70"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
+          </AnimatedSection>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

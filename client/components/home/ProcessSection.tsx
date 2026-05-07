@@ -1,5 +1,6 @@
-import type { ProcessContent, ProcessStep } from "@/lib/homePageTypes";
+import type { ProcessContent } from "@/lib/homePageTypes";
 import RichText from "@site/components/shared/RichText";
+import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface ProcessSectionProps {
   content?: ProcessContent;
@@ -36,59 +37,33 @@ export default function ProcessSection({ content }: ProcessSectionProps) {
   const steps = data.steps || defaultContent.steps;
 
   return (
-    <div className="bg-brand-dark pt-[30px] pb-[60px]">
-      {/* Header Section */}
-      <div className="max-w-[1080px] mx-auto w-[80%] py-[27px]">
-        <div className="text-center mb-[10px]">
-          <p
-            className="font-outfit text-[24px] leading-[36px]"
-            style={{ color: "rgb(186, 234, 160)" }}
-          >
+    <section className="bg-brand-dark py-20 md:py-28">
+      <AnimatedSection className="max-w-[1400px] mx-auto px-6 lg:px-10 text-center mb-14">
+        {data.sectionLabel && (
+          <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
             {data.sectionLabel}
           </p>
-        </div>
-        <div className="text-center">
-          <h2 className="font-playfair text-[28px] md:text-[40px] lg:text-[54px] leading-tight md:leading-[48.6px] text-white pb-[10px]">
-            {data.headingLine1}
-          </h2>
-          <h2 className="font-playfair text-[28px] md:text-[40px] lg:text-[54px] leading-tight md:leading-[48.6px] text-white pb-[10px]">
-            {data.headingLine2}
-          </h2>
-        </div>
-      </div>
+        )}
+        <h2 className="font-grotesk text-[clamp(2rem,5vw,52px)] font-light leading-[1.1] text-white">
+          {data.headingLine1}
+          {data.headingLine2 && (
+            <><br />{data.headingLine2}</>
+          )}
+        </h2>
+      </AnimatedSection>
 
-      {/* Steps Grid */}
-      <div className="max-w-[1600px] mx-auto w-[80%] flex flex-col md:flex-row gap-[3%]">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         {steps.map((step, index) => (
-          <div
-            key={index}
-            className={`md:w-[31.3333%] bg-[rgb(30,50,49)] p-[20px] ${
-              index < steps.length - 1 ? "mb-4 md:mb-0" : ""
-            }`}
-          >
-            {/* Step Number */}
-            <div className="mb-[20px]">
-              <p
-                className="font-outfit text-[24px] leading-[36px]"
-                style={{ color: "rgb(186, 234, 160)" }}
-              >
-                {step.number}
-              </p>
-            </div>
-
-            {/* Step Content */}
-            <div className="mb-[30px]">
-              <h3 className="font-outfit text-[32px] leading-[32px] text-white pb-[10px]">
-                {step.title}
-              </h3>
-              <RichText
-                html={step.description}
-                className="font-outfit text-[20px] leading-[30px] text-white"
-              />
-            </div>
-          </div>
+          <AnimatedSection key={index} delay={index * 0.1} className="bg-brand-card border border-brand-border/30 p-8">
+            <p className="font-grotesk text-[36px] font-light text-brand-accent mb-4">{step.number}</p>
+            <h3 className="font-grotesk text-[22px] font-medium text-white mb-4">{step.title}</h3>
+            <RichText
+              html={step.description}
+              className="font-manrope text-[15px] leading-relaxed text-white/60"
+            />
+          </AnimatedSection>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

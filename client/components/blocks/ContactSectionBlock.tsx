@@ -19,17 +19,17 @@ export default function ContactSectionBlock({ block }: ContactSectionBlockProps)
           <div className="py-[4.2415%] relative w-full">
             <div className="relative w-full">
               <div className="mb-[10px]">
-                <p className="font-outfit text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[#6b8d0c]">
+                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[#6b8d0c]">
                   {block.sectionLabel}
                 </p>
               </div>
               <div>
-                <h2 className="font-playfair text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
+                <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[10px]">
                   {block.heading}
                 </h2>
                 <RichText
                   html={block.description}
-                  className="font-outfit text-[16px] md:text-[24px] leading-[24px] md:leading-[36px] text-black"
+                  className="font-manrope text-[16px] md:text-[24px] leading-[24px] md:leading-[36px] text-black"
                 />
               </div>
             </div>
@@ -41,10 +41,10 @@ export default function ContactSectionBlock({ block }: ContactSectionBlockProps)
             style={{ backgroundColor: "rgba(29, 73, 70, 0.54)" }}
           >
             <div className="text-left">
-              <h4 className="font-playfair text-[22px] md:text-[28px] leading-tight md:leading-[36.4px] text-white pb-[10px]">
+              <h4 className="font-grotesk text-[22px] md:text-[28px] leading-tight md:leading-[36.4px] text-white pb-[10px]">
                 {block.formHeading}
               </h4>
-              <p className="font-outfit text-[16px] md:text-[20px] leading-[24px] md:leading-[28px] text-white font-light">
+              <p className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[28px] text-white font-light">
                 Our intake team is available 24 hours a day, seven days a week
               </p>
               <div className="mt-[20px] md:mt-[30px] flex justify-start">
@@ -116,7 +116,7 @@ export default function ContactSectionBlock({ block }: ContactSectionBlockProps)
               <div>
                 <Button
                   type="submit"
-                  className="w-full bg-brand-accent-dark text-brand-accent border-brand-accent font-outfit text-[22px] h-[50px] hover:bg-brand-accent hover:text-black transition-all duration-300 rounded-none"
+                  className="w-full bg-brand-accent-dark text-brand-accent border-brand-accent font-manrope text-[22px] h-[50px] hover:bg-brand-accent hover:text-black transition-all duration-300 rounded-none"
                 >
                   SUBMIT
                 </Button>

@@ -27,12 +27,12 @@ export default function ValueCard({
 
         {/* Content Section */}
         <div>
-          <h3 className="font-playfair text-[24px] md:text-[32px] leading-tight text-white pb-[10px] md:pb-[15px]">
+          <h3 className="font-grotesk text-[24px] md:text-[32px] leading-tight text-white pb-[10px] md:pb-[15px]">
             {title}
           </h3>
           <RichText
             html={description}
-            className="font-outfit text-[14px] md:text-[16px] leading-[22px] md:leading-[26px] text-white/80"
+            className="font-manrope text-[14px] md:text-[16px] leading-[22px] md:leading-[26px] text-white/80"
           />
         </div>
       </div>

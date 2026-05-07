@@ -544,9 +544,42 @@ export default function AdminSiteSettings() {
 
           <Card>
             <CardHeader>
+              <CardTitle>Footer Column Headings</CardTitle>
+              <CardDescription>
+                Labels displayed above each links column in the footer
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="footerColumn1Label">Column 1 Heading</Label>
+                <Input
+                  id="footerColumn1Label"
+                  value={settings.footerColumn1Label || ""}
+                  onChange={(e) =>
+                    updateSettings({ footerColumn1Label: e.target.value })
+                  }
+                  placeholder="e.g. Resursi"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="footerColumn2Label">Column 2 Heading</Label>
+                <Input
+                  id="footerColumn2Label"
+                  value={settings.footerColumn2Label || ""}
+                  onChange={(e) =>
+                    updateSettings({ footerColumn2Label: e.target.value })
+                  }
+                  placeholder="e.g. Usluge"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle>About Column Links</CardTitle>
               <CardDescription>
-                Links in the "About" section of the footer
+                Links in the first column of the footer
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

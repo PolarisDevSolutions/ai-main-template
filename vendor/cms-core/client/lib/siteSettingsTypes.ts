@@ -49,6 +49,8 @@ export interface SiteSettings {
   // Footer Links
   footerAboutLinks: FooterLink[];
   footerPracticeLinks: FooterLink[];
+  footerColumn1Label: string;
+  footerColumn2Label: string;
 
   // Address
   addressLine1: string;
@@ -94,6 +96,8 @@ export interface SiteSettingsRow {
   navigation_items: NavigationItem[];
   footer_about_links: FooterLink[];
   footer_practice_links: FooterLink[];
+  footer_column1_label: string | null;
+  footer_column2_label: string | null;
   address_line1: string | null;
   address_line2: string | null;
   map_embed_url: string | null;
@@ -127,12 +131,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   headerCtaUrl: "",
   navigationItems: [
   ],
-  footerAboutLinks: [
-    
-  ],
-  footerPracticeLinks: [
-   
-  ],
+  footerAboutLinks: [],
+  footerPracticeLinks: [],
+  footerColumn1Label: "",
+  footerColumn2Label: "",
   addressLine1: "",
   addressLine2: "",
   mapEmbedUrl:
@@ -175,6 +177,8 @@ export function rowToSiteSettings(row: SiteSettingsRow): SiteSettings {
     footerPracticeLinks: row.footer_practice_links?.length
       ? row.footer_practice_links
       : DEFAULT_SITE_SETTINGS.footerPracticeLinks,
+    footerColumn1Label: row.footer_column1_label || DEFAULT_SITE_SETTINGS.footerColumn1Label,
+    footerColumn2Label: row.footer_column2_label || DEFAULT_SITE_SETTINGS.footerColumn2Label,
     addressLine1: row.address_line1 || DEFAULT_SITE_SETTINGS.addressLine1,
     addressLine2: row.address_line2 || DEFAULT_SITE_SETTINGS.addressLine2,
     mapEmbedUrl: row.map_embed_url || DEFAULT_SITE_SETTINGS.mapEmbedUrl,
@@ -210,6 +214,8 @@ export function siteSettingsToRow(
     navigation_items: settings.navigationItems,
     footer_about_links: settings.footerAboutLinks,
     footer_practice_links: settings.footerPracticeLinks,
+    footer_column1_label: settings.footerColumn1Label || null,
+    footer_column2_label: settings.footerColumn2Label || null,
     address_line1: settings.addressLine1,
     address_line2: settings.addressLine2,
     map_embed_url: settings.mapEmbedUrl,
