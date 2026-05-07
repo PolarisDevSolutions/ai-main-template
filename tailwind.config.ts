@@ -14,21 +14,21 @@ export default {
     },
     extend: {
       fontFamily: {
-        playfair: [
-          '"Playfair Display"',
-          "Georgia",
-          '"Times New Roman"',
-          "serif",
+        grotesk: [
+          '"Space Grotesk"',
+          "Helvetica",
+          "Arial",
+          "sans-serif",
         ],
-        outfit: ["Outfit", "Helvetica", "Arial", "Lucida", "sans-serif"],
+        manrope: ["Manrope", "Helvetica", "Arial", "sans-serif"],
       },
       colors: {
         // TEMPLATE: Update brand colors for each new project
         "brand-dark": "rgb(6, 29, 27)",
         "brand-card": "rgb(20, 41, 40)",
         "brand-border": "rgb(97, 111, 111)",
-        "brand-accent": "rgb(186, 234, 160)",
-        "brand-accent-dark": "rgb(45, 70, 58)",
+        "brand-accent": "rgb(212, 175, 55)",
+        "brand-accent-dark": "rgb(160, 128, 20)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -80,25 +80,22 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 30s linear infinite",
       },
     },
   },
