@@ -161,14 +161,16 @@ export default function Index() {
 
       {/* ── Partner Logos Marquee ── */}
       {partnerLogos && partnerLogos.length > 0 && (
-        <div className="bg-brand-card/50 border-y border-brand-border/20 py-6 overflow-hidden">
+        <div className="w-full overflow-hidden border-y border-brand-dark/8 py-8 bg-white">
           <div className="flex animate-marquee whitespace-nowrap" style={{ width: "max-content" }}>
             {[...partnerLogos, ...partnerLogos].map((logo, index) => (
               <div key={index} className="inline-flex items-center justify-center px-10 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  className="h-[44px] w-auto object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-300"
+                  width={160}
+                  height={80}
+                  className="h-[64px] w-auto object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
                   loading="lazy"
                 />
               </div>
