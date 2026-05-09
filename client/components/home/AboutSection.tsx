@@ -57,43 +57,44 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
-          <AnimatedSection className="md:w-full" direction="left">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          <AnimatedSection className="lg:w-full" direction="left">
             {data.sectionLabel && (
               <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
                 {data.sectionLabel}
               </p>
             )}
             <div className="mb-8">
-              <h2 className="font-grotesk text-[clamp(2rem,4vw,48px)] font-light leading-[1.15] text-brand-dark mb-6">
+              <h2 className="font-grotesk text-[clamp(2rem,4vw,48px)] font-semibold leading-[1.15] text-brand-dark mb-6">
                 {data.heading}
               </h2>
               <RichText
                 html={data.description}
-                className="font-manrope text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] text-black"
+                className="font-manrope text-[15px] md:text-[17px] leading-7 text-brand-dark/78 [&_p]:mb-4 [&_p:last-child]:mb-0"
               />
             </div>
 
-            {phoneDisplay && (
-              <a
-                href={`tel:${phoneNumber.replace(/\D/g, "")}`}
-                className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[340px] mb-4"
-              >
+            <div className="flex flex-col gap-4 max-w-[340px]">
+              {phoneDisplay && (
+                <a
+                  href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                  className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300"
+                >
                 <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
                   <Phone className="w-5 h-5 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" strokeWidth={1.5} />
                 </div>
                 <div>
                   {phoneLabel && <p className="font-manrope text-[12px] text-brand-dark/60 mb-0.5">{phoneLabel}</p>}
                   <p className="font-grotesk text-[22px] font-medium text-brand-dark leading-tight">{phoneDisplay}</p>
-                </div>
-              </a>
-            )}
+                  </div>
+                </a>
+              )}
 
-            {data.contactLabel && (
-              <Link
-                to="/contact/"
-                className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[340px]"
-              >
+              {data.contactLabel && (
+                <Link
+                  to="/contact/"
+                  className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300"
+                >
                 <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
                   <MessageCircle className="w-5 h-5 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" strokeWidth={1.5} />
                 </div>
@@ -103,47 +104,48 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
                 </div>
               </Link>
             )}
+            </div>
           </AnimatedSection>
 
-          <AnimatedSection className="md:w-full flex justify-center" delay={0.1}>
-            <img
-              src={data.attorneyImage}
-              alt={data.attorneyImageAlt}
-              className="max-w-full w-auto h-auto object-contain max-h-[600px]"
-              width={462}
-              height={631}
-              loading="lazy"
-            />
-          </AnimatedSection>
+          <div className="lg:w-full flex flex-col gap-8 lg:gap-10">
+            <AnimatedSection className="flex justify-center lg:justify-start" delay={0.1}>
+              <img
+                src={data.attorneyImage}
+                alt={data.attorneyImageAlt}
+                className="w-full max-w-[520px] h-auto object-contain max-h-[600px]"
+                width={462}
+                height={631}
+                loading="lazy"
+              />
+            </AnimatedSection>
 
-          <AnimatedSection className="md:w-full flex flex-col gap-5" delay={0.2}>
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group relative bg-white border border-brand-dark/8 hover:border-brand-accent/40 p-6 transition-all duration-300"
-              >
-                {/* Large background number */}
-                <span
-                  className="absolute top-3 right-4 font-grotesk text-[64px] font-light leading-none text-brand-dark/[0.04] select-none pointer-events-none"
-                  aria-hidden="true"
+            <AnimatedSection className="flex flex-col gap-5" delay={0.2}>
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="group relative bg-white border border-brand-dark/8 hover:border-brand-accent/40 p-6 transition-all duration-300"
                 >
-                  {feature.number}
-                </span>
-                {/* Gold left border accent */}
-                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand-accent/0 group-hover:bg-brand-accent transition-all duration-300" />
-                <p className="font-manrope text-[11px] font-semibold tracking-[0.18em] uppercase text-brand-accent mb-2">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <h3 className="font-grotesk text-[18px] font-medium text-brand-dark mb-2">
-                  {feature.title}
-                </h3>
-                <RichText
-                  html={feature.description}
-                  className="font-manrope text-[14px] leading-relaxed text-brand-dark/55"
-                />
-              </div>
-            ))}
-          </AnimatedSection>
+                  <span
+                    className="absolute top-3 right-4 font-grotesk text-[64px] font-light leading-none text-brand-dark/[0.04] select-none pointer-events-none"
+                    aria-hidden="true"
+                  >
+                    {feature.number}
+                  </span>
+                  <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand-accent/0 group-hover:bg-brand-accent transition-all duration-300" />
+                  <p className="font-manrope text-[11px] font-semibold tracking-[0.18em] uppercase text-brand-accent mb-2">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="font-grotesk text-[18px] font-medium text-brand-dark mb-2">
+                    {feature.title}
+                  </h3>
+                  <RichText
+                    html={feature.description}
+                    className="font-manrope text-[14px] leading-relaxed text-brand-dark/55 [&_p]:mb-3 [&_p:last-child]:mb-0"
+                  />
+                </div>
+              ))}
+            </AnimatedSection>
+          </div>
         </div>
       </div>
 
