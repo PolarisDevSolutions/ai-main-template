@@ -64,6 +64,32 @@ function HeroSection({ content, update }: SectionProps) {
           <Label>Headline</Label>
           <Input value={hero.headline} onChange={(e) => set({ headline: e.target.value })} />
         </div>
+        <div>
+          <Label>Description</Label>
+          <Textarea value={hero.description} onChange={(e) => set({ description: e.target.value })} rows={4} />
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          <div>
+            <Label>Trust Text 1</Label>
+            <Input value={hero.trustText1} onChange={(e) => set({ trustText1: e.target.value })} />
+          </div>
+          <div>
+            <Label>Trust Text 2</Label>
+            <Input value={hero.trustText2} onChange={(e) => set({ trustText2: e.target.value })} />
+          </div>
+          <div>
+            <Label>Trust Text 3</Label>
+            <Input value={hero.trustText3} onChange={(e) => set({ trustText3: e.target.value })} />
+          </div>
+        </div>
+        <div>
+          <Label>Form Small Title</Label>
+          <Input value={hero.formTitle} onChange={(e) => set({ formTitle: e.target.value })} />
+        </div>
+        <div>
+          <Label>CTA Phone Label</Label>
+          <Input value={hero.phoneLabel} onChange={(e) => set({ phoneLabel: e.target.value })} />
+        </div>
         <p className="text-xs text-gray-500 italic">Phone number is managed in Site Settings &gt; Contact Info</p>
       </div>
     </Section>

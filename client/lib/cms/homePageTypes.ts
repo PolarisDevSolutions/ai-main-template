@@ -2,9 +2,14 @@
 // Each section maps directly to a static component's data needs
 
 export interface HeroContent {
-  h1Title: string; // H1 title text (all caps, ~20px) between headline and phone button
-  headline: string;
+  h1Title: string; // H1 title text (all caps, ~20px) above the main hero headline
   highlightedText: string;
+  headline: string;
+  description: string;
+  trustText1: string;
+  trustText2: string;
+  trustText3: string;
+  formTitle: string;
   phone: string;
   phoneLabel: string;
 }
@@ -148,8 +153,14 @@ export interface HomePageContent {
 export const defaultHomeContent: HomePageContent = {
   hero: {
     h1Title: "YOUR FIRM HEADLINE",
-    headline: "with integrity, experience, and relentless advocacy.",
     highlightedText: "Protecting your rights",
+    headline: "with integrity, experience, and relentless advocacy.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    trustText1: "Brz odgovor",
+    trustText2: "SEO optimizacija",
+    trustText3: "Moderni dizajn",
+    formTitle: "Pošaljite upit",
     phone: "",
     phoneLabel: "Call Us 24/7",
   },
