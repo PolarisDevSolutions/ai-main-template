@@ -3,9 +3,10 @@ import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import type { ContentBlock } from "../lib/blocks";
 import { consumePageData } from '../lib/pageDataInjection';
+import { getPublicEnv } from '../lib/runtimeEnv';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
 export interface BlogHeroData {
   title: string;

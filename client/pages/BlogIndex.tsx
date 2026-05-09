@@ -3,9 +3,11 @@ import Layout from "@site/components/layout/Layout";
 import BlogHero from "@site/components/blog/BlogHero";
 import RecentBlogPosts from "@site/components/blog/RecentBlogPosts";
 import { useBlogContent } from "@site/hooks/useBlogContent";
+import { getInjectedPageData } from "@site/lib/pageDataInjection";
 
 export default function BlogIndex() {
   const { hero, recentPosts, meta } = useBlogContent();
+  const injected = getInjectedPageData("/blog/");
 
   return (
     <Layout>
@@ -25,7 +27,7 @@ export default function BlogIndex() {
       <BlogHero hero={hero} />
 
       {/* Recent Blog Posts - 6 latest */}
-      <RecentBlogPosts data={recentPosts} />
+      <RecentBlogPosts data={recentPosts} initialPosts={injected?.blogPosts} />
     </Layout>
   );
 }

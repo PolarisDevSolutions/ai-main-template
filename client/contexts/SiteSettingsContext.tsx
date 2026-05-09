@@ -1,13 +1,13 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
   type ReactNode,
 } from "react";
+import { getPublicEnv } from "@site/lib/runtimeEnv";
 
-// Site Settings types (matching submodule)
-interface SiteSettings {
+export interface SiteSettings {
   siteName: string;
   logoUrl: string;
   logoAlt: string;
@@ -39,18 +39,15 @@ interface SiteSettings {
   copyrightText: string;
   siteUrl: string;
   siteNoindex: boolean;
-  // Analytics & Scripts
   ga4MeasurementId: string;
   googleAdsId: string;
   googleAdsConversionLabel: string;
   headScripts: string;
   footerScripts: string;
-  // SEO
   globalSchema: string;
 }
 
-// TEMPLATE: Update default fallback values for each new project
-const DEFAULT_SETTINGS: SiteSettings = {
+export const DEFAULT_SETTINGS: SiteSettings = {
   siteName: "",
   logoUrl: "",
   logoAlt: "",
@@ -89,36 +86,135 @@ const DEFAULT_SETTINGS: SiteSettings = {
   globalSchema: "",
 };
 
+interface SiteSettingsRowLike {
+  site_name?: string | null;
+  logo_url?: string | null;
+  logo_alt?: string | null;
+  phone_number?: string | null;
+  phone_display?: string | null;
+  phone_availability?: string | null;
+  apply_phone_globally?: boolean | null;
+  header_cta_text?: string | null;
+  header_cta_url?: string | null;
+  navigation_items?: SiteSettings["navigationItems"] | null;
+  footer_about_links?: SiteSettings["footerAboutLinks"] | null;
+  footer_practice_links?: SiteSettings["footerPracticeLinks"] | null;
+  footer_column1_label?: string | null;
+  footer_column2_label?: string | null;
+  footer_column4_label?: string | null;
+  footer_logo_text?: string | null;
+  footer_column4_content?: string | null;
+  footer_tagline_html?: string | null;
+  address_line1?: string | null;
+  address_line2?: string | null;
+  map_embed_url?: string | null;
+  social_links?: SiteSettings["socialLinks"] | null;
+  copyright_text?: string | null;
+  site_url?: string | null;
+  site_noindex?: boolean | null;
+  ga4_measurement_id?: string | null;
+  google_ads_id?: string | null;
+  google_ads_conversion_label?: string | null;
+  head_scripts?: string | null;
+  footer_scripts?: string | null;
+  global_schema?: string | null;
+}
+
+export function resolveSiteSettings(
+  row?: SiteSettingsRowLike | null,
+): SiteSettings {
+  if (!row) {
+    return DEFAULT_SETTINGS;
+  }
+
+  return {
+    siteName: row.site_name || DEFAULT_SETTINGS.siteName,
+    logoUrl: row.logo_url || DEFAULT_SETTINGS.logoUrl,
+    logoAlt: row.logo_alt || DEFAULT_SETTINGS.logoAlt,
+    phoneNumber: row.phone_number || DEFAULT_SETTINGS.phoneNumber,
+    phoneDisplay: row.phone_display || DEFAULT_SETTINGS.phoneDisplay,
+    phoneAvailability:
+      row.phone_availability || DEFAULT_SETTINGS.phoneAvailability,
+    applyPhoneGlobally:
+      row.apply_phone_globally ?? DEFAULT_SETTINGS.applyPhoneGlobally,
+    headerCtaText: row.header_cta_text || DEFAULT_SETTINGS.headerCtaText,
+    headerCtaUrl: row.header_cta_url || DEFAULT_SETTINGS.headerCtaUrl,
+    navigationItems: row.navigation_items?.length
+      ? row.navigation_items
+      : DEFAULT_SETTINGS.navigationItems,
+    footerAboutLinks:
+      row.footer_about_links || DEFAULT_SETTINGS.footerAboutLinks,
+    footerPracticeLinks:
+      row.footer_practice_links || DEFAULT_SETTINGS.footerPracticeLinks,
+    footerColumn1Label:
+      row.footer_column1_label || DEFAULT_SETTINGS.footerColumn1Label,
+    footerColumn2Label:
+      row.footer_column2_label || DEFAULT_SETTINGS.footerColumn2Label,
+    footerColumn4Label:
+      row.footer_column4_label || DEFAULT_SETTINGS.footerColumn4Label,
+    footerLogoText: row.footer_logo_text || DEFAULT_SETTINGS.footerLogoText,
+    footerColumn4Content:
+      row.footer_column4_content || DEFAULT_SETTINGS.footerColumn4Content,
+    footerTaglineHtml:
+      row.footer_tagline_html || DEFAULT_SETTINGS.footerTaglineHtml,
+    addressLine1: row.address_line1 || DEFAULT_SETTINGS.addressLine1,
+    addressLine2: row.address_line2 || DEFAULT_SETTINGS.addressLine2,
+    mapEmbedUrl: row.map_embed_url || DEFAULT_SETTINGS.mapEmbedUrl,
+    socialLinks: row.social_links || DEFAULT_SETTINGS.socialLinks,
+    copyrightText: row.copyright_text || DEFAULT_SETTINGS.copyrightText,
+    siteUrl: row.site_url || DEFAULT_SETTINGS.siteUrl,
+    siteNoindex: row.site_noindex ?? DEFAULT_SETTINGS.siteNoindex,
+    ga4MeasurementId:
+      row.ga4_measurement_id || DEFAULT_SETTINGS.ga4MeasurementId,
+    googleAdsId: row.google_ads_id || DEFAULT_SETTINGS.googleAdsId,
+    googleAdsConversionLabel:
+      row.google_ads_conversion_label ||
+      DEFAULT_SETTINGS.googleAdsConversionLabel,
+    headScripts: row.head_scripts || DEFAULT_SETTINGS.headScripts,
+    footerScripts: row.footer_scripts || DEFAULT_SETTINGS.footerScripts,
+    globalSchema: row.global_schema || DEFAULT_SETTINGS.globalSchema,
+  };
+}
+
 interface SiteSettingsContextValue {
   settings: SiteSettings;
   isLoading: boolean;
-  // Convenience getters for phone
   phoneDisplay: string;
   phoneLabel: string;
 }
 
-const SiteSettingsContext = createContext<SiteSettingsContextValue | null>(
-  null,
-);
+const SiteSettingsContext = createContext<SiteSettingsContextValue | null>(null);
 
-// Supabase configuration
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
-// Global cache
 let settingsCache: SiteSettings | null = null;
+
+export function clearSiteSettingsCache() {
+  settingsCache = null;
+}
 
 interface SiteSettingsProviderProps {
   children: ReactNode;
+  initialSettings?: SiteSettings | null;
 }
 
-export function SiteSettingsProvider({ children }: SiteSettingsProviderProps) {
-  const [settings, setSettings] = useState<SiteSettings>(
-    settingsCache || DEFAULT_SETTINGS,
-  );
-  const [isLoading, setIsLoading] = useState(!settingsCache);
+export function SiteSettingsProvider({
+  children,
+  initialSettings,
+}: SiteSettingsProviderProps) {
+  const seededSettings = initialSettings || settingsCache || DEFAULT_SETTINGS;
+  const [settings, setSettings] = useState<SiteSettings>(seededSettings);
+  const [isLoading, setIsLoading] = useState(!initialSettings && !settingsCache);
 
   useEffect(() => {
+    if (initialSettings) {
+      settingsCache = initialSettings;
+      setSettings(initialSettings);
+      setIsLoading(false);
+      return;
+    }
+
     if (settingsCache) {
       setSettings(settingsCache);
       setIsLoading(false);
@@ -144,61 +240,19 @@ export function SiteSettingsProvider({ children }: SiteSettingsProviderProps) {
         const data = await response.json();
 
         if (Array.isArray(data) && data.length > 0) {
-          const row = data[0];
-          const loadedSettings: SiteSettings = {
-            siteName: row.site_name || DEFAULT_SETTINGS.siteName,
-            logoUrl: row.logo_url || DEFAULT_SETTINGS.logoUrl,
-            logoAlt: row.logo_alt || DEFAULT_SETTINGS.logoAlt,
-            phoneNumber: row.phone_number || DEFAULT_SETTINGS.phoneNumber,
-            phoneDisplay: row.phone_display || DEFAULT_SETTINGS.phoneDisplay,
-            phoneAvailability:
-              row.phone_availability || DEFAULT_SETTINGS.phoneAvailability,
-            applyPhoneGlobally:
-              row.apply_phone_globally ?? DEFAULT_SETTINGS.applyPhoneGlobally,
-            headerCtaText:
-              row.header_cta_text || DEFAULT_SETTINGS.headerCtaText,
-            headerCtaUrl: row.header_cta_url || DEFAULT_SETTINGS.headerCtaUrl,
-            navigationItems: row.navigation_items?.length
-              ? row.navigation_items
-              : DEFAULT_SETTINGS.navigationItems,
-            footerAboutLinks:
-              row.footer_about_links || DEFAULT_SETTINGS.footerAboutLinks,
-            footerPracticeLinks:
-              row.footer_practice_links || DEFAULT_SETTINGS.footerPracticeLinks,
-            footerColumn1Label: row.footer_column1_label || DEFAULT_SETTINGS.footerColumn1Label,
-            footerColumn2Label: row.footer_column2_label || DEFAULT_SETTINGS.footerColumn2Label,
-            footerColumn4Label: row.footer_column4_label || DEFAULT_SETTINGS.footerColumn4Label,
-            footerLogoText: row.footer_logo_text || DEFAULT_SETTINGS.footerLogoText,
-            footerColumn4Content: row.footer_column4_content || DEFAULT_SETTINGS.footerColumn4Content,
-            addressLine1: row.address_line1 || DEFAULT_SETTINGS.addressLine1,
-            addressLine2: row.address_line2 || DEFAULT_SETTINGS.addressLine2,
-            mapEmbedUrl: row.map_embed_url || DEFAULT_SETTINGS.mapEmbedUrl,
-            socialLinks: row.social_links || DEFAULT_SETTINGS.socialLinks,
-            footerTaglineHtml: row.footer_tagline_html || DEFAULT_SETTINGS.footerTaglineHtml,
-            copyrightText: row.copyright_text || DEFAULT_SETTINGS.copyrightText,
-            siteUrl: row.site_url || "",
-            siteNoindex: row.site_noindex ?? DEFAULT_SETTINGS.siteNoindex,
-            ga4MeasurementId: row.ga4_measurement_id || "",
-            googleAdsId: row.google_ads_id || "",
-            googleAdsConversionLabel: row.google_ads_conversion_label || "",
-            headScripts: row.head_scripts || "",
-            footerScripts: row.footer_scripts || "",
-            globalSchema: row.global_schema || "",
-          };
-
+          const loadedSettings = resolveSiteSettings(data[0]);
           settingsCache = loadedSettings;
           setSettings(loadedSettings);
         }
       } catch (err) {
         console.error("[SiteSettingsContext] Error loading settings:", err);
-        // Keep defaults on error
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchSettings();
-  }, []);
+  }, [initialSettings]);
 
   const value: SiteSettingsContextValue = {
     settings,
@@ -214,11 +268,10 @@ export function SiteSettingsProvider({ children }: SiteSettingsProviderProps) {
   );
 }
 
-// Hook to access site settings
 export function useSiteSettings(): SiteSettingsContextValue {
   const context = useContext(SiteSettingsContext);
+
   if (!context) {
-    // Return defaults if used outside provider (for safety)
     return {
       settings: DEFAULT_SETTINGS,
       isLoading: false,
@@ -226,12 +279,13 @@ export function useSiteSettings(): SiteSettingsContextValue {
       phoneLabel: DEFAULT_SETTINGS.phoneAvailability,
     };
   }
+
   return context;
 }
 
-// Convenience hook specifically for phone
 export function useGlobalPhone() {
   const { settings, isLoading } = useSiteSettings();
+
   return {
     phoneNumber: settings.phoneNumber,
     phoneDisplay: settings.phoneDisplay,

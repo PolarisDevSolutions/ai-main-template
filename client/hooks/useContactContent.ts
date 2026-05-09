@@ -5,10 +5,11 @@ import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
 import { consumePageData } from '../lib/pageDataInjection';
+import { getPublicEnv } from '../lib/runtimeEnv';
 
 // Supabase configuration - use environment variables
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
 interface UseContactContentResult {
   content: ContactPageContent;
@@ -24,8 +25,8 @@ let cachedMeta: PageMeta | null = null;
 export function useContactContent(): UseContactContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/contact/');
-  const initialContent = injected
-    ? mergeWithDefaults(injected.content as Partial<ContactPageContent>, defaultContactContent)
+  const initialContent = injected && isStructuredContent(injected.content)
+    ? (injected.content as ContactPageContent)
     : (cachedContent ?? defaultContactContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -82,12 +83,9 @@ export function useContactContent(): UseContactContentResult {
 
         const pageData = data[0];
         const cmsContent = pageData.content as ContactPageContent;
-
-        // Merge CMS content with defaults (CMS content takes precedence)
-        let mergedContent = mergeWithDefaults(
-          cmsContent,
-          defaultContactContent,
-        );
+        let mergedContent = isStructuredContent(cmsContent)
+          ? cmsContent
+          : defaultContactContent;
 
         // Fetch About page for globally-shared CTA section
         try {
@@ -165,6 +163,10 @@ export function useContactContent(): UseContactContentResult {
   }, []);
 
   return { content, meta, isLoading, error };
+}
+
+function isStructuredContent(value: unknown) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 // Deep merge CMS content with defaults

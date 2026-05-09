@@ -63,36 +63,42 @@ export default function FaqSection({ content }: FaqSectionProps) {
 
         <AnimatedSection className="max-w-[960px] mx-auto" delay={0.15}>
           <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className={`border border-brand-border/20 transition-all duration-200 ${
-                  openIndex === index
-                    ? "border-l-4 border-l-brand-accent bg-brand-dark"
-                    : "hover:border-brand-border/40"
-                }`}
-              >
+            {faqs.map((faq, index) => {
+              const isOpen = openIndex === index;
+
+              return (
+                <div
+                  key={index}
+                  className={`border border-brand-border/20 transition-all duration-200 ${
+                    isOpen
+                      ? "border-l-4 border-l-brand-accent bg-brand-dark"
+                      : "hover:border-brand-border/40"
+                  }`}
+                >
                   <button
+                    type="button"
                     onClick={() => toggleFaq(index)}
                     className={`w-full font-manrope text-[18px] leading-snug px-5 py-5 text-left flex items-center justify-between cursor-pointer gap-4 ${
-                      openIndex === index ? "text-white" : "text-brand-dark"
+                      isOpen ? "text-white" : "text-brand-dark"
                     }`}
                   >
                     <span>{faq.question}</span>
                     <ChevronDown
                       className={`h-5 w-5 shrink-0 text-brand-accent transition-transform duration-200 ${
-                        openIndex === index ? "rotate-180" : ""
+                        isOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
-                  {openIndex === index && (
-                    <RichText
-                      html={faq.answer}
-                      className="font-manrope text-[15px] leading-relaxed font-light px-5 pb-5 text-white/70"
-                    />
-                  )}
-              </div>
-            ))}
+                  <RichText
+                    html={faq.answer}
+                    aria-hidden={!isOpen}
+                    className={`font-manrope text-[15px] leading-relaxed font-light px-5 pb-5 ${
+                      isOpen ? "block text-white/70" : "hidden text-brand-dark/70"
+                    }`}
+                  />
+                </div>
+              );
+            })}
           </div>
         </AnimatedSection>
       </div>

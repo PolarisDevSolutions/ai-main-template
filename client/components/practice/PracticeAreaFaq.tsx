@@ -26,7 +26,6 @@ export default function PracticeAreaFaq({
 
   return (
     <div className="bg-white py-[40px] md:py-[60px]">
-      {/* Header */}
       <div className="max-w-[1080px] mx-auto w-[95%] md:w-[85%] lg:w-[80%] mb-[30px] md:mb-[40px]">
         <div className="text-center">
           <DynamicHeading
@@ -43,36 +42,41 @@ export default function PracticeAreaFaq({
         </div>
       </div>
 
-      {/* Accordion */}
       <div className="max-w-[900px] mx-auto w-[95%] md:w-[85%] lg:w-[80%]">
-        {faqs.map((faq, index) => (
-          <div
-            key={index}
-            className={`border-[0.8px] border-[rgb(217,217,217)] ${
-              index < faqs.length - 1 ? "mb-[12px]" : ""
-            } ${openIndex === index ? "bg-brand-dark" : "bg-white"}`}
-          >
-            <button
-              onClick={() => toggleFaq(index)}
-              className={`w-full font-manrope text-[20px] md:text-[28px] leading-[28px] px-[20px] py-[20px] text-left flex items-center justify-between cursor-pointer ${
-                openIndex === index ? "text-white" : "text-[rgb(67,67,67)]"
-              }`}
+        {faqs.map((faq, index) => {
+          const isOpen = openIndex === index;
+
+          return (
+            <div
+              key={index}
+              className={`border-[0.8px] border-[rgb(217,217,217)] ${
+                index < faqs.length - 1 ? "mb-[12px]" : ""
+              } ${isOpen ? "bg-brand-dark" : "bg-white"}`}
             >
-              <span className="pr-[50px]">{faq.question}</span>
-              <ChevronDown
-                className={`h-6 w-6 flex-shrink-0 transition-transform duration-200 ${
-                  openIndex === index ? "rotate-180" : ""
+              <button
+                type="button"
+                onClick={() => toggleFaq(index)}
+                className={`w-full font-manrope text-[20px] md:text-[28px] leading-[28px] px-[20px] py-[20px] text-left flex items-center justify-between cursor-pointer ${
+                  isOpen ? "text-white" : "text-[rgb(67,67,67)]"
                 }`}
-              />
-            </button>
-            {openIndex === index && (
+              >
+                <span className="pr-[50px]">{faq.question}</span>
+                <ChevronDown
+                  className={`h-6 w-6 flex-shrink-0 transition-transform duration-200 ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
               <RichText
                 html={faq.answer}
-                className="font-manrope text-[18px] md:text-[22px] leading-[28px] md:leading-[33px] font-light px-[20px] pb-[20px] pt-[10px] text-white"
+                aria-hidden={!isOpen}
+                className={`font-manrope text-[18px] md:text-[22px] leading-[28px] md:leading-[33px] font-light px-[20px] pb-[20px] pt-[10px] ${
+                  isOpen ? "block text-white" : "hidden text-[rgb(67,67,67)]"
+                }`}
               />
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

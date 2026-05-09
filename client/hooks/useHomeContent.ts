@@ -4,10 +4,11 @@ import { defaultHomeContent } from "../lib/cms/homePageTypes";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
+import { getPublicEnv } from '../lib/runtimeEnv';
 
 // Supabase configuration - use environment variables
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
 interface UseHomeContentResult {
   content: HomePageContent;
@@ -23,8 +24,8 @@ let cachedMeta: PageMeta | null = null;
 export function useHomeContent(): UseHomeContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/');
-  const initialContent = injected
-    ? mergeWithDefaults(injected.content as Partial<HomePageContent>, defaultHomeContent)
+  const initialContent = injected && isStructuredContent(injected.content)
+    ? (injected.content as HomePageContent)
     : (cachedContent ?? defaultHomeContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -82,9 +83,9 @@ export function useHomeContent(): UseHomeContentResult {
 
         const pageData = data[0];
         const cmsContent = pageData.content as HomePageContent;
-
-        // Merge CMS content with defaults (CMS content takes precedence)
-        let mergedContent = mergeWithDefaults(cmsContent, defaultHomeContent);
+        const mergedContent = isStructuredContent(cmsContent)
+          ? cmsContent
+          : defaultHomeContent;
 
         // Extract meta fields
         const pageMeta: PageMeta = {
@@ -130,6 +131,10 @@ export function useHomeContent(): UseHomeContentResult {
   }, []);
 
   return { content, meta, isLoading, error };
+}
+
+function isStructuredContent(value: unknown) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 // Deep merge CMS content with defaults

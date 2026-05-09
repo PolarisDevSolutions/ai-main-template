@@ -7,9 +7,10 @@ import NotFound from "./NotFound";
 import type { PageMeta } from "@site/lib/cms/pageMeta";
 import { emptyPageMeta } from "@site/lib/cms/pageMeta";
 import { consumePageData } from "@site/lib/pageDataInjection";
+import { getPublicEnv } from "@site/lib/runtimeEnv";
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
 interface CmsPage {
   title: string;

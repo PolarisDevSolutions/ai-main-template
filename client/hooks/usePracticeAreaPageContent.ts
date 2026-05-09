@@ -4,9 +4,10 @@ import { defaultPracticeAreaPageContent } from "../lib/cms/practiceAreaPageTypes
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
+import { getPublicEnv } from '../lib/runtimeEnv';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
+const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
 interface UsePracticeAreaPageContentResult {
   content: PracticeAreaPageContent;
@@ -29,8 +30,8 @@ export function usePracticeAreaPageContent(
   // Consume SSG-injected data synchronously before first render
   const urlPath = slug ? `/practice-areas/${slug}/` : '';
   const injected = slug ? consumePageData(urlPath) : null;
-  const initialContent = injected
-    ? mergeWithDefaults(injected.content as Partial<PracticeAreaPageContent>, defaultPracticeAreaPageContent)
+  const initialContent = injected && isStructuredContent(injected.content)
+    ? (injected.content as PracticeAreaPageContent)
     : (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.content : defaultPracticeAreaPageContent);
   const initialMeta = injected?.meta ?? (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.meta : emptyPageMeta);
   const initialTitle = injected?.title ?? (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.title : '');
@@ -107,10 +108,9 @@ export function usePracticeAreaPageContent(
 
         const pageData = data[0];
         const cmsContent = pageData.content as Partial<PracticeAreaPageContent>;
-        const mergedContent = mergeWithDefaults(
-          cmsContent,
-          defaultPracticeAreaPageContent,
-        );
+        const mergedContent = isStructuredContent(cmsContent)
+          ? (cmsContent as PracticeAreaPageContent)
+          : defaultPracticeAreaPageContent;
 
         const pageMeta: PageMeta = {
           meta_title: pageData.meta_title,
@@ -161,6 +161,10 @@ export function usePracticeAreaPageContent(
   }, [slug]);
 
   return { content, meta, title, isLoading, error, notFound };
+}
+
+function isStructuredContent(value: unknown) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 function mergeWithDefaults(

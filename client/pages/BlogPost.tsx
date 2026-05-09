@@ -9,6 +9,7 @@ import type { Post } from "@/lib/database.types";
 import { ArrowLeft } from "lucide-react";
 import NotFound from "./NotFound";
 import { consumePageData } from "@site/lib/pageDataInjection";
+import { getPublicEnv } from "@site/lib/runtimeEnv";
 import { normalizeSlug } from "@site/lib/utils";
 
 interface PostWithCategory extends Post {
@@ -39,8 +40,8 @@ export default function BlogPost() {
   }, [slug]);
 
   const fetchPost = async (postSlug: string) => {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseUrl = getPublicEnv("VITE_SUPABASE_URL");
+    const supabaseKey = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
     if (!supabaseUrl || !supabaseKey) {
       setNotFound(true);
@@ -151,7 +152,7 @@ export default function BlogPost() {
             {/* Right: Sidebar */}
             <div className="w-full lg:w-[30%] lg:max-w-[340px] shrink-0">
               <div className="sticky top-8">
-                <BlogSidebar />
+                <BlogSidebar initialData={injected?.blogSidebar} />
               </div>
             </div>
           </div>
@@ -159,7 +160,7 @@ export default function BlogPost() {
       </section>
 
       {/* Section 3: Recent Articles */}
-      <RecentPosts excludeId={post.id} />
+      <RecentPosts excludeId={post.id} initialPosts={injected?.relatedPosts} />
     </Layout>
   );
 }

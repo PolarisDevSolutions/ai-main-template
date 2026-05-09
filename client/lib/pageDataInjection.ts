@@ -1,13 +1,5 @@
-import type { PageMeta } from './cms/pageMeta';
-
-/** Shape of window.__PAGE_DATA__ injected by SSG */
-export interface InjectedPageData {
-  urlPath: string;
-  title?: string;
-  content?: unknown;
-  meta: PageMeta;
-  post?: InjectedPostData;
-}
+import type { PageMeta } from "@site/lib/cms/pageMeta";
+import type { SiteSettings } from "@site/contexts/SiteSettingsContext";
 
 export interface InjectedPostData {
   id: string;
@@ -25,8 +17,30 @@ export interface InjectedPostData {
   og_image: string | null;
   noindex: boolean;
   published_at: string | null;
-  created_at: string;
+  created_at: string | null;
   post_categories: { name: string; slug: string } | null;
+}
+
+export interface InjectedAwardImage {
+  src: string;
+  alt: string;
+}
+
+export interface InjectedBlogSidebarData {
+  attorneyImage: string;
+  awardImages: InjectedAwardImage[];
+}
+
+export interface InjectedPageData {
+  urlPath: string;
+  title?: string;
+  content?: unknown;
+  meta: PageMeta;
+  post?: InjectedPostData;
+  siteSettings?: SiteSettings;
+  blogPosts?: InjectedPostData[];
+  relatedPosts?: InjectedPostData[];
+  blogSidebar?: InjectedBlogSidebarData | null;
 }
 
 declare global {
@@ -35,20 +49,38 @@ declare global {
   }
 }
 
-/**
- * Consume injected page data if it matches the given URL path.
- * Returns the data and clears window.__PAGE_DATA__ (one-time use).
- * Returns null for client-side navigations (no injected data).
- */
+let serverPageData: InjectedPageData | null = null;
+
+export function setServerPageData(data: InjectedPageData | null) {
+  serverPageData = data;
+}
+
+export function normalizeUrlPath(path: string): string {
+  if (!path || path === "/") {
+    return "/";
+  }
+
+  return `/${path.replace(/^\/+|\/+$/g, "")}/`;
+}
+
+function getBrowserPageData(): InjectedPageData | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return window.__PAGE_DATA__ ?? null;
+}
+
+export function getInjectedPageData(urlPath: string): InjectedPageData | null {
+  const data = serverPageData ?? getBrowserPageData();
+
+  if (!data) {
+    return null;
+  }
+
+  return normalizeUrlPath(data.urlPath) === normalizeUrlPath(urlPath) ? data : null;
+}
+
 export function consumePageData(urlPath: string): InjectedPageData | null {
-  if (typeof window === 'undefined' || !window.__PAGE_DATA__) return null;
-
-  const data = window.__PAGE_DATA__;
-  const normalize = (p: string) => (p === '/' ? '/' : p.replace(/\/?$/, '/'));
-
-  if (normalize(data.urlPath) !== normalize(urlPath)) return null;
-
-  // Clear to prevent stale data on client-side navigation
-  delete window.__PAGE_DATA__;
-  return data;
+  return getInjectedPageData(urlPath);
 }

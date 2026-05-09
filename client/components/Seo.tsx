@@ -1,8 +1,9 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async/lib/index.esm.js';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { buildAllSchemas, type SchemaInput } from '@site/lib/schemaHelpers';
 import { useSiteSettings } from '@site/contexts/SiteSettingsContext';
+import { getPublicEnv } from '@site/lib/runtimeEnv';
 
 interface SeoProps {
   title?: string;
@@ -41,7 +42,7 @@ export default function Seo({
   const { settings } = useSiteSettings();
 
   // Use admin-configured Site URL, fall back to env var
-  const siteUrl = settings.siteUrl || import.meta.env.VITE_SITE_URL || '';
+  const siteUrl = settings.siteUrl || getPublicEnv('VITE_SITE_URL') || '';
 
   // Normalise pathname: ensure trailing slash for client-side navigation
   // (server redirects handle it for full-page loads, but React Router link
@@ -58,7 +59,7 @@ export default function Seo({
   const siteName = settings.siteName || '';
   const fullTitle = title
     ? (siteName ? `${title} | ${siteName}` : title)
-    : (siteName || document.title);
+    : siteName;
 
   // Default description
   const defaultDescription = 'Protecting your rights with integrity, experience, and relentless advocacy.';
@@ -80,12 +81,12 @@ export default function Seo({
     const input: SchemaInput = {
       title: fullTitle,
       description: fullDescription,
-      url: fullCanonical || (typeof window !== 'undefined' ? window.location.href : ''),
+      url: fullCanonical || (siteUrl ? `${siteUrl}${normalizedPathname}` : ''),
       image: resolvedOgImage,
       schemaType,
       schemaData,
       pageContent,
-      siteSettings: settings,
+      siteSettings: settings as any,
     };
 
     return buildAllSchemas(input);

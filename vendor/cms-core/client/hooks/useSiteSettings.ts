@@ -6,8 +6,15 @@ import {
 } from "../lib/siteSettingsTypes";
 
 // Supabase configuration
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const viteEnv = ((import.meta as ImportMeta & {
+  env?: Record<string, string | undefined>;
+}).env ?? {}) as Record<string, string | undefined>;
+const SUPABASE_URL =
+  viteEnv.VITE_SUPABASE_URL ||
+  (typeof process !== "undefined" ? process.env?.VITE_SUPABASE_URL : undefined);
+const SUPABASE_ANON_KEY =
+  viteEnv.VITE_SUPABASE_ANON_KEY ||
+  (typeof process !== "undefined" ? process.env?.VITE_SUPABASE_ANON_KEY : undefined);
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error("Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY");
 }
