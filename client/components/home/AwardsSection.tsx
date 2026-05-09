@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { WhyNeedUsContent } from "@/lib/homePageTypes";
-import { Button } from "@/components/ui/button";
 import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
 import DynamicHeading from "@site/components/shared/DynamicHeading";
+import { ArrowUpRight } from "lucide-react";
 
 interface WhyNeedUsSectionProps {
   content?: WhyNeedUsContent;
@@ -53,9 +54,13 @@ export default function WhyNeedUsSection({ content, headingTag }: WhyNeedUsSecti
             )}
 
             {data.buttonLabel && data.buttonLink && (
-              <Button asChild className="mt-8 min-w-[220px]">
-                <Link to={data.buttonLink}>{data.buttonLabel}</Link>
-              </Button>
+              <Link
+                to={data.buttonLink}
+                className="mt-8 inline-flex min-w-[220px] items-center justify-center gap-2 border border-brand-accent px-5 py-2.5 font-manrope text-[14px] font-medium tracking-wide text-brand-accent transition-all duration-200 hover:bg-brand-accent hover:text-brand-dark"
+              >
+                {data.buttonLabel}
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
             )}
           </AnimatedSection>
 
