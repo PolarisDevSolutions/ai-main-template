@@ -1,4 +1,5 @@
 import type { ContactPageContent } from "@/lib/cms/contactPageTypes";
+import SharedHeroEditor from "./SharedHeroEditor";
 import { Section, ArrayEditor, GlobalSectionInfo, RichTextField, HeadingField, Input, Label, Textarea } from "./EditorShared";
 
 interface ContactEditorProps {
@@ -38,26 +39,16 @@ function useHeadingTag(content: ContactPageContent, update: Updater) {
 
 /* ------------------------------------------------------------------ */
 function HeroSection({ content, update }: SectionProps) {
-  const hero = content.hero;
-  const set = (patch: Partial<typeof hero>) => update("hero", { ...hero, ...patch });
   const ht = useHeadingTag(content, update);
 
   return (
     <Section title="Hero Section">
-      <div className="grid gap-4">
-        <div>
-          <Label>Section Label</Label>
-          <Input value={hero.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
-        </div>
-        <HeadingField
-          label="Tagline"
-          value={hero.tagline}
-          onChange={(v) => set({ tagline: v })}
-          tag={ht.get("hero.tagline")}
-          onTagChange={(t) => ht.set("hero.tagline", t)}
-        />
-        <RichTextField label="Description" value={hero.description} onChange={(v) => set({ description: v })} />
-      </div>
+      <SharedHeroEditor
+        hero={content.hero}
+        onChange={(hero) => update("hero", hero)}
+        headingTag={ht.get("hero.headline")}
+        onHeadingTagChange={(tag) => ht.set("hero.headline", tag)}
+      />
     </Section>
   );
 }

@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import type { Template, ContentBlock } from '@/lib/database.types';
 import { defaultPracticeAreaPageContent } from '@site/lib/cms/practiceAreaPageTypes';
 import type { PracticeAreaPageContent } from '@site/lib/cms/practiceAreaPageTypes';
+import { normalizeSharedHeroContent } from '@site/lib/cms/sharedHero';
 import PracticeAreaPageEditor from '@site/components/admin/editors/PracticeAreaPageEditor';
 import BlockEditor from '@/components/admin/BlockEditor';
 import { Button } from '@/components/ui/button';
@@ -110,10 +111,14 @@ export default function AdminTemplateEdit() {
   // Normalize practice content by merging with defaults
   const normalizedContent = useMemo(() => {
     if (!template || !isPracticeType) return template?.default_content;
-    return mergeWithDefaults(
+    const normalized = mergeWithDefaults(
       template.default_content as Partial<PracticeAreaPageContent> | null,
       defaultPracticeAreaPageContent,
     );
+    return {
+      ...normalized,
+      hero: normalizeSharedHeroContent(normalized.hero, defaultPracticeAreaPageContent.hero),
+    };
   }, [template?.default_content, isPracticeType]);
 
   if (loading) {

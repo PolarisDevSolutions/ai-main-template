@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
 import { defaultAboutContent } from "../lib/cms/aboutPageTypes";
+import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
@@ -30,7 +31,13 @@ export function useAboutContent(): UseAboutContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/about/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? (injected.content as AboutPageContent)
+    ? {
+        ...(injected.content as AboutPageContent),
+        hero: normalizeSharedHeroContent(
+          (injected.content as AboutPageContent).hero,
+          defaultAboutContent.hero,
+        ),
+      }
     : (cachedContent ?? defaultAboutContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -100,7 +107,10 @@ export function useAboutContent(): UseAboutContentResult {
         }
         const cmsContent = pageData.content as AboutPageContent;
         const mergedContent = isStructuredContent(cmsContent)
-          ? cmsContent
+          ? {
+              ...cmsContent,
+              hero: normalizeSharedHeroContent(cmsContent.hero, defaultAboutContent.hero),
+            }
           : defaultAboutContent;
 
         const pageMeta: PageMeta = {

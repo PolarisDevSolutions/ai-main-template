@@ -1,18 +1,12 @@
 // Type definitions for structured homepage content
+import {
+  createDefaultSharedHeroContent,
+  type SharedHeroContent,
+} from "./sharedHero";
+
 // Each section maps directly to a static component's data needs
 
-export interface HeroContent {
-  h1Title: string; // H1 title text (all caps, ~20px) above the main hero headline
-  highlightedText: string;
-  headline: string;
-  description: string;
-  trustText1: string;
-  trustText2: string;
-  trustText3: string;
-  formTitle: string;
-  phone: string;
-  phoneLabel: string;
-}
+export type HeroContent = SharedHeroContent;
 
 export interface PartnerLogo {
   src: string;
@@ -157,7 +151,7 @@ export interface HomePageContent {
 
 // Default content - used as fallback when CMS content is not available
 export const defaultHomeContent: HomePageContent = {
-  hero: {
+  hero: createDefaultSharedHeroContent({
     h1Title: "YOUR FIRM HEADLINE",
     highlightedText: "Polaris digitalna rešenja",
     headline: "za rast, vidljivost i konverzije.",
@@ -169,7 +163,7 @@ export const defaultHomeContent: HomePageContent = {
     formTitle: "Pošaljite upit",
     phone: "",
     phoneLabel: "Call Us 24/7",
-  },
+  }),
   partnerLogosTitle: "",
   partnerLogos: [
     { src: "/images/logos/partner-1.png", alt: "Partner Logo" },

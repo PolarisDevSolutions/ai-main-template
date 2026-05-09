@@ -1,11 +1,12 @@
 // Type definitions for structured Contact page content
+import {
+  createDefaultSharedHeroContent,
+  type SharedHeroContent,
+} from "./sharedHero";
+
 // Each section maps directly to a static component's data needs
 
-export interface ContactHeroContent {
-  sectionLabel: string; // "– Contact Us" (H1)
-  tagline: string; // "Let's Talk About Your Case" (styled paragraph)
-  description: string; // Description paragraph
-}
+export type ContactHeroContent = SharedHeroContent;
 
 export interface ContactMethodItem {
   icon: string; // Lucide icon name
@@ -82,12 +83,18 @@ export interface ContactPageContent {
 
 // Default content - used as fallback when CMS content is not available
 export const defaultContactContent: ContactPageContent = {
-  hero: {
-    sectionLabel: "– Contact Us",
-    tagline: "Let's Talk About Your Case",
+  hero: createDefaultSharedHeroContent({
+    h1Title: "– Kontakt",
+    highlightedText: "Recite nam",
+    headline: "šta želite da izgradimo.",
     description:
-      "Our team is ready to listen, answer your questions, and provide the expert legal guidance you need. Contact us today for a free consultation.",
-  },
+      "Pošaljite nam detalje projekta i dobićete jasan predlog narednih koraka, procenu obima i preporuku digitalnog pravca.",
+    trustText1: "Brz odgovor",
+    trustText2: "Jasan proces",
+    trustText3: "Bez obaveze",
+    formTitle: "Pošaljite detalje projekta",
+    phoneLabel: "Pozovite nas",
+  }),
   contactMethods: {
     methods: [
       {

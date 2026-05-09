@@ -1,13 +1,12 @@
 // Type definitions for individual Practice Area page content (e.g. /practice-areas/personal-injury)
+import {
+  createDefaultSharedHeroContent,
+  type SharedHeroContent,
+} from "./sharedHero";
+
 // Each section maps directly to a static component's data needs
 
-export interface PracticeAreaHeroContent {
-  sectionLabel: string;
-  tagline: string;
-  description: string;
-  backgroundImage?: string;
-  backgroundImageAlt?: string;
-}
+export type PracticeAreaHeroContent = SharedHeroContent;
 
 export interface PracticeAreaTestimonialItem {
   text: string;
@@ -52,13 +51,18 @@ export interface PracticeAreaPageContent {
 
 // Default content — used as fallback when CMS content is not available
 export const defaultPracticeAreaPageContent: PracticeAreaPageContent = {
-  hero: {
-    sectionLabel: "– Practice Area",
-    tagline: "Experienced Legal Representation",
+  hero: createDefaultSharedHeroContent({
+    h1Title: "– Usluga",
+    highlightedText: "Prilagođeno rešenje",
+    headline: "za vaš sledeći korak.",
     description:
-      "Our dedicated team of attorneys brings years of experience and a proven track record of success. We fight to protect your rights and pursue the justice you deserve.",
-    backgroundImage: "",
-  },
+      "Svaka usluga ima drugačiji proces, prioritete i ciljeve. Ova stranica objašnjava šta dobijate, kako radimo i kako izgleda saradnja.",
+    trustText1: "Analiza",
+    trustText2: "Implementacija",
+    trustText3: "Optimizacija",
+    formTitle: "Pošaljite upit",
+    phoneLabel: "Pozovite nas",
+  }),
   socialProof: {
     mode: "awards",
     testimonials: [

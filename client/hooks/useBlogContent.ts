@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
+import {
+  createDefaultSharedHeroContent,
+  normalizeSharedHeroContent,
+  type SharedHeroContent,
+} from "../lib/cms/sharedHero";
 import type { ContentBlock } from "../lib/blocks";
 import { consumePageData } from '../lib/pageDataInjection';
 import { getPublicEnv } from '../lib/runtimeEnv';
@@ -8,11 +13,7 @@ import { getPublicEnv } from '../lib/runtimeEnv';
 const SUPABASE_URL = getPublicEnv("VITE_SUPABASE_URL");
 const SUPABASE_ANON_KEY = getPublicEnv("VITE_SUPABASE_ANON_KEY");
 
-export interface BlogHeroData {
-  title: string;
-  subtitle: string;
-  backgroundImage?: string;
-}
+export type BlogHeroData = SharedHeroContent;
 
 export interface RecentPostsData {
   sectionLabel: string;
@@ -32,10 +33,18 @@ let cachedHero: BlogHeroData | null = null;
 let cachedRecentPosts: RecentPostsData | null = null;
 let cachedMeta: PageMeta | null = null;
 
-const defaultHero: BlogHeroData = {
-  title: "– Our Blog",
-  subtitle: "Legal Insights & Updates",
-};
+const defaultHero: BlogHeroData = createDefaultSharedHeroContent({
+  h1Title: "– Blog",
+  highlightedText: "Uvidi",
+  headline: "i aktuelnosti iz digitalnog sveta.",
+  description:
+    "Čitajte novosti, preporuke i praktične smernice o izradi sajtova, SEO optimizaciji i digitalnom marketingu.",
+  trustText1: "Strategija",
+  trustText2: "SEO",
+  trustText3: "Web razvoj",
+  formTitle: "Pošaljite pitanje",
+  phoneLabel: "Pozovite nas",
+});
 
 const defaultRecentPosts: RecentPostsData = {
   sectionLabel: "– Latest Articles",
@@ -57,11 +66,7 @@ export function useBlogContent(): UseBlogContentResult {
         | Extract<ContentBlock, { type: 'hero' }>
         | undefined;
       if (heroBlock) {
-        heroData = {
-          title: heroBlock.sectionLabel || defaultHero.title,
-          subtitle: heroBlock.tagline || defaultHero.subtitle,
-          backgroundImage: heroBlock.backgroundImage,
-        };
+        heroData = normalizeSharedHeroContent(heroBlock, defaultHero);
       }
       const recentPostsBlock = blocks.find((b) => b.type === 'recent-posts') as
         | Extract<ContentBlock, { type: 'recent-posts' }>
@@ -133,11 +138,7 @@ export function useBlogContent(): UseBlogContentResult {
             | undefined;
 
           if (heroBlock) {
-            heroData = {
-              title: heroBlock.sectionLabel || defaultHero.title,
-              subtitle: heroBlock.tagline || defaultHero.subtitle,
-              backgroundImage: heroBlock.backgroundImage,
-            };
+            heroData = normalizeSharedHeroContent(heroBlock, defaultHero);
           }
 
           const recentPostsBlock = blocks.find((b) => b.type === "recent-posts") as

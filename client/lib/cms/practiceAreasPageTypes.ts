@@ -1,13 +1,12 @@
 // Type definitions for structured Practice Areas page content
+import {
+  createDefaultSharedHeroContent,
+  type SharedHeroContent,
+} from "./sharedHero";
+
 // Each section maps directly to a static component's data needs
 
-export interface PracticeAreasHeroContent {
-  sectionLabel: string; // "– Practice Areas" (H1)
-  tagline: string; // "Comprehensive Legal Expertise" (styled text)
-  description: string; // Description paragraph
-  phone: string;
-  phoneLabel: string;
-}
+export type PracticeAreasHeroContent = SharedHeroContent;
 
 export interface PracticeAreaGridItem {
   icon: string; // Lucide icon name
@@ -66,14 +65,18 @@ export interface PracticeAreasPageContent {
 
 // Default content - used as fallback when CMS content is not available
 export const defaultPracticeAreasContent: PracticeAreasPageContent = {
-  hero: {
-    sectionLabel: "– Practice Areas",
-    tagline: "Comprehensive Legal Expertise",
+  hero: createDefaultSharedHeroContent({
+    h1Title: "– Usluge",
+    highlightedText: "Sve što vam je",
+    headline: "potrebno za digitalni rast.",
     description:
-      "Our team of experienced attorneys specializes in a wide range of legal practice areas. Whether you've been injured, wronged, or need expert legal counsel, we have the knowledge and resources to protect your rights and pursue the justice you deserve.",
-    phone: "",
-    phoneLabel: "Call Us 24/7",
-  },
+      "Od izrade sajtova i SEO optimizacije do oglasa i održavanja, ovde možete pregledati usluge kroz koje pomažemo brendovima da rastu.",
+    trustText1: "Web sajtovi",
+    trustText2: "SEO",
+    trustText3: "Marketing",
+    formTitle: "Zatražite ponudu",
+    phoneLabel: "Pozovite nas",
+  }),
   grid: {
     heading: "Our Areas of Practice",
     description:

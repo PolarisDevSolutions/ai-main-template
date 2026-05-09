@@ -1,13 +1,12 @@
 // Type definitions for structured About page content
+import {
+  createDefaultSharedHeroContent,
+  type SharedHeroContent,
+} from "./sharedHero";
+
 // Each section maps directly to a static component's data needs
 
-export interface AboutHeroContent {
-  sectionLabel: string; // "– About Us" (H1)
-  tagline: string; // "Dedicated to Justice & Excellence" (styled paragraph)
-  description: string; // Description paragraph
-  phone: string;
-  phoneLabel: string;
-}
+export type AboutHeroContent = SharedHeroContent;
 
 export interface StoryContent {
   sectionLabel: string; // "– Our Story"
@@ -110,14 +109,18 @@ export interface AboutPageContent {
 
 // Default content - used as fallback when CMS content is not available
 export const defaultAboutContent: AboutPageContent = {
-  hero: {
-    sectionLabel: "– About Us",
-    tagline: "Dedicated to Justice & Excellence",
+  hero: createDefaultSharedHeroContent({
+    h1Title: "– About Us",
+    highlightedText: "Polaris digitalna rešenja",
+    headline: "koja pretvaraju prisustvo u rezultate.",
     description:
-      "For over two decades, our firm has stood as a beacon of hope for individuals facing challenges. We combine deep expertise with genuine compassion to deliver results that change lives.",
-    phone: "",
-    phoneLabel: "Call Us 24/7",
-  },
+      "Upoznajte tim, proces i principe koji stoje iza svakog sajta, SEO kampanje i digitalne strategije koju isporučujemo.",
+    trustText1: "Strategija",
+    trustText2: "Transparentnost",
+    trustText3: "Rezultati",
+    formTitle: "Započnimo razgovor",
+    phoneLabel: "Pozovite nas",
+  }),
   story: {
     sectionLabel: "– Our Story",
     heading: "Building Trust Since 1999",

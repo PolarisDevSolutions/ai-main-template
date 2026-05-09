@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ContactPageContent } from "../lib/cms/contactPageTypes";
 import { defaultContactContent } from "../lib/cms/contactPageTypes";
+import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
@@ -31,7 +32,13 @@ export function useContactContent(): UseContactContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/contact/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? (injected.content as ContactPageContent)
+    ? {
+        ...(injected.content as ContactPageContent),
+        hero: normalizeSharedHeroContent(
+          (injected.content as ContactPageContent).hero,
+          defaultContactContent.hero,
+        ),
+      }
     : (cachedContent ?? defaultContactContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -101,7 +108,10 @@ export function useContactContent(): UseContactContentResult {
         }
         const cmsContent = pageData.content as ContactPageContent;
         let mergedContent = isStructuredContent(cmsContent)
-          ? cmsContent
+          ? {
+              ...cmsContent,
+              hero: normalizeSharedHeroContent(cmsContent.hero, defaultContactContent.hero),
+            }
           : defaultContactContent;
 
         // Fetch About page for globally-shared CTA section

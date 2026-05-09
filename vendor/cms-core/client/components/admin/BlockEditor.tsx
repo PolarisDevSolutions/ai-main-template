@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import SharedHeroEditor from '@site/components/admin/editors/SharedHeroEditor';
+import {
+  createDefaultSharedHeroContent,
+  normalizeSharedHeroContent,
+} from '@site/lib/cms/sharedHero';
 import type { ContentBlock } from '../../lib/database.types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -65,7 +70,16 @@ const ICON_OPTIONS = [
 function getDefaultBlock(type: string): ContentBlock {
   switch (type) {
     case 'hero':
-      return { type: 'hero', sectionLabel: '– Practice Area', tagline: 'Page Title', description: '<p>Enter a description here...</p>' };
+      return {
+        type: 'hero',
+        ...createDefaultSharedHeroContent({
+          h1Title: '– Hero',
+          headline: 'Page headline',
+          description: '<p>Enter a description here...</p>',
+          formTitle: 'Pošaljite upit',
+          phoneLabel: 'Pozovite nas',
+        }),
+      };
     case 'heading':
       return { type: 'heading', level: 2, text: 'Section Heading' };
     case 'content-section':
@@ -242,29 +256,24 @@ function BlockFields({ block, onUpdate }: { block: ContentBlock; onUpdate: (upda
 /*  Hero Fields                                                        */
 /* ------------------------------------------------------------------ */
 function HeroFields({ block, onUpdate }: { block: Extract<ContentBlock, { type: 'hero' }>; onUpdate: (u: Partial<ContentBlock>) => void }) {
+  const hero = normalizeSharedHeroContent(
+    block,
+    createDefaultSharedHeroContent({
+      h1Title: '– Hero',
+      headline: 'Page headline',
+      description: '<p>Enter a description here...</p>',
+      formTitle: 'Pošaljite upit',
+      phoneLabel: 'Pozovite nas',
+    }),
+  );
+
   return (
-    <div className="space-y-4">
-      <div>
-        <Label>Section Label</Label>
-        <Input value={block.sectionLabel} onChange={(e) => onUpdate({ sectionLabel: e.target.value })} placeholder="– Practice Area" />
-      </div>
-      <div>
-        <Label>Tagline</Label>
-        <Input value={block.tagline} onChange={(e) => onUpdate({ tagline: e.target.value })} placeholder="Main heading text" />
-      </div>
-      <div>
-        <Label>Description</Label>
-        <RichTextEditor value={block.description} onChange={(html) => onUpdate({ description: html })} placeholder="Hero description..." />
-      </div>
-      <div>
-        <Label>Background Image URL</Label>
-        <Input value={block.backgroundImage || ''} onChange={(e) => onUpdate({ backgroundImage: e.target.value })} placeholder="https://..." />
-      </div>
-      <div>
-        <Label>Background Image Alt Text</Label>
-        <Input value={block.backgroundImageAlt || ''} onChange={(e) => onUpdate({ backgroundImageAlt: e.target.value })} placeholder="Describe the background image" />
-      </div>
-    </div>
+    <SharedHeroEditor
+      hero={hero}
+      onChange={(nextHero) => onUpdate(nextHero)}
+      headingTag="h1"
+      onHeadingTagChange={() => undefined}
+    />
   );
 }
 

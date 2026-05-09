@@ -12,6 +12,7 @@ import { defaultPracticeAreasContent } from "@site/lib/cms/practiceAreasPageType
 import type { PracticeAreasPageContent } from "@site/lib/cms/practiceAreasPageTypes";
 import { defaultPracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
 import type { PracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
+import { normalizeSharedHeroContent } from "@site/lib/cms/sharedHero";
 import { normalizePagePath, resolveStructuredPageKind, type StructuredPageKind } from "@site/lib/pageIdentity";
 import { clearAboutContentCache } from "@site/hooks/useAboutContent";
 import { clearContactContentCache } from "@site/hooks/useContactContent";
@@ -294,32 +295,56 @@ export default function AdminPageEdit() {
     }
 
     switch (pageKind) {
-      case "home":
-        return mergeWithDefaults(
+      case "home": {
+        const normalized = mergeWithDefaults(
           page.content as unknown as Partial<HomePageContent>,
           defaultHomeContent,
         );
-      case "about":
-        return mergeWithDefaults(
+        return {
+          ...normalized,
+          hero: normalizeSharedHeroContent(normalized.hero, defaultHomeContent.hero),
+        };
+      }
+      case "about": {
+        const normalized = mergeWithDefaults(
           page.content as unknown as Partial<AboutPageContent>,
           defaultAboutContent,
         );
-      case "contact":
-        return mergeWithDefaults(
+        return {
+          ...normalized,
+          hero: normalizeSharedHeroContent(normalized.hero, defaultAboutContent.hero),
+        };
+      }
+      case "contact": {
+        const normalized = mergeWithDefaults(
           page.content as unknown as Partial<ContactPageContent>,
           defaultContactContent,
         );
-      case "practice-areas":
-        return mergeWithDefaults(
+        return {
+          ...normalized,
+          hero: normalizeSharedHeroContent(normalized.hero, defaultContactContent.hero),
+        };
+      }
+      case "practice-areas": {
+        const normalized = mergeWithDefaults(
           page.content as unknown as Partial<PracticeAreasPageContent>,
           defaultPracticeAreasContent,
         );
+        return {
+          ...normalized,
+          hero: normalizeSharedHeroContent(normalized.hero, defaultPracticeAreasContent.hero),
+        };
+      }
       case "practice-area": {
         const raw = page.content;
         const obj = raw && typeof raw === "object" && !Array.isArray(raw)
           ? (raw as Partial<PracticeAreaPageContent>)
           : {};
-        return mergeWithDefaults(obj, defaultPracticeAreaPageContent);
+        const normalized = mergeWithDefaults(obj, defaultPracticeAreaPageContent);
+        return {
+          ...normalized,
+          hero: normalizeSharedHeroContent(normalized.hero, defaultPracticeAreaPageContent.hero),
+        };
       }
       default:
         return page.content;

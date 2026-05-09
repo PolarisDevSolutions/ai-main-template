@@ -1,4 +1,5 @@
 import type { PracticeAreaPageContent } from "@/lib/cms/practiceAreaPageTypes";
+import SharedHeroEditor from "./SharedHeroEditor";
 import {
   Section,
   ArrayEditor,
@@ -63,56 +64,16 @@ function useHeadingTag(content: PracticeAreaPageContent, update: Updater) {
 /*  Hero Section                                                       */
 /* ------------------------------------------------------------------ */
 function HeroSection({ content, update }: SectionProps) {
-  const hero = content.hero;
-  const set = (patch: Partial<typeof hero>) =>
-    update("hero", { ...hero, ...patch });
   const ht = useHeadingTag(content, update);
 
   return (
     <Section title="Hero Section">
-      <div className="grid gap-4">
-        <HeadingField
-          label="Section Label"
-          value={hero.sectionLabel}
-          onChange={(v) => set({ sectionLabel: v })}
-          tag={ht.get("hero.sectionLabel")}
-          onTagChange={(t) => ht.set("hero.sectionLabel", t)}
-        />
-        <div>
-          <Label>Tagline</Label>
-          <Input
-            value={hero.tagline}
-            onChange={(e) => set({ tagline: e.target.value })}
-          />
-        </div>
-        <RichTextField
-          label="Description"
-          value={hero.description}
-          onChange={(v) => set({ description: v })}
-        />
-        <ImageField
-          label="Background Image (Optional)"
-          value={hero.backgroundImage || ""}
-          onChange={(url) => set({ backgroundImage: url })}
-          folder="practice-areas"
-        />
-        <div>
-          <Label>Background Image Alt Text</Label>
-          <Input
-            value={hero.backgroundImageAlt || ""}
-            onChange={(e) => set({ backgroundImageAlt: e.target.value })}
-            placeholder="Describe the background image"
-          />
-        </div>
-        <p className="text-xs text-gray-500 italic">
-          When set, the background image replaces the solid dark green
-          background. A semi-transparent overlay is applied automatically.
-        </p>
-        <p className="text-xs text-gray-500 italic">
-          Phone number CTA is managed globally in Site Settings &gt; Contact
-          Info
-        </p>
-      </div>
+      <SharedHeroEditor
+        hero={content.hero}
+        onChange={(hero) => update("hero", hero)}
+        headingTag={ht.get("hero.headline")}
+        onHeadingTagChange={(tag) => ht.set("hero.headline", tag)}
+      />
     </Section>
   );
 }

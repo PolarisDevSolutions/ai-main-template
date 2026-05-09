@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { HomePageContent } from "../lib/cms/homePageTypes";
 import { defaultHomeContent } from "../lib/cms/homePageTypes";
+import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
@@ -25,7 +26,13 @@ export function useHomeContent(): UseHomeContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? (injected.content as HomePageContent)
+    ? {
+        ...(injected.content as HomePageContent),
+        hero: normalizeSharedHeroContent(
+          (injected.content as HomePageContent).hero,
+          defaultHomeContent.hero,
+        ),
+      }
     : (cachedContent ?? defaultHomeContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -84,7 +91,10 @@ export function useHomeContent(): UseHomeContentResult {
         const pageData = data[0];
         const cmsContent = pageData.content as HomePageContent;
         const mergedContent = isStructuredContent(cmsContent)
-          ? cmsContent
+          ? {
+              ...cmsContent,
+              hero: normalizeSharedHeroContent(cmsContent.hero, defaultHomeContent.hero),
+            }
           : defaultHomeContent;
 
         // Extract meta fields

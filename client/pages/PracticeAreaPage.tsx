@@ -56,36 +56,15 @@ export default function PracticeAreaPage() {
         pageContent={content}
       />
 
-      {/* Wrapper: background image spans hero + awards, extends behind header */}
-      {/* Header height = 30px spacer + ~82px bar + 30px pb ≈ 142px; using 160px for safe full coverage */}
-      <div className="relative -mt-[180px] bg-brand-dark">
-        {content.hero.backgroundImage && (
-          <>
-            <img
-              src={content.hero.backgroundImage}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div
-              className="absolute inset-0"
-              style={{ backgroundColor: "rgba(6, 29, 27, 0.85)" }}
-            />
-          </>
-        )}
+      <PracticeAreaHero
+        content={content.hero}
+        headingTags={content.headingTags}
+      />
 
-        {/* Spacer to compensate for the -mt-[180px] so hero content sits below header */}
-        <div className="h-[180px]" />
-
-        <PracticeAreaHero
-          content={content.hero}
-          headingTags={content.headingTags}
-        />
-
-        <PracticeAreaSocialProof
-          content={content.socialProof}
-          headingTags={content.headingTags}
-        />
-      </div>
+      <PracticeAreaSocialProof
+        content={content.socialProof}
+        headingTags={content.headingTags}
+      />
 
       {content.contentSections.map((section, index) => (
         <PracticeAreaContentSection

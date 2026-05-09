@@ -1,12 +1,9 @@
+import type { SharedHeroContent } from "@site/lib/cms/sharedHero";
+
 export type ContentBlock =
-  | {
+  | ({
       type: "hero";
-      sectionLabel: string;
-      tagline: string;
-      description: string;
-      backgroundImage?: string;
-      backgroundImageAlt?: string;
-    }
+    } & SharedHeroContent)
   | { type: "heading"; level: 1 | 2 | 3; text: string }
   | {
       type: "content-section";

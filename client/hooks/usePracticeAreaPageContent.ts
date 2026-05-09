@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { PracticeAreaPageContent } from "../lib/cms/practiceAreaPageTypes";
 import { defaultPracticeAreaPageContent } from "../lib/cms/practiceAreaPageTypes";
+import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
@@ -31,7 +32,13 @@ export function usePracticeAreaPageContent(
   const urlPath = slug ? `/practice-areas/${slug}/` : '';
   const injected = slug ? consumePageData(urlPath) : null;
   const initialContent = injected && isStructuredContent(injected.content)
-    ? (injected.content as PracticeAreaPageContent)
+    ? {
+        ...(injected.content as PracticeAreaPageContent),
+        hero: normalizeSharedHeroContent(
+          (injected.content as PracticeAreaPageContent).hero,
+          defaultPracticeAreaPageContent.hero,
+        ),
+      }
     : (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.content : defaultPracticeAreaPageContent);
   const initialMeta = injected?.meta ?? (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.meta : emptyPageMeta);
   const initialTitle = injected?.title ?? (urlPath && cache.has(urlPath) ? cache.get(urlPath)!.title : '');
@@ -109,7 +116,7 @@ export function usePracticeAreaPageContent(
         const pageData = data[0];
         const cmsContent = pageData.content as Partial<PracticeAreaPageContent>;
         const mergedContent = isStructuredContent(cmsContent)
-          ? (cmsContent as PracticeAreaPageContent)
+          ? mergeWithDefaults(cmsContent as PracticeAreaPageContent, defaultPracticeAreaPageContent)
           : defaultPracticeAreaPageContent;
 
         const pageMeta: PageMeta = {
@@ -174,7 +181,7 @@ function mergeWithDefaults(
   if (!cms) return defaults;
 
   return {
-    hero: { ...defaults.hero, ...cms.hero },
+    hero: normalizeSharedHeroContent(cms.hero, defaults.hero),
     socialProof: {
       ...defaults.socialProof,
       ...cms.socialProof,

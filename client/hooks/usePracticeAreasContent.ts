@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { PracticeAreasPageContent } from "../lib/cms/practiceAreasPageTypes";
 import { defaultPracticeAreasContent } from "../lib/cms/practiceAreasPageTypes";
+import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
@@ -31,7 +32,13 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/practice-areas/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? (injected.content as PracticeAreasPageContent)
+    ? {
+        ...(injected.content as PracticeAreasPageContent),
+        hero: normalizeSharedHeroContent(
+          (injected.content as PracticeAreasPageContent).hero,
+          defaultPracticeAreasContent.hero,
+        ),
+      }
     : (cachedContent ?? defaultPracticeAreasContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -101,7 +108,10 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
         }
         const cmsContent = pageData.content as PracticeAreasPageContent;
         let mergedContent = isStructuredContent(cmsContent)
-          ? cmsContent
+          ? {
+              ...cmsContent,
+              hero: normalizeSharedHeroContent(cmsContent.hero, defaultPracticeAreasContent.hero),
+            }
           : defaultPracticeAreasContent;
 
         // Fetch About page for globally-shared sections (whyChooseUs, cta)
