@@ -21,14 +21,15 @@ export default function Footer() {
   const phoneLabel = settings.phoneAvailability?.trim() || "";
   const copyrightRaw = settings.copyrightText?.trim() || "";
   const copyrightText = copyrightRaw.replace(/\{year\}/gi, String(new Date().getFullYear()));
-  const mapEmbedUrl = settings.mapEmbedUrl?.trim() || "";
   const resourceLinks = settings.footerAboutLinks ?? [];
   const practiceLinks = settings.footerPracticeLinks ?? [];
   const footerTaglineHtml = settings.footerTaglineHtml || "";
   const col1Label = settings.footerColumn1Label?.trim() || "Resursi";
   const col2Label = settings.footerColumn2Label?.trim() || "Usluge";
+  const col4Label = settings.footerColumn4Label?.trim() || "";
+  const footerLogoText = settings.footerLogoText?.trim() || "";
+  const footerColumn4Content = settings.footerColumn4Content?.trim() || "";
   const enabledSocialLinks = (settings.socialLinks ?? []).filter((s) => s.enabled);
-  const addressParts = [settings.addressLine1, settings.addressLine2].filter(Boolean);
 
   return (
     <footer className="bg-brand-dark">
@@ -88,7 +89,7 @@ export default function Footer() {
       {/* Links + Map Row */}
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Logo + Address Column */}
+          {/* Logo + Text Column */}
           <div className="flex flex-col gap-6">
             <Link to="/" className="block">
               {logoUrl ? (
@@ -105,14 +106,10 @@ export default function Footer() {
               )}
             </Link>
 
-            {addressParts.length > 0 && (
-              <div>
-                {addressParts.map((line, i) => (
-                  <p key={i} className="font-manrope text-[14px] text-white/50 leading-relaxed">
-                    {line}
-                  </p>
-                ))}
-              </div>
+            {footerLogoText && (
+              <p className="whitespace-pre-line font-manrope text-[14px] text-white/50 leading-relaxed max-w-[240px]">
+                {footerLogoText}
+              </p>
             )}
 
             {/* Social Icons */}
@@ -180,24 +177,21 @@ export default function Footer() {
             ) : null}
           </div>
 
-          {/* Map */}
-          {mapEmbedUrl ? (
+          {/* Column 4 Content */}
+          {(col4Label || footerColumn4Content) && (
             <div>
-              <h4 className="font-grotesk text-[13px] font-semibold tracking-widest uppercase text-brand-accent mb-5">
-                Lokacija
-              </h4>
-              <iframe
-                src={mapEmbedUrl}
-                width="100%"
-                height="200"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full border border-brand-border/30"
-                title="Lokacija kancelarije"
-              />
+              {col4Label && (
+                <h4 className="font-grotesk text-[13px] font-semibold tracking-widest uppercase text-brand-accent mb-5">
+                  {col4Label}
+                </h4>
+              )}
+              {footerColumn4Content && (
+                <div className="whitespace-pre-line font-manrope text-[15px] text-white/60 leading-relaxed">
+                  {footerColumn4Content}
+                </div>
+              )}
             </div>
-          ) : null}
+          )}
         </div>
       </div>
 

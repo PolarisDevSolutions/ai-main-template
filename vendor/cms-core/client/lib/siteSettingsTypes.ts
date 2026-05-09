@@ -51,6 +51,9 @@ export interface SiteSettings {
   footerPracticeLinks: FooterLink[];
   footerColumn1Label: string;
   footerColumn2Label: string;
+  footerColumn4Label: string;
+  footerLogoText: string;
+  footerColumn4Content: string;
 
   // Address
   addressLine1: string;
@@ -98,6 +101,9 @@ export interface SiteSettingsRow {
   footer_practice_links: FooterLink[];
   footer_column1_label: string | null;
   footer_column2_label: string | null;
+  footer_column4_label: string | null;
+  footer_logo_text: string | null;
+  footer_column4_content: string | null;
   address_line1: string | null;
   address_line2: string | null;
   map_embed_url: string | null;
@@ -135,6 +141,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   footerPracticeLinks: [],
   footerColumn1Label: "",
   footerColumn2Label: "",
+  footerColumn4Label: "",
+  footerLogoText: "",
+  footerColumn4Content: "",
   addressLine1: "",
   addressLine2: "",
   mapEmbedUrl:
@@ -179,6 +188,9 @@ export function rowToSiteSettings(row: SiteSettingsRow): SiteSettings {
       : DEFAULT_SITE_SETTINGS.footerPracticeLinks,
     footerColumn1Label: row.footer_column1_label || DEFAULT_SITE_SETTINGS.footerColumn1Label,
     footerColumn2Label: row.footer_column2_label || DEFAULT_SITE_SETTINGS.footerColumn2Label,
+    footerColumn4Label: row.footer_column4_label || DEFAULT_SITE_SETTINGS.footerColumn4Label,
+    footerLogoText: row.footer_logo_text || DEFAULT_SITE_SETTINGS.footerLogoText,
+    footerColumn4Content: row.footer_column4_content || DEFAULT_SITE_SETTINGS.footerColumn4Content,
     addressLine1: row.address_line1 || DEFAULT_SITE_SETTINGS.addressLine1,
     addressLine2: row.address_line2 || DEFAULT_SITE_SETTINGS.addressLine2,
     mapEmbedUrl: row.map_embed_url || DEFAULT_SITE_SETTINGS.mapEmbedUrl,
@@ -216,6 +228,9 @@ export function siteSettingsToRow(
     footer_practice_links: settings.footerPracticeLinks,
     footer_column1_label: settings.footerColumn1Label || null,
     footer_column2_label: settings.footerColumn2Label || null,
+    footer_column4_label: settings.footerColumn4Label || null,
+    footer_logo_text: settings.footerLogoText || null,
+    footer_column4_content: settings.footerColumn4Content || null,
     address_line1: settings.addressLine1,
     address_line2: settings.addressLine2,
     map_embed_url: settings.mapEmbedUrl,

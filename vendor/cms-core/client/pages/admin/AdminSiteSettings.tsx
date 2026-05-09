@@ -572,6 +572,17 @@ export default function AdminSiteSettings() {
                   placeholder="e.g. Usluge"
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="footerColumn4Label">Column 4 Heading</Label>
+                <Input
+                  id="footerColumn4Label"
+                  value={settings.footerColumn4Label || ""}
+                  onChange={(e) =>
+                    updateSettings({ footerColumn4Label: e.target.value })
+                  }
+                  placeholder="e.g. Kontakt"
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -675,36 +686,47 @@ export default function AdminSiteSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Map Embed</CardTitle>
+              <CardTitle>Footer Text Under Logo</CardTitle>
               <CardDescription>
-                Google Maps embed URL for the footer map
+                Short text shown under the footer logo instead of the address
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Label htmlFor="mapEmbedUrl">Map Embed URL</Label>
-                <Input
-                  id="mapEmbedUrl"
-                  value={settings.mapEmbedUrl}
+                <Label htmlFor="footerLogoText">Text Under Logo</Label>
+                <Textarea
+                  id="footerLogoText"
+                  value={settings.footerLogoText || ""}
                   onChange={(e) =>
-                    updateSettings({ mapEmbedUrl: e.target.value })
+                    updateSettings({ footerLogoText: e.target.value })
                   }
-                  placeholder="https://www.google.com/maps/embed?..."
+                  placeholder="Add short footer text under the logo"
+                  rows={4}
                 />
               </div>
-              {settings.mapEmbedUrl && (
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500 mb-2">Preview:</p>
-                  <iframe
-                    src={settings.mapEmbedUrl}
-                    width="100%"
-                    height="200"
-                    className="rounded-lg border"
-                    loading="lazy"
-                    title="Map Preview"
-                  />
-                </div>
-              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Footer Column 4 Content</CardTitle>
+              <CardDescription>
+                Text content displayed under the fourth footer column heading
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Label htmlFor="footerColumn4Content">Column 4 Content</Label>
+                <Textarea
+                  id="footerColumn4Content"
+                  value={settings.footerColumn4Content || ""}
+                  onChange={(e) =>
+                    updateSettings({ footerColumn4Content: e.target.value })
+                  }
+                  placeholder="Add contact info or other footer content"
+                  rows={6}
+                />
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
