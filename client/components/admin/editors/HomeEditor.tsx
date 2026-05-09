@@ -18,7 +18,7 @@ export default function HomeEditor({ content, onChange }: HomeEditorProps) {
       <AboutSectionEditor content={content} update={update} />
       <PracticeAreasIntroSection content={content} update={update} />
       <PracticeAreasItemsSection content={content} update={update} />
-      <AwardsSection content={content} update={update} />
+      <WhyNeedUsSection content={content} update={update} />
       {/* Testimonials section removed from frontend — keep data intact */}
       <ProcessSection content={content} update={update} />
       <GoogleReviewsSection content={content} update={update} />
@@ -280,42 +280,52 @@ function PracticeAreasItemsSection({ content, update }: SectionProps) {
 }
 
 /* ------------------------------------------------------------------ */
-function AwardsSection({ content, update }: SectionProps) {
-  const awards = content.awards;
-  const set = (patch: Partial<typeof awards>) => update("awards", { ...awards, ...patch });
+function WhyNeedUsSection({ content, update }: SectionProps) {
+  const section = content.whyNeedUs;
+  const set = (patch: Partial<typeof section>) => update("whyNeedUs", { ...section, ...patch });
   const ht = useHeadingTag(content, update);
 
   return (
-    <Section title="Awards & Memberships" defaultOpen={false}>
+    <Section title="Why You Need Us" defaultOpen={false}>
       <div className="grid gap-4">
-        <div>
-          <Label>Section Label</Label>
-          <Input value={awards.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
-        </div>
         <HeadingField
-          label="Heading"
-          value={awards.heading}
+          label="Title"
+          value={section.heading}
           onChange={(v) => set({ heading: v })}
-          tag={ht.get("awards.heading")}
-          onTagChange={(t) => ht.set("awards.heading", t)}
+          tag={ht.get("whyNeedUs.heading")}
+          onTagChange={(t) => ht.set("whyNeedUs.heading", t)}
         />
-        <RichTextField label="Description" value={awards.description} onChange={(v) => set({ description: v })} />
-        <h4 className="font-medium">Award Logos</h4>
+        <RichTextField label="Brief Intro" value={section.intro} onChange={(v) => set({ intro: v })} />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <Label>CTA Button Label</Label>
+            <Input value={section.buttonLabel} onChange={(e) => set({ buttonLabel: e.target.value })} />
+          </div>
+          <div>
+            <Label>CTA Button Link</Label>
+            <Input value={section.buttonLink} onChange={(e) => set({ buttonLink: e.target.value })} placeholder="/kontakt/" />
+          </div>
+        </div>
+        <h4 className="font-medium">Feature Cards</h4>
         <ArrayEditor
-          items={awards.logos}
-          onChange={(items) => set({ logos: items })}
-          itemLabel="Logo"
-          newItem={() => ({ src: "", alt: "" })}
+          items={section.cards}
+          onChange={(items) => set({ cards: items })}
+          itemLabel="Card"
+          newItem={() => ({ title: "", description: "" })}
           renderItem={(item, _, upd) => (
             <div className="grid gap-3">
-              <ImageField label="Logo Image" value={item.src} onChange={(url) => upd({ ...item, src: url })} folder="awards" />
               <div>
-                <Label>Alt Text</Label>
-                <Input value={item.alt} onChange={(e) => upd({ ...item, alt: e.target.value })} />
+                <Label>Title</Label>
+                <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea value={item.description} onChange={(e) => upd({ ...item, description: e.target.value })} rows={3} />
               </div>
             </div>
           )}
         />
+        <RichTextField label="Closing Paragraph" value={section.closingParagraph} onChange={(v) => set({ closingParagraph: v })} />
       </div>
     </Section>
   );

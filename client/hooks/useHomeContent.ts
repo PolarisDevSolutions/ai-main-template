@@ -162,12 +162,12 @@ function mergeWithDefaults(
     practiceAreas: cmsContent.practiceAreas?.length
       ? cmsContent.practiceAreas
       : defaults.practiceAreas,
-    awards: {
-      ...defaults.awards,
-      ...cmsContent.awards,
-      logos: cmsContent.awards?.logos?.length
-        ? cmsContent.awards.logos
-        : defaults.awards.logos,
+    whyNeedUs: {
+      ...defaults.whyNeedUs,
+      ...cmsContent.whyNeedUs,
+      cards: cmsContent.whyNeedUs?.cards?.length
+        ? cmsContent.whyNeedUs.cards
+        : defaults.whyNeedUs.cards,
     },
     testimonials: {
       ...defaults.testimonials,

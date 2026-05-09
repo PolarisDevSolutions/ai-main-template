@@ -6,7 +6,7 @@ import HeroContactForm from "@site/components/home/HeroContactForm";
 import AboutSection from "@site/components/home/AboutSection";
 import PracticeAreasSection from "@site/components/home/PracticeAreasSection";
 import PracticeAreasGrid from "@site/components/home/PracticeAreasGrid";
-import AwardsSection from "@site/components/home/AwardsSection";
+import WhyNeedUsSection from "@site/components/home/AwardsSection";
 import ProcessSection from "@site/components/home/ProcessSection";
 import GoogleReviewsSection from "@site/components/home/GoogleReviewsSection";
 import FaqSection from "@site/components/home/FaqSection";
@@ -231,7 +231,7 @@ export default function Index() {
       <AboutSection content={content.about} />
       <PracticeAreasSection content={content.practiceAreasIntro} />
       <PracticeAreasGrid areas={content.practiceAreas} />
-      <AwardsSection content={content.awards} />
+      <WhyNeedUsSection content={content.whyNeedUs} headingTag={content.headingTags?.["whyNeedUs.heading"]} />
       <ProcessSection content={content.process} />
       <GoogleReviewsSection content={content.googleReviews} />
       <FaqSection content={content.faq} />

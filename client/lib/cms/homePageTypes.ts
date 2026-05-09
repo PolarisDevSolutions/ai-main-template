@@ -58,11 +58,18 @@ export interface PracticeAreasIntroContent {
   buttonLink: string;
 }
 
-export interface AwardsContent {
-  sectionLabel: string;
-  heading: string;
+export interface WhyNeedUsCard {
+  title: string;
   description: string;
-  logos: Array<{ src: string; alt: string }>;
+}
+
+export interface WhyNeedUsContent {
+  heading: string;
+  intro: string;
+  buttonLabel: string;
+  buttonLink: string;
+  cards: WhyNeedUsCard[];
+  closingParagraph: string;
 }
 
 export interface TestimonialItem {
@@ -141,7 +148,7 @@ export interface HomePageContent {
   about: AboutContent;
   practiceAreasIntro: PracticeAreasIntroContent;
   practiceAreas: PracticeAreaItem[];
-  awards: AwardsContent;
+  whyNeedUs: WhyNeedUsContent;
   testimonials: TestimonialsContent;
   process: ProcessContent;
   googleReviews: GoogleReviewsContent;
@@ -216,17 +223,22 @@ export const defaultHomeContent: HomePageContent = {
     buttonLink: "/practice-areas/",
   },
   practiceAreas: [],
-  awards: {
-    sectionLabel: "– Achievements",
-    heading: "Awards & Membership",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi",
-    logos: [
-      { src: "/images/awards/award-1.png", alt: "Award Logo" },
-      { src: "/images/awards/award-2.png", alt: "Award Logo" },
-      { src: "/images/awards/award-3.png", alt: "Award Logo" },
-      { src: "/images/awards/award-4.png", alt: "Award Logo" },
+  whyNeedUs: {
+    heading: "Zašto vam je potreban pravi partner za rast",
+    intro:
+      "<p>Ovaj prostor je namenjen kratkom uvodu od jednog ili dva pasusa koji objašnjava zašto klijenti biraju vaš tim.</p><p>Možete dodati jasan kontekst, diferencijatore i razlog zbog kog je vaša podrška važna za njihov sledeći korak.</p>",
+    buttonLabel: "Zakažite konsultacije",
+    buttonLink: "/kontakt/",
+    cards: [
+      { title: "Strategija", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
+      { title: "Performanse", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
+      { title: "SEO pristup", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
+      { title: "Kreativa", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
+      { title: "Podrška", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
+      { title: "Rezultati", description: "Kratak opis ključne vrednosti ili koristi koju pružate." },
     ],
+    closingParagraph:
+      "<p>Ovaj završni pasus možete iskoristiti za dodatno pojašnjenje, zaključak ili kratki poziv na akciju koji zatvara sekciju.</p>",
   },
   testimonials: {
     sectionLabel: "– Testimonials",
