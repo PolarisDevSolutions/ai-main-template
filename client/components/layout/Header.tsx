@@ -25,7 +25,7 @@ export default function Header() {
   const logoUrl = settings.logoUrl?.trim() || "";
   const logoAlt = settings.logoAlt?.trim() || settings.siteName?.trim() || "Logo";
   const ctaText = settings.headerCtaText?.trim() || "";
-  const ctaUrl = settings.headerCtaUrl?.trim() || "/contact";
+  const ctaUrl = settings.headerCtaUrl?.trim() || "/kontakt/";
   const navItems = [...(settings.navigationItems ?? [])].sort(
     (a, b) => (a.order ?? 0) - (b.order ?? 0),
   );
@@ -42,7 +42,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-[72px] lg:h-[80px]">
           {/* Logo */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >

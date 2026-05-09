@@ -57,13 +57,14 @@ export default function Seo({
 
   // Build full title using dynamic site name from settings
   const siteName = settings.siteName || '';
-  const fullTitle = title
-    ? (siteName ? `${title} | ${siteName}` : title)
-    : siteName;
+  const normalizedTitle = title?.trim();
+  const fullTitle = normalizedTitle
+    ? (siteName && !normalizedTitle.toLowerCase().includes(siteName.toLowerCase())
+        ? `${normalizedTitle} | ${siteName}`
+        : normalizedTitle)
+    : siteName || undefined;
 
-  // Default description
-  const defaultDescription = 'Protecting your rights with integrity, experience, and relentless advocacy.';
-  const fullDescription = description || defaultDescription;
+  const fullDescription = description?.trim() || undefined;
 
   // Default image
   const defaultImage = 'https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2F4a50c7b6b66348e3a521b50cbb1563bb?format=webp&width=800&height=1200';
@@ -71,7 +72,7 @@ export default function Seo({
 
   // OG overrides — fall back to page-level values
   const resolvedOgTitle = ogTitle || fullTitle;
-  const resolvedOgDescription = ogDescription || fullDescription;
+  const resolvedOgDescription = ogDescription?.trim() || fullDescription;
   const resolvedOgImage = ogImage || fullImage;
 
   // Build JSON-LD structured data
@@ -94,8 +95,8 @@ export default function Seo({
 
   return (
     <Helmet>
-      <title>{fullTitle}</title>
-      <meta name="description" content={fullDescription} />
+      {fullTitle && <title>{fullTitle}</title>}
+      {fullDescription && <meta name="description" content={fullDescription} />}
 
       {(noindex || settings?.siteNoindex) && <meta name="robots" content="noindex, nofollow" />}
 
@@ -103,7 +104,7 @@ export default function Seo({
 
       {/* Open Graph */}
       <meta property="og:title" content={resolvedOgTitle} />
-      <meta property="og:description" content={resolvedOgDescription} />
+      {resolvedOgDescription && <meta property="og:description" content={resolvedOgDescription} />}
       <meta property="og:type" content="website" />
       {fullCanonical && <meta property="og:url" content={fullCanonical} />}
       {resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
@@ -113,7 +114,7 @@ export default function Seo({
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={resolvedOgTitle} />
-      <meta name="twitter:description" content={resolvedOgDescription} />
+      {resolvedOgDescription && <meta name="twitter:description" content={resolvedOgDescription} />}
       {resolvedOgImage && <meta name="twitter:image" content={resolvedOgImage} />}
       {resolvedOgImage && <meta name="twitter:image:alt" content={settings.siteName || 'Site icon'} />}
 

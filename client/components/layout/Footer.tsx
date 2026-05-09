@@ -3,6 +3,7 @@ import { Facebook, Instagram, Youtube, Linkedin, Twitter, Phone } from "lucide-r
 import { Link } from "react-router-dom";
 import RichText from "@site/components/shared/RichText";
 import { useSiteSettings } from "@site/contexts/SiteSettingsContext";
+import { isExternalHref, normalizeHref, resolveFooterHref } from "@site/lib/linkUtils";
 
 const SOCIAL_ICON_MAP: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   facebook: Facebook,
@@ -122,7 +123,7 @@ export default function Footer() {
                   return (
                     <a
                       key={social.platform}
-                      href={social.url}
+                      href={normalizeHref(social.url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-9 h-9 border border-brand-border/60 flex items-center justify-center text-white/60 hover:border-brand-accent hover:text-brand-accent transition-all duration-200"
@@ -145,12 +146,15 @@ export default function Footer() {
               <ul className="space-y-3">
                 {resourceLinks.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      to={link.href || "#"}
-                      className="font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
+                    {(() => {
+                      const href = resolveFooterHref(link.label, link.href, settings);
+                      const className = "font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200";
+                      return isExternalHref(href) ? (
+                        <a href={href} className={className}>{link.label}</a>
+                      ) : (
+                        <Link to={href} className={className}>{link.label}</Link>
+                      );
+                    })()}
                   </li>
                 ))}
               </ul>
@@ -166,12 +170,15 @@ export default function Footer() {
               <ul className="space-y-3">
                 {practiceLinks.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      to={link.href || "/"}
-                      className="font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
+                    {(() => {
+                      const href = resolveFooterHref(link.label, link.href, settings);
+                      const className = "font-manrope text-[15px] text-white/60 hover:text-brand-accent transition-colors duration-200";
+                      return isExternalHref(href) ? (
+                        <a href={href} className={className}>{link.label}</a>
+                      ) : (
+                        <Link to={href} className={className}>{link.label}</Link>
+                      );
+                    })()}
                   </li>
                 ))}
               </ul>

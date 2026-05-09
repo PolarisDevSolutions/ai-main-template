@@ -9,6 +9,7 @@
  */
 
 import type { HTMLAttributes } from "react";
+import { normalizeHtmlHrefs } from "@site/lib/linkUtils";
 
 interface RichTextProps extends HTMLAttributes<HTMLDivElement> {
   /** The HTML string from the CMS / Tiptap editor */
@@ -25,11 +26,12 @@ export default function RichText({
   if (!html) return null;
 
   const Tag = inline ? "span" : "div";
+  const normalizedHtml = normalizeHtmlHrefs(html);
 
   return (
     <Tag
       {...rest}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: normalizedHtml }}
     />
   );
 }

@@ -58,8 +58,8 @@ export default function ContactPage() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "Contact Us"}
-        description={meta.meta_description || "Get in touch with our experienced legal team. Free consultation available 24/7. We're here to help with your legal needs."}
+        title={meta.meta_title || "Kontakt"}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

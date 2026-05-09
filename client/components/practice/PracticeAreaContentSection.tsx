@@ -58,7 +58,7 @@ export default function PracticeAreaContentSection({
                     icon={Calendar}
                     title="Schedule Now"
                     subtitle="Free Consultation"
-                    link="/contact/"
+                    link="/kontakt/"
                   />
                 </div>
               )}

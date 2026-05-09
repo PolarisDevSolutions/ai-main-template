@@ -363,6 +363,7 @@ function generatePageHtml({
     .join("\n");
 
   let html = template.replace(/<title>.*?<\/title>/s, "");
+  html = html.replace(/<script>window\.__PAGE_DATA__=[\s\S]*?<\/script>\s*/g, "");
   html = injectRenderedHtml(html, renderedHtml);
   html = html.replace("</head>", `${headInjection}\n</head>`);
 

@@ -18,7 +18,7 @@ export default function PracticeAreaCard({
   description,
   image,
   imageAlt,
-  link = "/contact/",
+  link = "/kontakt/",
 }: PracticeAreaCardProps) {
   return (
     <Link

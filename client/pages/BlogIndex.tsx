@@ -13,7 +13,7 @@ export default function BlogIndex() {
     <Layout>
       <Seo
         title={meta.meta_title || "Blog"}
-        description={meta.meta_description || "Stay informed with our latest articles, legal insights, and news from our law firm."}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

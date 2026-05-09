@@ -56,7 +56,7 @@ export default function ContentSectionBlock({ block, index }: ContentSectionBloc
                     icon={Calendar}
                     title="Zakažite odmah"
                     subtitle="Besplatne konsultacije"
-                    link="/contact/"
+                    link="/kontakt/"
                   />
                 </div>
               )}

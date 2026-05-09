@@ -25,8 +25,8 @@ export default function AnimatedSection({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: initialY, x: initialX }}
-      animate={inView ? { opacity: 1, y: 0, x: 0 } : {}}
+      initial={false}
+      animate={inView ? { opacity: 1, y: 0, x: 0 } : { opacity: 1, y: 0, x: 0 }}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
       className={cn(className)}
     >

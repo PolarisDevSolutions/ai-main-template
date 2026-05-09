@@ -16,9 +16,12 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/about/" element={<AboutUs />} />
+      <Route path="/o-nama/" element={<AboutUs />} />
       <Route path="/practice-areas/" element={<PracticeAreas />} />
+      <Route path="/usluge/" element={<PracticeAreas />} />
       <Route path="/practice-areas/:slug/" element={<PracticeAreaPage />} />
       <Route path="/contact/" element={<ContactPage />} />
+      <Route path="/kontakt/" element={<ContactPage />} />
       <Route path="/blog/" element={<BlogIndex />} />
       <Route path="/blog/:slug/" element={<BlogPost />} />
       <Route

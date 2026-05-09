@@ -12,9 +12,9 @@ export default function Hero() {
           <div className="mb-[40px]">
             <div className="relative">
               <p className="font-grotesk text-[clamp(2rem,5vw,68.8px)] font-light leading-[1.2] text-white text-left">
-                <span className="text-brand-accent">Protecting your rights</span>
+                <span className="text-brand-accent">Polaris digitalna rešenja</span>
                 <br />
-                with integrity, experience, and relentless advocacy.
+                za rast, vidljivost i konverzije.
               </p>
             </div>
           </div>

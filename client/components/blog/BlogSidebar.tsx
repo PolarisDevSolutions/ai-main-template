@@ -91,7 +91,7 @@ export default function BlogSidebar({ initialData }: BlogSidebarProps) {
         icon={Calendar}
         title="Schedule Today"
         subtitle="Book a Consultation"
-        link="/contact/"
+        link="/kontakt/"
         className="w-full md:w-full"
       />
 

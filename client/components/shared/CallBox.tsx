@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { isExternalHref, normalizeHref } from "@site/lib/linkUtils";
 
 interface CallBoxProps {
   icon: LucideIcon;
@@ -68,7 +69,11 @@ export default function CallBox({
   }
 
   if (link) {
-    return <Link to={link} className="block">{content}</Link>;
+    const normalizedLink = normalizeHref(link);
+    if (isExternalHref(normalizedLink)) {
+      return <a href={normalizedLink} className="block">{content}</a>;
+    }
+    return <Link to={normalizedLink} className="block">{content}</Link>;
   }
 
   return content;

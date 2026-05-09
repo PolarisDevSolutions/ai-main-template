@@ -59,8 +59,8 @@ export default function PracticeAreas() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "Practice Areas"}
-        description={meta.meta_description || "Explore our comprehensive areas of legal expertise. From personal injury to complex litigation, our experienced attorneys are ready to fight for your rights."}
+        title={meta.meta_title || "Usluge"}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

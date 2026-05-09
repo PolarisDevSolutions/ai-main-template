@@ -48,8 +48,8 @@ export default function AboutUs() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "About Us"}
-        description={meta.meta_description || "Learn about our law firm's mission, values, and experienced legal team dedicated to protecting your rights."}
+        title={meta.meta_title || "O Nama"}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

@@ -56,7 +56,7 @@ export default function Index() {
     <Layout>
       <Seo
         title={meta.meta_title || "Početna"}
-        description={meta.meta_description || ""}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}
@@ -77,7 +77,7 @@ export default function Index() {
             <div className="flex-1 min-w-0">
               {heroContent.h1Title && (
                 <motion.p
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-6"
@@ -88,7 +88,7 @@ export default function Index() {
 
               <motion.h1
                 variants={headlineVariants}
-                initial="hidden"
+                initial={false}
                 animate="visible"
                 className="font-grotesk text-[clamp(2.5rem,6vw,72px)] font-light leading-[1.1] text-white mb-6"
               >
@@ -117,7 +117,7 @@ export default function Index() {
 
               {heroContent.description && (
                 <motion.p
-                  initial={{ opacity: 0, y: 14 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, delay: 0.25 }}
                   className="max-w-[640px] font-manrope text-[16px] md:text-[18px] leading-7 text-white mb-8"
@@ -129,7 +129,7 @@ export default function Index() {
               {/* Phone CTA */}
               {phoneDisplay && (
                 <motion.div
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}
                   className="max-w-[520px]"
@@ -163,7 +163,7 @@ export default function Index() {
 
             {/* Right: Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 24 }}
+              initial={false}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="lg:w-[420px] shrink-0"
@@ -174,7 +174,7 @@ export default function Index() {
 
               {trustTexts.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.65 }}
                   className="mt-6"
@@ -197,7 +197,7 @@ export default function Index() {
 
         {/* Scroll hint */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"

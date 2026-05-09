@@ -92,7 +92,7 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
 
               {data.contactLabel && (
                 <Link
-                  to="/contact/"
+                  to="/kontakt/"
                   className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300"
                 >
                 <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">

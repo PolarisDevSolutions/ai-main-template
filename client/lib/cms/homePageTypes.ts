@@ -159,8 +159,8 @@ export interface HomePageContent {
 export const defaultHomeContent: HomePageContent = {
   hero: {
     h1Title: "YOUR FIRM HEADLINE",
-    highlightedText: "Protecting your rights",
-    headline: "with integrity, experience, and relentless advocacy.",
+    highlightedText: "Polaris digitalna rešenja",
+    headline: "za rast, vidljivost i konverzije.",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     trustText1: "Brz odgovor",
