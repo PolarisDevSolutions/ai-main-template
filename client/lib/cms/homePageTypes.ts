@@ -122,9 +122,6 @@ export interface FaqItem {
 export interface FaqContent {
   heading: string;
   description: string;
-  videoThumbnail: string;
-  videoThumbnailAlt?: string;
-  videoUrl: string;
   items: FaqItem[];
 }
 
@@ -339,10 +336,6 @@ export const defaultHomeContent: HomePageContent = {
     heading: "Frequently Asked Questions",
     description:
       "Aenean porta erat id urna porttitor scelerisque. Aliquam vitae auctor nunc.",
-    videoThumbnail: "/images/backgrounds/faq-bg.jpg",
-    videoThumbnailAlt: "Frequently Asked Questions",
-    videoUrl:
-      "",
     items: [
       {
         question: "This is an example FAQ",

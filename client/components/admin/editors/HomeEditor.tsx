@@ -494,15 +494,6 @@ function FaqSectionEditor({ content, update }: SectionProps) {
           onTagChange={(t) => ht.set("faq.heading", t)}
         />
         <RichTextField label="Description" value={faq.description} onChange={(v) => set({ description: v })} />
-        <ImageField label="Video Thumbnail" value={faq.videoThumbnail} onChange={(url) => set({ videoThumbnail: url })} folder="backgrounds" />
-        <div>
-          <Label>Video Thumbnail Alt Text</Label>
-          <Input value={faq.videoThumbnailAlt || ""} onChange={(e) => set({ videoThumbnailAlt: e.target.value })} placeholder="Describe the thumbnail image" />
-        </div>
-        <div>
-          <Label>Video URL</Label>
-          <Input value={faq.videoUrl} onChange={(e) => set({ videoUrl: e.target.value })} />
-        </div>
         <ArrayEditor
           items={faq.items}
           onChange={(items) => set({ items })}

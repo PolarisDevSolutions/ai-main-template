@@ -12,9 +12,6 @@ const defaultContent: FaqContent = {
   heading: "Frequently Asked Questions",
   description:
     "Aenean porta erat id urna porttitor scelerisque. Aliquam vitae auctor nunc.",
-  videoThumbnail: "/images/backgrounds/faq-bg.jpg",
-  videoUrl:
-    "https://www.youtube.com/embed/FkQuawiGWUw?autoplay=1&feature=oembed",
   items: [
     {
       question: "This is an example FAQ",
@@ -64,33 +61,17 @@ export default function FaqSection({ content }: FaqSectionProps) {
           )}
         </AnimatedSection>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-          {/* Left Side - Image */}
-          {data.videoThumbnail && (
-            <AnimatedSection className="lg:w-[45%] shrink-0" direction="left">
-              <img
-                src={data.videoThumbnail}
-                alt={data.videoThumbnailAlt || "FAQ"}
-                className="w-full h-auto object-cover"
-                width={720}
-                height={480}
-                loading="lazy"
-              />
-            </AnimatedSection>
-          )}
-
-          {/* Accordion */}
-          <AnimatedSection className="flex-1" delay={0.15}>
-            <div className="space-y-3">
-              {faqs.map((faq, index) => (
-                <div
-                  key={index}
-                  className={`border border-brand-border/20 transition-all duration-200 ${
-                    openIndex === index
-                      ? "border-l-4 border-l-brand-accent bg-brand-dark"
-                      : "hover:border-brand-border/40"
-                  }`}
-                >
+        <AnimatedSection className="max-w-[960px] mx-auto" delay={0.15}>
+          <div className="space-y-3">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className={`border border-brand-border/20 transition-all duration-200 ${
+                  openIndex === index
+                    ? "border-l-4 border-l-brand-accent bg-brand-dark"
+                    : "hover:border-brand-border/40"
+                }`}
+              >
                   <button
                     onClick={() => toggleFaq(index)}
                     className={`w-full font-manrope text-[18px] leading-snug px-5 py-5 text-left flex items-center justify-between cursor-pointer gap-4 ${
@@ -110,11 +91,10 @@ export default function FaqSection({ content }: FaqSectionProps) {
                       className="font-manrope text-[15px] leading-relaxed font-light px-5 pb-5 text-white/70"
                     />
                   )}
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-        </div>
+              </div>
+            ))}
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
