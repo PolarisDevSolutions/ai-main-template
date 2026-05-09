@@ -20,5 +20,5 @@ export default function HeroBlock({ block }: HeroBlockProps) {
     }),
   );
 
-  return <MarketingHeroSection content={hero} headingTag="h1" />;
+  return <MarketingHeroSection content={hero} />;
 }

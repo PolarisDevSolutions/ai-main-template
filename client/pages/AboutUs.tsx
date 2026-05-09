@@ -61,10 +61,7 @@ export default function AboutUs() {
         pageContent={content}
       />
 
-      <MarketingHeroSection
-        content={content.hero}
-        headingTag={content.headingTags?.["hero.headline"]}
-      />
+      <MarketingHeroSection content={content.hero} />
 
       {/* Our Story Section */}
       <div className="bg-white pt-[30px] md:pt-[54px] pb-[30px] md:pb-[54px]">

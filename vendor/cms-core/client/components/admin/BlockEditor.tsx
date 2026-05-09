@@ -271,8 +271,6 @@ function HeroFields({ block, onUpdate }: { block: Extract<ContentBlock, { type: 
     <SharedHeroEditor
       hero={hero}
       onChange={(nextHero) => onUpdate(nextHero)}
-      headingTag="h1"
-      onHeadingTagChange={() => undefined}
     />
   );
 }

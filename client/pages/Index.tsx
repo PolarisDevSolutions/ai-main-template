@@ -47,7 +47,6 @@ export default function Index() {
       {/* ── Hero Section ── */}
       <MarketingHeroSection
         content={heroContent}
-        headingTag={content.headingTags?.["hero.headline"]}
         fullHeight
         overlapHeader
         showScrollHint

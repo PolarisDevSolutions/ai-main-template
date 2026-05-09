@@ -7,5 +7,5 @@ interface BlogHeroProps {
 }
 
 export default function BlogHero({ hero }: BlogHeroProps) {
-  return <MarketingHeroSection content={hero} headingTag="h1" />;
+  return <MarketingHeroSection content={hero} />;
 }

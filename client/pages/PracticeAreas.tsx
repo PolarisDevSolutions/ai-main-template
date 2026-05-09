@@ -72,10 +72,7 @@ export default function PracticeAreas() {
         pageContent={content}
       />
 
-      <MarketingHeroSection
-        content={content.hero}
-        headingTag={content.headingTags?.["hero.headline"]}
-      />
+      <MarketingHeroSection content={content.hero} />
 
       {/* Practice Areas Grid Section */}
       <div className="bg-white py-[40px] md:py-[60px]">

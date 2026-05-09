@@ -1,29 +1,25 @@
 import type { SharedHeroContent } from "@site/lib/cms/sharedHero";
-import { HeadingField, Input, Label, RichTextField } from "./EditorShared";
+import { Input, Label, RichTextField } from "./EditorShared";
 
 interface SharedHeroEditorProps {
   hero: SharedHeroContent;
   onChange: (hero: SharedHeroContent) => void;
-  headingTag?: string;
-  onHeadingTagChange: (tag: string) => void;
 }
 
 export default function SharedHeroEditor({
   hero,
   onChange,
-  headingTag,
-  onHeadingTagChange,
 }: SharedHeroEditorProps) {
   const set = (patch: Partial<SharedHeroContent>) => onChange({ ...hero, ...patch });
 
   return (
     <div className="grid gap-4">
       <div>
-        <Label>Eyebrow Label</Label>
+        <Label>Label (H1)</Label>
         <Input
           value={hero.h1Title}
           onChange={(e) => set({ h1Title: e.target.value })}
-          placeholder="Short label above the main headline"
+          placeholder="Primary hero label rendered as the page H1"
         />
       </div>
 
@@ -36,13 +32,14 @@ export default function SharedHeroEditor({
         />
       </div>
 
-      <HeadingField
-        label="Headline"
-        value={hero.headline}
-        onChange={(value) => set({ headline: value })}
-        tag={headingTag}
-        onTagChange={onHeadingTagChange}
-      />
+      <div>
+        <Label>Headline</Label>
+        <Input
+          value={hero.headline}
+          onChange={(e) => set({ headline: e.target.value })}
+          placeholder="Main hero headline"
+        />
+      </div>
 
       <RichTextField
         label="Description"

@@ -56,10 +56,7 @@ export default function PracticeAreaPage() {
         pageContent={content}
       />
 
-      <PracticeAreaHero
-        content={content.hero}
-        headingTags={content.headingTags}
-      />
+      <PracticeAreaHero content={content.hero} />
 
       <PracticeAreaSocialProof
         content={content.socialProof}

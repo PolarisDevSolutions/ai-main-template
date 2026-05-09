@@ -40,15 +40,11 @@ function useHeadingTag(content: AboutPageContent, update: Updater) {
 
 /* ------------------------------------------------------------------ */
 function HeroSection({ content, update }: SectionProps) {
-  const ht = useHeadingTag(content, update);
-
   return (
     <Section title="Hero Section">
       <SharedHeroEditor
         hero={content.hero}
         onChange={(hero) => update("hero", hero)}
-        headingTag={ht.get("hero.headline")}
-        onHeadingTagChange={(tag) => ht.set("hero.headline", tag)}
       />
     </Section>
   );

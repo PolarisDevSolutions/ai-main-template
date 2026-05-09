@@ -71,10 +71,7 @@ export default function ContactPage() {
         pageContent={content}
       />
 
-      <MarketingHeroSection
-        content={content.hero}
-        headingTag={content.headingTags?.["hero.headline"]}
-      />
+      <MarketingHeroSection content={content.hero} />
 
       {/* Contact Methods Section */}
       <div className="bg-white py-[40px] md:py-[60px]">

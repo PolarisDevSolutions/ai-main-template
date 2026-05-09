@@ -8,7 +8,6 @@ import { Phone } from "lucide-react";
 
 interface MarketingHeroSectionProps {
   content: SharedHeroContent;
-  headingTag?: string;
   fullHeight?: boolean;
   overlapHeader?: boolean;
   showScrollHint?: boolean;
@@ -16,7 +15,6 @@ interface MarketingHeroSectionProps {
 
 export default function MarketingHeroSection({
   content,
-  headingTag,
   fullHeight = false,
   overlapHeader = false,
   showScrollHint = false,
@@ -45,16 +43,15 @@ export default function MarketingHeroSection({
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
           <div className="min-w-0 flex-1">
             {content.h1Title && (
-              <p className="mb-6 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent">
+              <DynamicHeading
+                defaultTag="h1"
+                className="mb-6 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent"
+              >
                 {content.h1Title}
-              </p>
+              </DynamicHeading>
             )}
 
-            <DynamicHeading
-              tag={headingTag}
-              defaultTag="h1"
-              className="mb-6 font-grotesk text-[clamp(2.5rem,6vw,72px)] font-light leading-[1.1] text-white"
-            >
+            <p className="mb-6 font-grotesk text-[clamp(2.5rem,6vw,72px)] font-light leading-[1.1] text-white">
               <>
                 {highlightWords.map((word, index) => (
                   <span
@@ -71,7 +68,7 @@ export default function MarketingHeroSection({
                   </span>
                 ))}
               </>
-            </DynamicHeading>
+            </p>
 
             {content.description && (
               <RichText
