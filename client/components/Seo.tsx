@@ -65,7 +65,7 @@ export default function Seo({
   const fullDescription = description || defaultDescription;
 
   // Default image
-  const defaultImage = siteUrl ? `${siteUrl}/og-image.jpg` : undefined;
+  const defaultImage = 'https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2F4a50c7b6b66348e3a521b50cbb1563bb?format=webp&width=800&height=1200';
   const fullImage = image || defaultImage;
 
   // OG overrides — fall back to page-level values
@@ -106,12 +106,15 @@ export default function Seo({
       <meta property="og:type" content="website" />
       {fullCanonical && <meta property="og:url" content={fullCanonical} />}
       {resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
+      {resolvedOgImage && <meta property="og:image:secure_url" content={resolvedOgImage} />}
+      {resolvedOgImage && <meta property="og:image:alt" content={settings.siteName || 'Site icon'} />}
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={resolvedOgTitle} />
       <meta name="twitter:description" content={resolvedOgDescription} />
       {resolvedOgImage && <meta name="twitter:image" content={resolvedOgImage} />}
+      {resolvedOgImage && <meta name="twitter:image:alt" content={settings.siteName || 'Site icon'} />}
 
       {/* JSON-LD Structured Data */}
       {schemas.map((schema, i) => (
