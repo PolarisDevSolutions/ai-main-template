@@ -1,29 +1,67 @@
-// Type definitions for structured About page content
 import {
   createDefaultSharedHeroContent,
+  normalizeSharedHeroContent,
   type SharedHeroContent,
 } from "./sharedHero";
+import { defaultHomeContent, type AboutContent } from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
 
 export type AboutHeroContent = SharedHeroContent;
+export type StoryContent = AboutContent;
 
-export interface StoryContent {
-  sectionLabel: string; // "– Our Story"
-  heading: string; // "Building Trust Since 1999"
-  paragraphs: string[]; // Array of paragraph texts
-  image: string;
-  imageAlt: string;
+type LegacyStoryContent = Partial<StoryContent> & {
+  paragraphs?: string[];
+  image?: string;
+  imageAlt?: string;
+};
+
+function cloneStoryContent(content: AboutContent): StoryContent {
+  return {
+    ...content,
+    features: content.features.map((feature) => ({ ...feature })),
+    stats: content.stats.map((stat) => ({ ...stat })),
+  };
+}
+
+export function createDefaultAboutStoryContent(
+  overrides: Partial<StoryContent> = {},
+): StoryContent {
+  const base = cloneStoryContent(defaultHomeContent.about);
+
+  return {
+    ...base,
+    ...overrides,
+    features: overrides.features ?? base.features,
+    stats: overrides.stats ?? base.stats,
+  };
+}
+
+function paragraphsToRichText(paragraphs?: string[]) {
+  if (!paragraphs?.length) {
+    return "";
+  }
+
+  return paragraphs
+    .map((paragraph) => {
+      const trimmed = paragraph.trim();
+      if (!trimmed) {
+        return "";
+      }
+
+      return trimmed.startsWith("<") ? trimmed : `<p>${trimmed}</p>`;
+    })
+    .join("");
 }
 
 export interface MissionVisionContent {
   mission: {
-    heading: string; // "Our Mission"
-    text: string; // Mission paragraph
+    heading: string;
+    text: string;
   };
   vision: {
-    heading: string; // "Our Vision"
-    text: string; // Vision paragraph
+    heading: string;
+    text: string;
   };
 }
 
@@ -37,21 +75,21 @@ export interface TeamMember {
 }
 
 export interface TeamContent {
-  sectionLabel: string; // "– Our Legal Team"
-  heading: string; // "Experienced Attorneys..."
+  sectionLabel: string;
+  heading: string;
   members: TeamMember[];
 }
 
 export interface ValueItem {
-  icon: string; // Lucide icon name
+  icon: string;
   title: string;
   description: string;
 }
 
 export interface ValuesContent {
-  sectionLabel: string; // "– Our Values"
-  heading: string; // "Principles That Guide Our Practice"
-  subtitle: string; // Subtitle text (NEW)
+  sectionLabel: string;
+  heading: string;
+  subtitle: string;
   items: ValueItem[];
 }
 
@@ -71,29 +109,28 @@ export interface WhyChooseUsItem {
 }
 
 export interface WhyChooseUsContent {
-  sectionLabel: string; // "– Why Choose Us"
-  heading: string; // "What Sets Us Apart"
-  description: string; // Intro paragraph
-  image: string; // Section image
-  imageAlt: string; // Image alt text
+  sectionLabel: string;
+  heading: string;
+  description: string;
+  image: string;
+  imageAlt: string;
   items: WhyChooseUsItem[];
 }
 
 export interface CTAContent {
-  heading: string; // "Ready to Discuss Your Case?"
-  description: string; // Subtitle text
+  heading: string;
+  description: string;
   primaryButton: {
-    label: string; // "Call Us 24/7"
-    phone: string; // Phone number
+    label: string;
+    phone: string;
   };
   secondaryButton: {
-    label: string; // "Schedule Now"
-    sublabel: string; // "Free Consultation"
-    link: string; // Link URL
+    label: string;
+    sublabel: string;
+    link: string;
   };
 }
 
-// Complete About page content structure
 export interface AboutPageContent {
   hero: AboutHeroContent;
   story: StoryContent;
@@ -103,11 +140,9 @@ export interface AboutPageContent {
   stats: StatsContent;
   whyChooseUs: WhyChooseUsContent;
   cta: CTAContent;
-  /** Maps heading keys (e.g. "story.heading") to HTML tag names (e.g. "h2") */
   headingTags?: Record<string, string>;
 }
 
-// Default content - used as fallback when CMS content is not available
 export const defaultAboutContent: AboutPageContent = {
   hero: createDefaultSharedHeroContent({
     h1Title: "– About Us",
@@ -121,17 +156,42 @@ export const defaultAboutContent: AboutPageContent = {
     formTitle: "Započnimo razgovor",
     phoneLabel: "Pozovite nas",
   }),
-  story: {
-    sectionLabel: "– Our Story",
-    heading: "Building Trust Since 1999",
-    paragraphs: [
-      "Our firm was founded on a simple but powerful principle: every person deserves access to exceptional representation, regardless of their circumstances.",
-      "What started as a small practice has grown into one of the region's most respected firms, but our core values remain unchanged. We still treat every client like family and fight for their rights with unwavering dedication.",
-      "Today, our team of experienced professionals continues to set new standards for excellence in our community.",
+  story: createDefaultAboutStoryContent({
+    sectionLabel: "– O nama",
+    heading: "Digitalni partner za rast vašeg biznisa",
+    description:
+      "<p>Polaris Development pomaže kompanijama širom Srbije i inostranstva kroz izradu modernih web sajtova, SEO optimizaciju i digitalni marketing strategije fokusirane na rezultate.</p><p>Gradimo prisustvo koje izgleda moderno, radi brzo i pretvara posete u konkretne upite i klijente.</p>",
+    contactLabel: "Kontaktirajte nas",
+    contactText: "Zakažite besplatne konsultacije",
+    attorneyImage: "/images/team/attorney-2.png",
+    attorneyImageAlt: "Polaris Development",
+    features: [
+      {
+        number: "1",
+        title: "Strategija usmerena na rezultate",
+        description:
+          "<p>Svaki projekat planiramo prema vašim poslovnim ciljevima, tržištu i korisnicima koje želite da privučete.</p>",
+      },
+      {
+        number: "2",
+        title: "Brzina, SEO i performanse",
+        description:
+          "<p>Spajamo moderan dizajn sa tehničkom optimizacijom kako bi sajt bio vidljiv, brz i spreman za rast.</p>",
+      },
+      {
+        number: "3",
+        title: "Partnerstvo, ne samo isporuka",
+        description:
+          "<p>Ne pravimo samo lepe stranice — pomažemo vam da izgradite digitalni sistem koji podržava prodaju i dugoročni razvoj.</p>",
+      },
     ],
-    image: "/images/team/attorney-2.png",
-    imageAlt: "Our Firm",
-  },
+    stats: [
+      { value: "2018", label: "Iskustvo sa američkim tržištem" },
+      { value: "200+", label: "Projekata i kampanja" },
+      { value: "98%", label: "Fokus na zadovoljstvo klijenata" },
+      { value: "24/7", label: "Podrška i brz odgovor" },
+    ],
+  }),
   missionVision: {
     mission: {
       heading: "Our Mission",
@@ -152,11 +212,7 @@ export const defaultAboutContent: AboutPageContent = {
         bio: "With over 20 years of experience, they have successfully served thousands of clients and achieved outstanding results.",
         image: "/images/team/team-member-1.png",
         imageAlt: "",
-        specialties: [
-          "Specialty 1",
-          "Specialty 2",
-          "Specialty 3",
-        ],
+        specialties: ["Specialty 1", "Specialty 2", "Specialty 3"],
       },
       {
         name: "Attorney Name",
@@ -172,11 +228,7 @@ export const defaultAboutContent: AboutPageContent = {
         bio: "An expert who has helped countless clients receive the results they deserve.",
         image: "/images/team/team-member-1.png",
         imageAlt: "",
-        specialties: [
-          "Specialty 1",
-          "Specialty 2",
-          "Specialty 3",
-        ],
+        specialties: ["Specialty 1", "Specialty 2", "Specialty 3"],
       },
     ],
   },
@@ -267,3 +319,118 @@ export const defaultAboutContent: AboutPageContent = {
     },
   },
 };
+
+export function normalizeAboutStoryContent(
+  value: unknown,
+  fallbackStats?: StatItem[],
+): StoryContent {
+  const defaults = createDefaultAboutStoryContent(
+    fallbackStats?.length ? { stats: fallbackStats } : {},
+  );
+
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return defaults;
+  }
+
+  const story = value as LegacyStoryContent;
+  const isHomepageShape =
+    "description" in story ||
+    "attorneyImage" in story ||
+    "contactLabel" in story ||
+    "features" in story ||
+    "stats" in story;
+
+  if (isHomepageShape) {
+    return {
+      ...defaults,
+      ...story,
+      features:
+        Array.isArray(story.features) && story.features.length > 0
+          ? story.features
+          : defaults.features,
+      stats:
+        Array.isArray(story.stats) && story.stats.length > 0
+          ? story.stats
+          : defaults.stats,
+    };
+  }
+
+  return {
+    ...defaults,
+    sectionLabel: story.sectionLabel ?? defaults.sectionLabel,
+    heading: story.heading ?? defaults.heading,
+    description: paragraphsToRichText(story.paragraphs) || defaults.description,
+    attorneyImage: story.image ?? defaults.attorneyImage,
+    attorneyImageAlt: story.imageAlt ?? defaults.attorneyImageAlt,
+    stats: fallbackStats?.length ? fallbackStats : defaults.stats,
+  };
+}
+
+export function normalizeAboutPageContent(
+  value: Partial<AboutPageContent> | null | undefined,
+): AboutPageContent {
+  const cmsContent = value ?? {};
+  const story = normalizeAboutStoryContent(
+    cmsContent.story,
+    cmsContent.stats?.stats?.length
+      ? cmsContent.stats.stats
+      : defaultAboutContent.story.stats,
+  );
+
+  return {
+    ...defaultAboutContent,
+    ...cmsContent,
+    hero: normalizeSharedHeroContent(cmsContent.hero, defaultAboutContent.hero),
+    story,
+    missionVision: {
+      mission: {
+        ...defaultAboutContent.missionVision.mission,
+        ...cmsContent.missionVision?.mission,
+      },
+      vision: {
+        ...defaultAboutContent.missionVision.vision,
+        ...cmsContent.missionVision?.vision,
+      },
+    },
+    team: {
+      ...defaultAboutContent.team,
+      ...cmsContent.team,
+      members: cmsContent.team?.members?.length
+        ? cmsContent.team.members
+        : defaultAboutContent.team.members,
+    },
+    values: {
+      ...defaultAboutContent.values,
+      ...cmsContent.values,
+      items: cmsContent.values?.items?.length
+        ? cmsContent.values.items
+        : defaultAboutContent.values.items,
+    },
+    stats: {
+      ...defaultAboutContent.stats,
+      ...cmsContent.stats,
+      stats: cmsContent.stats?.stats?.length
+        ? cmsContent.stats.stats
+        : story.stats,
+    },
+    whyChooseUs: {
+      ...defaultAboutContent.whyChooseUs,
+      ...cmsContent.whyChooseUs,
+      items: cmsContent.whyChooseUs?.items?.length
+        ? cmsContent.whyChooseUs.items
+        : defaultAboutContent.whyChooseUs.items,
+    },
+    cta: {
+      ...defaultAboutContent.cta,
+      ...cmsContent.cta,
+      primaryButton: {
+        ...defaultAboutContent.cta.primaryButton,
+        ...cmsContent.cta?.primaryButton,
+      },
+      secondaryButton: {
+        ...defaultAboutContent.cta.secondaryButton,
+        ...cmsContent.cta?.secondaryButton,
+      },
+    },
+  };
+}

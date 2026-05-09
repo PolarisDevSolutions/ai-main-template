@@ -4,8 +4,11 @@ import { supabase } from "@/lib/supabase";
 import type { Page, ContentBlock } from "@/lib/database.types";
 import { defaultHomeContent } from "@site/lib/cms/homePageTypes";
 import type { HomePageContent } from "@site/lib/cms/homePageTypes";
-import { defaultAboutContent } from "@site/lib/cms/aboutPageTypes";
-import type { AboutPageContent } from "@site/lib/cms/aboutPageTypes";
+import {
+  defaultAboutContent,
+  normalizeAboutPageContent,
+  type AboutPageContent,
+} from "@site/lib/cms/aboutPageTypes";
 import { defaultContactContent } from "@site/lib/cms/contactPageTypes";
 import type { ContactPageContent } from "@site/lib/cms/contactPageTypes";
 import { defaultPracticeAreasContent } from "@site/lib/cms/practiceAreasPageTypes";
@@ -305,16 +308,10 @@ export default function AdminPageEdit() {
           hero: normalizeSharedHeroContent(normalized.hero, defaultHomeContent.hero),
         };
       }
-      case "about": {
-        const normalized = mergeWithDefaults(
+      case "about":
+        return normalizeAboutPageContent(
           page.content as unknown as Partial<AboutPageContent>,
-          defaultAboutContent,
         );
-        return {
-          ...normalized,
-          hero: normalizeSharedHeroContent(normalized.hero, defaultAboutContent.hero),
-        };
-      }
       case "contact": {
         const normalized = mergeWithDefaults(
           page.content as unknown as Partial<ContactPageContent>,

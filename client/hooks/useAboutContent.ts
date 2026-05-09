@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
-import { defaultAboutContent } from "../lib/cms/aboutPageTypes";
-import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
+import {
+  defaultAboutContent,
+  normalizeAboutPageContent,
+  type AboutPageContent,
+} from "../lib/cms/aboutPageTypes";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
@@ -31,13 +33,7 @@ export function useAboutContent(): UseAboutContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/about/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? {
-        ...(injected.content as AboutPageContent),
-        hero: normalizeSharedHeroContent(
-          (injected.content as AboutPageContent).hero,
-          defaultAboutContent.hero,
-        ),
-      }
+    ? normalizeAboutPageContent(injected.content as Partial<AboutPageContent>)
     : (cachedContent ?? defaultAboutContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -105,12 +101,9 @@ export function useAboutContent(): UseAboutContentResult {
           }
           return;
         }
-        const cmsContent = pageData.content as AboutPageContent;
+        const cmsContent = pageData.content as Partial<AboutPageContent>;
         const mergedContent = isStructuredContent(cmsContent)
-          ? {
-              ...cmsContent,
-              hero: normalizeSharedHeroContent(cmsContent.hero, defaultAboutContent.hero),
-            }
+          ? normalizeAboutPageContent(cmsContent)
           : defaultAboutContent;
 
         const pageMeta: PageMeta = {
@@ -160,75 +153,6 @@ export function useAboutContent(): UseAboutContentResult {
 
 function isStructuredContent(value: unknown) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-// Deep merge CMS content with defaults
-function mergeWithDefaults(
-  cmsContent: Partial<AboutPageContent> | null | undefined,
-  defaults: AboutPageContent,
-): AboutPageContent {
-  if (!cmsContent) return defaults;
-
-  return {
-    hero: { ...defaults.hero, ...cmsContent.hero },
-    story: {
-      ...defaults.story,
-      ...cmsContent.story,
-      paragraphs: cmsContent.story?.paragraphs?.length
-        ? cmsContent.story.paragraphs
-        : defaults.story.paragraphs,
-    },
-    missionVision: {
-      mission: {
-        ...defaults.missionVision.mission,
-        ...cmsContent.missionVision?.mission,
-      },
-      vision: {
-        ...defaults.missionVision.vision,
-        ...cmsContent.missionVision?.vision,
-      },
-    },
-    team: {
-      ...defaults.team,
-      ...cmsContent.team,
-      members: cmsContent.team?.members?.length
-        ? cmsContent.team.members
-        : defaults.team.members,
-    },
-    values: {
-      ...defaults.values,
-      ...cmsContent.values,
-      items: cmsContent.values?.items?.length
-        ? cmsContent.values.items
-        : defaults.values.items,
-    },
-    stats: {
-      ...defaults.stats,
-      ...cmsContent.stats,
-      stats: cmsContent.stats?.stats?.length
-        ? cmsContent.stats.stats
-        : defaults.stats.stats,
-    },
-    whyChooseUs: {
-      ...defaults.whyChooseUs,
-      ...cmsContent.whyChooseUs,
-      items: cmsContent.whyChooseUs?.items?.length
-        ? cmsContent.whyChooseUs.items
-        : defaults.whyChooseUs.items,
-    },
-    cta: {
-      ...defaults.cta,
-      ...cmsContent.cta,
-      primaryButton: {
-        ...defaults.cta.primaryButton,
-        ...cmsContent.cta?.primaryButton,
-      },
-      secondaryButton: {
-        ...defaults.cta.secondaryButton,
-        ...cmsContent.cta?.secondaryButton,
-      },
-    },
-  };
 }
 
 // Helper to clear cache (useful after admin edits)

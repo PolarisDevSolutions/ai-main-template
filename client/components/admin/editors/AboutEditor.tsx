@@ -19,7 +19,6 @@ export default function AboutEditor({ content, onChange }: AboutEditorProps) {
       <MissionVisionSection content={content} update={update} />
       <TeamSection content={content} update={update} />
       <ValuesSection content={content} update={update} />
-      <StatsSection content={content} update={update} />
       <WhyChooseUsSection content={content} update={update} />
       <CTASection content={content} update={update} />
     </div>
@@ -70,19 +69,64 @@ function StorySection({ content, update }: SectionProps) {
           tag={ht.get("story.heading")}
           onTagChange={(t) => ht.set("story.heading", t)}
         />
-        <ImageField label="Image" value={story.image} onChange={(url) => set({ image: url })} folder="team" />
-        <div>
-          <Label>Image Alt Text</Label>
-          <Input value={story.imageAlt} onChange={(e) => set({ imageAlt: e.target.value })} />
+        <RichTextField label="Description" value={story.description} onChange={(v) => set({ description: v })} />
+        <p className="text-xs text-gray-500 italic">Phone number is managed in Site Settings &gt; Contact Info</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>Contact Label</Label>
+            <Input value={story.contactLabel} onChange={(e) => set({ contactLabel: e.target.value })} />
+          </div>
+          <div>
+            <Label>Contact Text</Label>
+            <Input value={story.contactText} onChange={(e) => set({ contactText: e.target.value })} />
+          </div>
         </div>
-        <h4 className="font-medium mt-2">Paragraphs</h4>
+        <ImageField label="Attorney Image" value={story.attorneyImage} onChange={(url) => set({ attorneyImage: url })} folder="team" />
+        <div>
+          <Label>Attorney Image Alt</Label>
+          <Input value={story.attorneyImageAlt} onChange={(e) => set({ attorneyImageAlt: e.target.value })} />
+        </div>
+
+        <h4 className="font-medium mt-2">Features</h4>
         <ArrayEditor
-          items={story.paragraphs.map((text, i) => ({ id: String(i), text }))}
-          onChange={(items) => set({ paragraphs: items.map((it) => it.text) })}
-          itemLabel="Paragraph"
-          newItem={() => ({ id: String(Date.now()), text: "" })}
+          items={story.features}
+          onChange={(items) => set({ features: items })}
+          itemLabel="Feature"
+          newItem={() => ({ number: String(story.features.length + 1), title: "", description: "" })}
           renderItem={(item, _, upd) => (
-            <RichTextField label="" value={item.text} onChange={(v) => upd({ ...item, text: v })} />
+            <div className="grid gap-3">
+              <div className="grid grid-cols-4 gap-3">
+                <div>
+                  <Label>Number</Label>
+                  <Input value={item.number} onChange={(e) => upd({ ...item, number: e.target.value })} />
+                </div>
+                <div className="col-span-3">
+                  <Label>Title</Label>
+                  <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
+                </div>
+              </div>
+              <RichTextField label="Description" value={item.description} onChange={(v) => upd({ ...item, description: v })} />
+            </div>
+          )}
+        />
+
+        <h4 className="font-medium mt-2">Stats</h4>
+        <ArrayEditor
+          items={story.stats}
+          onChange={(items) => set({ stats: items })}
+          itemLabel="Stat"
+          newItem={() => ({ value: "", label: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Value</Label>
+                <Input value={item.value} onChange={(e) => upd({ ...item, value: e.target.value })} />
+              </div>
+              <div>
+                <Label>Label</Label>
+                <Input value={item.label} onChange={(e) => upd({ ...item, label: e.target.value })} />
+              </div>
+            </div>
           )}
         />
       </div>
@@ -227,32 +271,6 @@ function ValuesSection({ content, update }: SectionProps) {
           )}
         />
       </div>
-    </Section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-function StatsSection({ content, update }: SectionProps) {
-  return (
-    <Section title="Stats" defaultOpen={false}>
-      <ArrayEditor
-        items={content.stats.stats}
-        onChange={(items) => update("stats", { stats: items })}
-        itemLabel="Stat"
-        newItem={() => ({ value: "", label: "" })}
-        renderItem={(item, _, upd) => (
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label>Value</Label>
-              <Input value={item.value} onChange={(e) => upd({ ...item, value: e.target.value })} />
-            </div>
-            <div>
-              <Label>Label</Label>
-              <Input value={item.label} onChange={(e) => upd({ ...item, label: e.target.value })} />
-            </div>
-          </div>
-        )}
-      />
     </Section>
   );
 }
