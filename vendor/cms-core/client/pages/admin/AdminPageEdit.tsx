@@ -12,7 +12,12 @@ import { defaultPracticeAreasContent } from "@site/lib/cms/practiceAreasPageType
 import type { PracticeAreasPageContent } from "@site/lib/cms/practiceAreasPageTypes";
 import { defaultPracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
 import type { PracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
+import { normalizePagePath, resolveStructuredPageKind, type StructuredPageKind } from "@site/lib/pageIdentity";
+import { clearAboutContentCache } from "@site/hooks/useAboutContent";
+import { clearContactContentCache } from "@site/hooks/useContactContent";
+import { clearHomeContentCache } from "@site/hooks/useHomeContent";
 import { clearPracticeAreaPageCache } from "@site/hooks/usePracticeAreaPageContent";
+import { clearPracticeAreasContentCache } from "@site/hooks/usePracticeAreasContent";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,17 +49,11 @@ import SchemaTypeSelector from "../../components/admin/SchemaTypeSelector";
 import SchemaPreview from "../../components/admin/SchemaPreview";
 import ImageUploader from "../../components/admin/ImageUploader";
 import { clearPageCache } from "../../hooks/usePageContent";
-import type { PageKey } from "../../lib/pageContentTypes";
 import RevisionPanel, { createPageRevision } from "../../components/admin/RevisionPanel";
 import URLChangeRedirectModal from "../../components/admin/URLChangeRedirectModal";
 import type { PageRevision } from "@/lib/database.types";
 import { triggerRebuild } from "../../lib/triggerRebuild";
 import { toast } from "sonner";
-
-// Strip trailing slash for path comparisons (except root "/")
-function normalizePath(p: string): string {
-  return p === "/" ? p : p.replace(/\/+$/, "");
-}
 
 // Generic deep merge utility for content normalization
 function mergeWithDefaults<T extends Record<string, any>>(
@@ -104,9 +103,9 @@ export default function AdminPageEdit() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [page, setPage] = useState<Page | null>(null);
+  const [pageKind, setPageKind] = useState<StructuredPageKind | null>(null);
   const [activeTab, setActiveTab] = useState("content");
   const [originalUrlPath, setOriginalUrlPath] = useState<string>("");
-  const [previousStatus, setPreviousStatus] = useState<string>("");
   const [previousNoindex, setPreviousNoindex] = useState<boolean>(false);
   const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
@@ -132,8 +131,8 @@ export default function AdminPageEdit() {
     }
 
     setPage(data);
+    setPageKind(resolveStructuredPageKind(data));
     setOriginalUrlPath(data.url_path);
-    setPreviousStatus(data.status);
     setPreviousNoindex(data.noindex ?? false);
     setLoading(false);
   };
@@ -191,20 +190,40 @@ export default function AdminPageEdit() {
       console.error("Error saving page:", error);
       toast.error("Failed to save page: " + error.message);
     } else {
-      // Clear the page cache so the frontend fetches fresh content
-      const savedNormPath = normalizePath(page.url_path);
-      if (savedNormPath === "/" || savedNormPath === "/about" || savedNormPath === "/contact" || savedNormPath === "/practice-areas") {
-        clearPageCache(savedNormPath as PageKey);
-      }
-      // Clear individual practice area page cache
-      if (page.url_path?.startsWith("/practice-areas/")) {
-        const slug = page.url_path.replace("/practice-areas/", "");
-        clearPracticeAreaPageCache(slug);
+      // Clear cached content so the frontend fetches fresh content after an edit.
+      clearPageCache();
+
+      const savedPath = normalizePagePath(normalizedSaveUrlPath);
+      const previousPath = normalizePagePath(originalUrlPath);
+
+      switch (pageKind) {
+        case "home":
+          clearHomeContentCache();
+          break;
+        case "about":
+          clearAboutContentCache();
+          break;
+        case "contact":
+          clearContactContentCache();
+          break;
+        case "practice-areas":
+          clearPracticeAreasContentCache();
+          break;
+        case "practice-area": {
+          const practiceAreaSlugs = [savedPath, previousPath]
+            .filter((path) => path.startsWith("/practice-areas/"))
+            .map((path) => path.replace(/^\/practice-areas\//, "").replace(/\/+$/, ""))
+            .filter(Boolean);
+
+          for (const slug of practiceAreaSlugs) {
+            clearPracticeAreaPageCache(slug);
+          }
+          break;
+        }
       }
       // Update tracking state after successful save with normalized path
       setPage(prev => prev ? { ...prev, url_path: normalizedSaveUrlPath } : prev);
       setOriginalUrlPath(normalizedSaveUrlPath);
-      setPreviousStatus(page.status);
 
       // Trigger rebuild if noindex changed on a published page
       // (draft pages are not in the SSG output, so no rebuild needed)
@@ -266,58 +285,46 @@ export default function AdminPageEdit() {
     await performSave();
   };
 
-  const normalizedUrlPath = page?.url_path ? normalizePath(page.url_path) : "";
-
-  // Check if this is a structured page (main site pages or individual practice area pages)
-  // Practice area pages are detected by page_type or URL prefix (content shape is irrelevant)
-  const isPracticeAreaPage =
-    page?.page_type === "practice" ||
-    (normalizedUrlPath.startsWith("/practice-areas/") &&
-     normalizedUrlPath !== "/practice-areas");
-
-  const isStructuredPage =
-    page?.url_path &&
-    (["/", "/about", "/contact", "/practice-areas"].includes(normalizedUrlPath) ||
-      isPracticeAreaPage);
+  const isStructuredPage = pageKind !== null;
 
   // Normalize content by merging with defaults based on page type
   const normalizedContent = useMemo(() => {
-    if (!isStructuredPage) return page?.content;
-    if (!page?.content && !isPracticeAreaPage) return page?.content;
+    if (!page || !pageKind) {
+      return page?.content;
+    }
 
-    switch (normalizedUrlPath) {
-      case '/':
+    switch (pageKind) {
+      case "home":
         return mergeWithDefaults(
           page.content as unknown as Partial<HomePageContent>,
-          defaultHomeContent
+          defaultHomeContent,
         );
-      case '/about':
+      case "about":
         return mergeWithDefaults(
           page.content as unknown as Partial<AboutPageContent>,
-          defaultAboutContent
+          defaultAboutContent,
         );
-      case '/contact':
+      case "contact":
         return mergeWithDefaults(
           page.content as unknown as Partial<ContactPageContent>,
-          defaultContactContent
+          defaultContactContent,
         );
-      case '/practice-areas':
+      case "practice-areas":
         return mergeWithDefaults(
           page.content as unknown as Partial<PracticeAreasPageContent>,
-          defaultPracticeAreasContent
+          defaultPracticeAreasContent,
         );
+      case "practice-area": {
+        const raw = page.content;
+        const obj = raw && typeof raw === "object" && !Array.isArray(raw)
+          ? (raw as Partial<PracticeAreaPageContent>)
+          : {};
+        return mergeWithDefaults(obj, defaultPracticeAreaPageContent);
+      }
       default:
-        // Individual practice area pages (detected by page_type or url_path)
-        if (isPracticeAreaPage) {
-          const raw = page.content;
-          const obj = (raw && typeof raw === 'object' && !Array.isArray(raw))
-            ? raw as Partial<PracticeAreaPageContent>
-            : {};  // treat [] or null as empty → mergeWithDefaults fills in all sections
-          return mergeWithDefaults(obj, defaultPracticeAreaPageContent);
-        }
         return page.content;
     }
-  }, [page?.content, page?.url_path, isStructuredPage]);
+  }, [page, pageKind]);
 
   // Detect FAQ items in current page content for the SEO tab notice
   const faqItems = useMemo(
@@ -413,10 +420,9 @@ export default function AdminPageEdit() {
                   </p>
                 </div>
                 <PageContentEditor
-                  pageKey={normalizedUrlPath}
+                  pageKind={pageKind!}
                   content={normalizedContent}
                   onChange={handleStructuredContentChange}
-                  pageType={page.page_type}
                 />
               </div>
             ) : (

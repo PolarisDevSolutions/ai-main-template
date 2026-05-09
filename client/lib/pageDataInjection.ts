@@ -1,5 +1,6 @@
 import type { PageMeta } from "@site/lib/cms/pageMeta";
 import type { SiteSettings } from "@site/contexts/SiteSettingsContext";
+import { getEquivalentStructuredPaths, normalizePagePath } from "@site/lib/pageIdentity";
 
 export interface InjectedPostData {
   id: string;
@@ -55,13 +56,7 @@ export function setServerPageData(data: InjectedPageData | null) {
   serverPageData = data;
 }
 
-export function normalizeUrlPath(path: string): string {
-  if (!path || path === "/") {
-    return "/";
-  }
-
-  return `/${path.replace(/^\/+|\/+$/g, "")}/`;
-}
+export const normalizeUrlPath = normalizePagePath;
 
 function getBrowserPageData(): InjectedPageData | null {
   if (typeof window === "undefined") {
@@ -78,7 +73,10 @@ export function getInjectedPageData(urlPath: string): InjectedPageData | null {
     return null;
   }
 
-  return normalizeUrlPath(data.urlPath) === normalizeUrlPath(urlPath) ? data : null;
+  const requestedPaths = getEquivalentStructuredPaths(urlPath);
+  const actualPath = normalizeUrlPath(data.urlPath);
+
+  return requestedPaths.includes(actualPath) ? data : null;
 }
 
 export function consumePageData(urlPath: string): InjectedPageData | null {

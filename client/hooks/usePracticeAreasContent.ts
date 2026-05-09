@@ -5,6 +5,11 @@ import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
 import { consumePageData } from '../lib/pageDataInjection';
+import {
+  buildPublishedPageLookupQuery,
+  getEquivalentStructuredPaths,
+  pickPreferredPageRecord,
+} from '../lib/pageIdentity';
 import { getPublicEnv } from '../lib/runtimeEnv';
 
 // Supabase configuration - use environment variables
@@ -56,8 +61,12 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
         }
 
         // Fetch practice areas page from pages table
+        const practiceAreasPaths = getEquivalentStructuredPaths('/practice-areas/');
         const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/pages?url_path=eq./practice-areas/&status=eq.published&select=content,meta_title,meta_description,canonical_url,og_title,og_description,og_image,noindex,schema_type,schema_data`,
+          `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(
+            practiceAreasPaths,
+            'url_path,content,meta_title,meta_description,canonical_url,og_title,og_description,og_image,noindex,schema_type,schema_data',
+          )}`,
           {
             headers: {
               apikey: SUPABASE_ANON_KEY,
@@ -81,7 +90,15 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
           return;
         }
 
-        const pageData = data[0];
+        const pageData = pickPreferredPageRecord(data, practiceAreasPaths);
+
+        if (!pageData) {
+          if (isMounted) {
+            setContent(defaultPracticeAreasContent);
+            setIsLoading(false);
+          }
+          return;
+        }
         const cmsContent = pageData.content as PracticeAreasPageContent;
         let mergedContent = isStructuredContent(cmsContent)
           ? cmsContent
@@ -89,8 +106,9 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
 
         // Fetch About page for globally-shared sections (whyChooseUs, cta)
         try {
+          const aboutPaths = getEquivalentStructuredPaths('/about/');
           const aboutResp = await fetch(
-            `${SUPABASE_URL}/rest/v1/pages?url_path=eq./about/&status=eq.published&select=content`,
+            `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(aboutPaths, 'url_path,content')}`,
             {
               headers: {
                 apikey: SUPABASE_ANON_KEY,
@@ -101,7 +119,8 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
           if (aboutResp.ok) {
             const aboutData = await aboutResp.json();
             if (Array.isArray(aboutData) && aboutData.length > 0) {
-              const aboutContent = aboutData[0].content as Partial<AboutPageContent>;
+              const aboutPage = pickPreferredPageRecord(aboutData, aboutPaths);
+              const aboutContent = aboutPage?.content as Partial<AboutPageContent> | undefined;
               if (aboutContent?.whyChooseUs) {
                 mergedContent = {
                   ...mergedContent,

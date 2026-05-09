@@ -3,38 +3,35 @@ import AboutEditor from "@site/components/admin/editors/AboutEditor";
 import ContactEditor from "@site/components/admin/editors/ContactEditor";
 import PracticeAreasEditor from "@site/components/admin/editors/PracticeAreasEditor";
 import PracticeAreaPageEditor from "@site/components/admin/editors/PracticeAreaPageEditor";
+import type { StructuredPageKind } from "@site/lib/pageIdentity";
 import { Textarea } from "@/components/ui/textarea";
 
 interface PageContentEditorProps {
-  pageKey: string;
+  pageKind: StructuredPageKind;
   content: unknown;
   onChange: (content: unknown) => void;
-  pageType?: string;
 }
 
-export default function PageContentEditor({ pageKey, content, onChange, pageType }: PageContentEditorProps) {
-  // Normalize: strip trailing slash (except root "/") so "/about/" matches "/about"
-  const raw = typeof pageKey === "string" ? pageKey : "";
-  const urlPath = raw === "/" ? raw : raw.replace(/\/+$/, "");
-
-  if (urlPath === "/" || urlPath === "/home")
+export default function PageContentEditor({ pageKind, content, onChange }: PageContentEditorProps) {
+  if (pageKind === "home") {
     return <HomeEditor content={content as any} onChange={onChange as any} />;
+  }
 
-  if (urlPath === "/about")
+  if (pageKind === "about") {
     return <AboutEditor content={content as any} onChange={onChange as any} />;
+  }
 
-  if (urlPath === "/contact")
+  if (pageKind === "contact") {
     return <ContactEditor content={content as any} onChange={onChange as any} />;
+  }
 
-  if (urlPath === "/practice-areas")
+  if (pageKind === "practice-areas") {
     return <PracticeAreasEditor content={content as any} onChange={onChange as any} />;
+  }
 
-  // Individual practice area pages — detected by URL prefix OR page_type + structured content
-  if (
-    urlPath.startsWith("/practice-areas/") ||
-    (pageType === "practice" && content && !Array.isArray(content) && typeof content === "object")
-  )
+  if (pageKind === "practice-area") {
     return <PracticeAreaPageEditor content={content as any} onChange={onChange as any} />;
+  }
 
   // Fallback: raw JSON editor for unknown page types
   return (

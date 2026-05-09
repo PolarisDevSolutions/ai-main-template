@@ -4,6 +4,11 @@ import { defaultAboutContent } from "../lib/cms/aboutPageTypes";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
 import { consumePageData } from '../lib/pageDataInjection';
+import {
+  buildPublishedPageLookupQuery,
+  getEquivalentStructuredPaths,
+  pickPreferredPageRecord,
+} from '../lib/pageIdentity';
 import { getPublicEnv } from '../lib/runtimeEnv';
 
 // Supabase configuration - use environment variables
@@ -55,8 +60,12 @@ export function useAboutContent(): UseAboutContentResult {
         }
 
         // Fetch about page from pages table
+        const aboutPaths = getEquivalentStructuredPaths('/about/');
         const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/pages?url_path=eq./about/&status=eq.published&select=content,meta_title,meta_description,canonical_url,og_title,og_description,og_image,noindex,schema_type,schema_data`,
+          `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(
+            aboutPaths,
+            'url_path,content,meta_title,meta_description,canonical_url,og_title,og_description,og_image,noindex,schema_type,schema_data',
+          )}`,
           {
             headers: {
               apikey: SUPABASE_ANON_KEY,
@@ -80,7 +89,15 @@ export function useAboutContent(): UseAboutContentResult {
           return;
         }
 
-        const pageData = data[0];
+        const pageData = pickPreferredPageRecord(data, aboutPaths);
+
+        if (!pageData) {
+          if (isMounted) {
+            setContent(defaultAboutContent);
+            setIsLoading(false);
+          }
+          return;
+        }
         const cmsContent = pageData.content as AboutPageContent;
         const mergedContent = isStructuredContent(cmsContent)
           ? cmsContent
