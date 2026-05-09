@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Link } from "react-router-dom";
 import type { WhyNeedUsContent } from "@/lib/homePageTypes";
 import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
