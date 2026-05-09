@@ -9,7 +9,7 @@ const heroContactFormSchema = z.object({
   firstName: z.string().min(1, "Ime je obavezno"),
   lastName: z.string().min(1, "Prezime je obavezno"),
   email: z.string().email("Unesite validnu email adresu"),
-  phone: z.string().optional(),
+  phone: z.string().min(1, "Broj telefona je obavezan"),
   honeypot: z.string().max(0),
 });
 
@@ -82,6 +82,7 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
               name="firstName"
               type="text"
               placeholder="Ime *"
+              required
               className={inputClass}
               aria-invalid={errors.firstName ? "true" : "false"}
             />
@@ -95,6 +96,7 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
               name="lastName"
               type="text"
               placeholder="Prezime *"
+              required
               className={inputClass}
               aria-invalid={errors.lastName ? "true" : "false"}
             />
@@ -110,6 +112,7 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
             name="email"
             type="email"
             placeholder="Email adresa *"
+            required
             className={inputClass}
             aria-invalid={errors.email ? "true" : "false"}
           />
@@ -123,9 +126,14 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
             {...register("phone")}
             name="phone"
             type="tel"
-            placeholder="Broj telefona"
+            placeholder="Broj telefona *"
+            required
             className={inputClass}
+            aria-invalid={errors.phone ? "true" : "false"}
           />
+          {errors.phone && (
+            <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>
+          )}
         </div>
 
         <div className="absolute invisible" aria-hidden="true">

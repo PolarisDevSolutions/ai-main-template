@@ -101,7 +101,8 @@ export default function ContactSectionBlock({ block }: ContactSectionBlockProps)
                 <Input
                   type="tel"
                   name="phone"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number *"
+                  required
                   className="w-full h-[50px] bg-[#f7f7f7] border-[0.8px] border-[#c4c4c4] text-[#6b6b6b] text-[16px] px-[12px] py-[12px] rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>

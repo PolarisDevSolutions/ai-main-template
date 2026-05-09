@@ -10,7 +10,7 @@ const contactFormSchema = z.object({
   firstName: z.string().min(1, "Ime je obavezno"),
   lastName: z.string().min(1, "Prezime je obavezno"),
   email: z.string().email("Unesite validnu email adresu"),
-  phone: z.string().optional(),
+  phone: z.string().min(1, "Broj telefona je obavezan"),
   message: z.string().min(1, "Poruka je obavezna"),
   honeypot: z.string().max(0),
 });
@@ -74,6 +74,7 @@ export default function ContactForm() {
             name="firstName"
             type="text"
             placeholder="Ime *"
+            required
             className={inputClass}
             aria-invalid={errors.firstName ? "true" : "false"}
           />
@@ -87,6 +88,7 @@ export default function ContactForm() {
             name="lastName"
             type="text"
             placeholder="Prezime *"
+            required
             className={inputClass}
             aria-invalid={errors.lastName ? "true" : "false"}
           />
@@ -102,6 +104,7 @@ export default function ContactForm() {
           name="email"
           type="email"
           placeholder="Email adresa *"
+          required
           className={inputClass}
           aria-invalid={errors.email ? "true" : "false"}
         />
@@ -115,9 +118,14 @@ export default function ContactForm() {
           {...register("phone")}
           name="phone"
           type="tel"
-          placeholder="Broj telefona"
+          placeholder="Broj telefona *"
+          required
           className={inputClass}
+          aria-invalid={errors.phone ? "true" : "false"}
         />
+        {errors.phone && (
+          <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>
+        )}
       </div>
 
       <div>
@@ -125,6 +133,7 @@ export default function ContactForm() {
           {...register("message")}
           name="message"
           placeholder="Poruka *"
+          required
           className={`${inputClass} h-auto min-h-[120px] resize-y`}
           aria-invalid={errors.message ? "true" : "false"}
         />

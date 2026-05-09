@@ -88,7 +88,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
                   <Input
                     type="text"
                     name="firstName"
-                    placeholder="Vaše ime"
+                    placeholder="Vaše ime *"
                     required
                     className={inputClass}
                   />
@@ -100,7 +100,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
                   <Input
                     type="text"
                     name="lastName"
-                    placeholder="Vaše prezime"
+                    placeholder="Vaše prezime *"
                     required
                     className={inputClass}
                   />
@@ -114,7 +114,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
                 <Input
                   type="email"
                   name="email"
-                  placeholder="vas@email.com"
+                  placeholder="vas@email.com *"
                   required
                   className={inputClass}
                 />
@@ -122,12 +122,13 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
 
               <div>
                 <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                  Telefon
+                  Telefon *
                 </label>
                 <Input
                   type="tel"
                   name="phone"
-                  placeholder="+381 ..."
+                  placeholder="+381 ... *"
+                  required
                   className={inputClass}
                 />
               </div>
@@ -138,7 +139,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
                 </label>
                 <Textarea
                   name="message"
-                  placeholder="Kako vam možemo pomoći?"
+                  placeholder="Kako vam možemo pomoći? *"
                   required
                   className={`${inputClass} h-auto min-h-[120px] resize-none`}
                 />
