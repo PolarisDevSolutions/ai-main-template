@@ -109,7 +109,7 @@ export default function Index() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, delay: 0.25 }}
-                  className="max-w-[640px] font-manrope text-[16px] md:text-[18px] leading-7 text-white/72 mb-8"
+                  className="max-w-[640px] font-manrope text-[16px] md:text-[18px] leading-7 text-white mb-8"
                 >
                   {heroContent.description}
                 </motion.p>
@@ -148,25 +148,6 @@ export default function Index() {
                 </motion.div>
               )}
 
-              {trustTexts.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.65 }}
-                  className="mt-6 max-w-[520px]"
-                >
-                  <div className="flex flex-wrap items-start justify-center gap-x-6 gap-y-4">
-                    {trustTexts.map((text, index) => (
-                      <div key={`${text}-${index}`} className="min-w-[110px] text-center">
-                        <div className="w-6 h-[2px] bg-brand-accent/80 mx-auto mb-2" />
-                        <p className="font-manrope text-[11px] uppercase tracking-[0.18em] text-white/68">
-                          {text}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
             </div>
 
             {/* Right: Contact Form */}
@@ -179,6 +160,26 @@ export default function Index() {
               <div className="bg-brand-card/80 backdrop-blur-sm border border-brand-border/40 p-6 lg:p-8">
                 <HeroContactForm title={heroContent.formTitle} />
               </div>
+
+              {trustTexts.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.65 }}
+                  className="mt-6"
+                >
+                  <div className="flex flex-wrap items-start justify-center gap-x-6 gap-y-4">
+                    {trustTexts.map((text, index) => (
+                      <div key={`${text}-${index}`} className="min-w-[110px] text-center">
+                        <div className="w-6 h-[2px] bg-brand-accent/80 mx-auto mb-2" />
+                        <p className="font-manrope text-[11px] uppercase tracking-[0.18em] text-white">
+                          {text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           </div>
         </div>
