@@ -212,13 +212,13 @@ export default function Index() {
           )}
           <div className="flex animate-marquee whitespace-nowrap" style={{ width: "max-content" }}>
             {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-              <div key={index} className="inline-flex h-[88px] w-[190px] items-center justify-center px-8 shrink-0">
+              <div key={index} className="inline-flex h-[96px] w-[220px] items-center justify-center px-6 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  width={150}
-                  height={48}
-                  className="h-[48px] w-[150px] object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
+                  width={200}
+                  height={72}
+                  className="max-h-[72px] max-w-[200px] h-auto w-auto object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
                   loading="lazy"
                 />
               </div>
