@@ -141,6 +141,7 @@ function mergeWithDefaults(
 
   return {
     hero: { ...defaults.hero, ...cmsContent.hero },
+    partnerLogosTitle: cmsContent.partnerLogosTitle ?? defaults.partnerLogosTitle,
     partnerLogos: cmsContent.partnerLogos?.length
       ? cmsContent.partnerLogos
       : defaults.partnerLogos,

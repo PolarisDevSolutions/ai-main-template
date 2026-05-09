@@ -135,6 +135,7 @@ export interface ContactContent {
 // Complete homepage content structure
 export interface HomePageContent {
   hero: HeroContent;
+  partnerLogosTitle: string;
   partnerLogos: PartnerLogo[];
   about: AboutContent;
   practiceAreasIntro: PracticeAreasIntroContent;
@@ -164,6 +165,7 @@ export const defaultHomeContent: HomePageContent = {
     phone: "",
     phoneLabel: "Call Us 24/7",
   },
+  partnerLogosTitle: "",
   partnerLogos: [
     { src: "/images/logos/partner-1.png", alt: "Partner Logo" },
     { src: "/images/logos/partner-2.png", alt: "Partner Logo" },

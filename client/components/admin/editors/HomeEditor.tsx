@@ -98,8 +98,19 @@ function HeroSection({ content, update }: SectionProps) {
 
 /* ------------------------------------------------------------------ */
 function PartnerLogosSection({ content, update }: SectionProps) {
+  const ht = useHeadingTag(content, update);
+
   return (
     <Section title="Partner Logos" defaultOpen={false}>
+      <div className="grid gap-4 mb-4">
+        <HeadingField
+          label="Section Title"
+          value={content.partnerLogosTitle}
+          onChange={(v) => update("partnerLogosTitle", v)}
+          tag={ht.get("partnerLogos.title") === "h2" ? "h3" : ht.get("partnerLogos.title")}
+          onTagChange={(t) => ht.set("partnerLogos.title", t)}
+        />
+      </div>
       <ArrayEditor
         items={content.partnerLogos}
         onChange={(items) => update("partnerLogos", items)}

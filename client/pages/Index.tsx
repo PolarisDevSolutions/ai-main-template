@@ -11,6 +11,7 @@ import ProcessSection from "@site/components/home/ProcessSection";
 import GoogleReviewsSection from "@site/components/home/GoogleReviewsSection";
 import FaqSection from "@site/components/home/FaqSection";
 import ContactUsSection from "@site/components/home/ContactUsSection";
+import DynamicHeading from "@site/components/shared/DynamicHeading";
 import { useHomeContent } from "@site/hooks/useHomeContent";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import { Phone } from "lucide-react";
@@ -198,15 +199,26 @@ export default function Index() {
       {/* ── Partner Logos Marquee ── */}
       {partnerLogos && partnerLogos.length > 0 && (
         <div className="w-full overflow-hidden border-y border-brand-dark/8 py-8 bg-white">
+          {content.partnerLogosTitle && (
+            <div className="px-6 lg:px-10 pb-6">
+              <DynamicHeading
+                tag={content.headingTags?.["partnerLogos.title"]}
+                defaultTag="h3"
+                className="text-center font-grotesk text-[clamp(1.5rem,2.8vw,32px)] font-medium leading-tight text-brand-dark"
+              >
+                {content.partnerLogosTitle}
+              </DynamicHeading>
+            </div>
+          )}
           <div className="flex animate-marquee whitespace-nowrap" style={{ width: "max-content" }}>
             {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-              <div key={index} className="inline-flex items-center justify-center px-10 shrink-0">
+              <div key={index} className="inline-flex h-[88px] w-[190px] items-center justify-center px-8 shrink-0">
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  width={160}
-                  height={80}
-                  className="h-[64px] w-auto object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
+                  width={150}
+                  height={48}
+                  className="h-[48px] w-[150px] object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
                   loading="lazy"
                 />
               </div>
