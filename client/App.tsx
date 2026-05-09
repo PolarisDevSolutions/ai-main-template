@@ -1,3 +1,4 @@
+import "@site/global.css";
 import { BrowserRouter } from "react-router-dom";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { QueryClient } from "@tanstack/react-query";
