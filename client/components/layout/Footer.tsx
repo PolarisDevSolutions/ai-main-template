@@ -1,6 +1,7 @@
 import React from "react";
 import { Facebook, Instagram, Youtube, Linkedin, Twitter, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import RichText from "@site/components/shared/RichText";
 import { useSiteSettings } from "@site/contexts/SiteSettingsContext";
 
 const SOCIAL_ICON_MAP: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
@@ -186,9 +187,10 @@ export default function Footer() {
                 </h4>
               )}
               {footerColumn4Content && (
-                <div className="whitespace-pre-line font-manrope text-[15px] text-white/60 leading-relaxed">
-                  {footerColumn4Content}
-                </div>
+                <RichText
+                  html={footerColumn4Content}
+                  className="font-manrope text-[15px] leading-relaxed text-white/60 [&_a]:text-white [&_a]:underline-offset-4 hover:[&_a]:text-brand-accent [&_a]:underline [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:text-white [&_ul]:space-y-2 [&_ol]:space-y-2 [&_li]:ml-4"
+                />
               )}
             </div>
           )}

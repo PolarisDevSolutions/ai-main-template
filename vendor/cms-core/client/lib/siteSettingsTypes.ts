@@ -53,7 +53,7 @@ export interface SiteSettings {
   footerColumn2Label: string;
   footerColumn4Label: string;
   footerLogoText: string;
-  footerColumn4Content: string;
+  footerColumn4Content: string; // Rich text HTML
 
   // Address
   addressLine1: string;

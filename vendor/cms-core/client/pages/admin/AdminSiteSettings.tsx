@@ -711,20 +711,18 @@ export default function AdminSiteSettings() {
             <CardHeader>
               <CardTitle>Footer Column 4 Content</CardTitle>
               <CardDescription>
-                Text content displayed under the fourth footer column heading
+                Rich text content displayed under the fourth footer column heading
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Label htmlFor="footerColumn4Content">Column 4 Content</Label>
-                <Textarea
-                  id="footerColumn4Content"
+                <Label>Column 4 Content (HTML)</Label>
+                <RichTextEditor
                   value={settings.footerColumn4Content || ""}
-                  onChange={(e) =>
-                    updateSettings({ footerColumn4Content: e.target.value })
+                  onChange={(value) =>
+                    updateSettings({ footerColumn4Content: value })
                   }
                   placeholder="Add contact info or other footer content"
-                  rows={6}
                 />
               </div>
             </CardContent>
