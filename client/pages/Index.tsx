@@ -30,6 +30,16 @@ const wordVariant = {
   },
 };
 
+function SectionDivider({ backgroundClass = "bg-white" }: { backgroundClass?: string }) {
+  return (
+    <div className={backgroundClass} aria-hidden="true">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-center px-6 py-4 lg:px-10 md:py-6">
+        <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+      </div>
+    </div>
+  );
+}
+
 export default function Index() {
   const { content, meta } = useHomeContent();
   const { phoneNumber, phoneDisplay, phoneLabel: globalPhoneLabel } = useGlobalPhone();
@@ -229,12 +239,19 @@ export default function Index() {
 
       {/* ── Home Sections ── */}
       <AboutSection content={content.about} />
+      <SectionDivider />
       <PracticeAreasSection content={content.practiceAreasIntro} />
+      <SectionDivider backgroundClass="bg-brand-dark" />
       <PracticeAreasGrid areas={content.practiceAreas} />
+      <SectionDivider />
       <WhyNeedUsSection content={content.whyNeedUs} headingTag={content.headingTags?.["whyNeedUs.heading"]} />
+      <SectionDivider />
       <ProcessSection content={content.process} />
+      <SectionDivider />
       <GoogleReviewsSection content={content.googleReviews} />
+      <SectionDivider backgroundClass="bg-brand-dark" />
       <FaqSection content={content.faq} />
+      <SectionDivider />
       <ContactUsSection content={content.contact} />
     </Layout>
   );
