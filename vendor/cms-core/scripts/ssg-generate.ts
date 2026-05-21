@@ -301,10 +301,38 @@ function getHelmetHead(helmet: any) {
 }
 
 function injectRenderedHtml(template: string, renderedHtml: string) {
-  return template.replace(
-    /<div id="root">[\s\S]*?<\/div>/,
-    `<div id="root">${renderedHtml}</div>`,
-  );
+  const rootOpenTag = '<div id="root">';
+  const rootStart = template.indexOf(rootOpenTag);
+
+  if (rootStart === -1) {
+    throw new Error('Root container not found in HTML template.');
+  }
+
+  const divTagPattern = /<\/?div\b[^>]*>/gi;
+  divTagPattern.lastIndex = rootStart + rootOpenTag.length;
+
+  let depth = 1;
+  let rootEnd = -1;
+  let match: RegExpExecArray | null;
+
+  while ((match = divTagPattern.exec(template))) {
+    if (match[0].startsWith('</')) {
+      depth -= 1;
+    } else {
+      depth += 1;
+    }
+
+    if (depth === 0) {
+      rootEnd = divTagPattern.lastIndex;
+      break;
+    }
+  }
+
+  if (rootEnd === -1) {
+    throw new Error('Root container closing tag not found in HTML template.');
+  }
+
+  return `${template.slice(0, rootStart)}${rootOpenTag}${renderedHtml}</div>${template.slice(rootEnd)}`;
 }
 
 function generatePageHtml({
