@@ -32,13 +32,10 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/practice-areas/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? {
-        ...(injected.content as PracticeAreasPageContent),
-        hero: normalizeSharedHeroContent(
-          (injected.content as PracticeAreasPageContent).hero,
-          defaultPracticeAreasContent.hero,
-        ),
-      }
+    ? mergeWithDefaults(
+        injected.content as Partial<PracticeAreasPageContent>,
+        defaultPracticeAreasContent,
+      )
     : (cachedContent ?? defaultPracticeAreasContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -106,12 +103,9 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
           }
           return;
         }
-        const cmsContent = pageData.content as PracticeAreasPageContent;
+        const cmsContent = pageData.content as Partial<PracticeAreasPageContent>;
         let mergedContent = isStructuredContent(cmsContent)
-          ? {
-              ...cmsContent,
-              hero: normalizeSharedHeroContent(cmsContent.hero, defaultPracticeAreasContent.hero),
-            }
+          ? mergeWithDefaults(cmsContent, defaultPracticeAreasContent)
           : defaultPracticeAreasContent;
 
         // Fetch About page for globally-shared sections (whyChooseUs, cta)
@@ -222,7 +216,11 @@ function mergeWithDefaults(
   if (!cmsContent) return defaults;
 
   return {
-    hero: { ...defaults.hero, ...cmsContent.hero },
+    hero: normalizeSharedHeroContent(cmsContent.hero, defaults.hero),
+    intro: {
+      ...defaults.intro,
+      ...cmsContent.intro,
+    },
     grid: {
       ...defaults.grid,
       ...cmsContent.grid,
@@ -248,6 +246,10 @@ function mergeWithDefaults(
         ...defaults.cta.secondaryButton,
         ...cmsContent.cta?.secondaryButton,
       },
+    },
+    headingTags: {
+      ...defaults.headingTags,
+      ...cmsContent.headingTags,
     },
   };
 }

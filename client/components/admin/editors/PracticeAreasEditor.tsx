@@ -15,6 +15,7 @@ export default function PracticeAreasEditor({ content, onChange }: PracticeAreas
   return (
     <div className="space-y-6">
       <HeroSection content={content} update={update} />
+      <IntroSection content={content} update={update} />
       <GridSection content={content} update={update} />
       <GlobalSectionInfo sectionTitle="Why Choose Us" managedIn="About Us" />
       <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
@@ -42,6 +43,24 @@ function HeroSection({ content, update }: SectionProps) {
         hero={content.hero}
         onChange={(hero) => update("hero", hero)}
       />
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function IntroSection({ content, update }: SectionProps) {
+  const intro = content.intro;
+  const set = (patch: Partial<typeof intro>) => update("intro", { ...intro, ...patch });
+
+  return (
+    <Section title="Usluge - Intro" defaultOpen={false}>
+      <div className="grid gap-4">
+        <div>
+          <Label>Title</Label>
+          <Input value={intro.title} onChange={(e) => set({ title: e.target.value })} />
+        </div>
+        <RichTextField label="Content" value={intro.content} onChange={(v) => set({ content: v })} />
+      </div>
     </Section>
   );
 }

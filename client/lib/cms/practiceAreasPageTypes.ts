@@ -8,6 +8,11 @@ import {
 
 export type PracticeAreasHeroContent = SharedHeroContent;
 
+export interface PracticeAreasIntroContent {
+  title: string;
+  content: string;
+}
+
 export interface PracticeAreaGridItem {
   icon: string; // Lucide icon name
   title: string; // "Personal Injury"
@@ -56,6 +61,7 @@ export interface CTAContent {
 // Complete Practice Areas page content structure
 export interface PracticeAreasPageContent {
   hero: PracticeAreasHeroContent;
+  intro: PracticeAreasIntroContent;
   grid: PracticeAreasGridContent;
   whyChoose: WhyChooseContent;
   cta: CTAContent;
@@ -77,6 +83,11 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
     formTitle: "Zatražite ponudu",
     phoneLabel: "Pozovite nas",
   }),
+  intro: {
+    title: "Rešenja prilagođena vašem rastu",
+    content:
+      "<p>Bez obzira da li vam je potreban novi sajt, bolja vidljivost na Google-u ili održavanje postojećeg digitalnog prisustva, naše usluge su osmišljene tako da podrže stvarne poslovne ciljeve.</p>",
+  },
   grid: {
     heading: "Our Areas of Practice",
     description:
