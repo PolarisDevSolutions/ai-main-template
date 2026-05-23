@@ -41,20 +41,6 @@ export interface OfficeHoursContent {
   note: string; // Additional note
 }
 
-export interface CTAContent {
-  heading: string; // "Ready to Discuss Your Case?"
-  description: string; // Subtitle text
-  primaryButton: {
-    label: string; // "Call Us Now"
-    phone: string; // Phone number
-  };
-  secondaryButton: {
-    label: string; // "Schedule Consultation"
-    sublabel: string; // "Free Case Review"
-    link: string; // Link URL
-  };
-}
-
 // Complete Contact page content structure
 export interface ContactPageContent {
   hero: ContactHeroContent;
@@ -62,7 +48,6 @@ export interface ContactPageContent {
   contactMethods: ContactMethodsContent;
   form: ContactFormContent;
   officeHours: OfficeHoursContent;
-  cta: CTAContent;
   /** Maps heading keys (e.g. "form.heading") to HTML tag names (e.g. "h2") */
   headingTags?: Record<string, string>;
 }
@@ -122,18 +107,5 @@ export const defaultContactContent: ContactPageContent = {
       { day: "Holidays", hours: "24/7 Available" },
     ],
     note: "Our intake team is available 24 hours a day, seven days a week. We understand that legal emergencies don't follow a schedule.",
-  },
-  cta: {
-    heading: "Ready to Discuss Your Case?",
-    description: "Our experienced legal team is standing by to help you.",
-    primaryButton: {
-      label: "Call Us Now",
-      phone: "",
-    },
-    secondaryButton: {
-      label: "Schedule Consultation",
-      sublabel: "Free Case Review",
-      link: "/kontakt/",
-    },
   },
 };

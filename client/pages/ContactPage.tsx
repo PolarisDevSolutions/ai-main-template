@@ -1,7 +1,6 @@
 import Seo from "@site/components/Seo";
 import Layout from "@site/components/layout/Layout";
 import ContactForm from "@site/components/home/ContactForm";
-import CallBox from "@site/components/shared/CallBox";
 import {
   Phone,
   Mail,
@@ -33,7 +32,7 @@ function formatTelHref(value: string) {
 
 export default function ContactPage() {
   const { content, meta } = useContactContent();
-  const { phoneNumber, phoneDisplay, phoneLabel } = useGlobalPhone();
+  const { phoneNumber, phoneDisplay } = useGlobalPhone();
   const { settings } = useSiteSettings();
 
   // Map contact methods from CMS content with icon components
@@ -160,9 +159,7 @@ export default function ContactPage() {
               <ContactForm />
             </div>
 
-            {/* Right Side - Office Hours & Additional Info */}
-            <div className="space-y-[30px] md:space-y-[40px]">
-              {/* Office Hours */}
+            <div>
               <div className="bg-brand-card border border-brand-border p-[30px] md:p-[40px]">
                 <div className="flex items-center gap-3 mb-[20px]">
                   <div className="bg-brand-accent p-[15px]">
@@ -198,17 +195,6 @@ export default function ContactPage() {
                     />
                   </div>
                 )}
-              </div>
-
-              {/* Call to Action Boxes */}
-              <div className="space-y-[20px]">
-                <CallBox
-                  icon={Phone}
-                  title={phoneLabel}
-                  subtitle={phoneDisplay}
-                  phone={phoneNumber}
-                  className="w-full max-w-none"
-                />
               </div>
             </div>
           </div>

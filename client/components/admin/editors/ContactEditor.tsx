@@ -1,6 +1,6 @@
 import type { ContactPageContent } from "@/lib/cms/contactPageTypes";
 import SharedHeroEditor from "./SharedHeroEditor";
-import { Section, ArrayEditor, GlobalSectionInfo, RichTextField, HeadingField, Input, Label, Textarea } from "./EditorShared";
+import { Section, ArrayEditor, RichTextField, HeadingField, Input, Label, Textarea } from "./EditorShared";
 
 interface ContactEditorProps {
   content: ContactPageContent;
@@ -19,7 +19,6 @@ export default function ContactEditor({ content, onChange }: ContactEditorProps)
       <ContactMethodsSection content={content} update={update} />
       <FormSection content={content} update={update} />
       <OfficeHoursSection content={content} update={update} />
-      <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
     </div>
   );
 }

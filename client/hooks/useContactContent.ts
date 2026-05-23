@@ -4,7 +4,6 @@ import { defaultContactContent } from "../lib/cms/contactPageTypes";
 import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
-import type { AboutPageContent } from "../lib/cms/aboutPageTypes";
 import { consumePageData } from '../lib/pageDataInjection';
 import {
   buildPublishedPageLookupQuery,
@@ -105,44 +104,9 @@ export function useContactContent(): UseContactContentResult {
           return;
         }
         const cmsContent = pageData.content as Partial<ContactPageContent>;
-        let mergedContent = isStructuredContent(cmsContent)
+        const mergedContent = isStructuredContent(cmsContent)
           ? mergeWithDefaults(cmsContent, defaultContactContent)
           : defaultContactContent;
-
-        // Fetch About page for globally-shared CTA section
-        try {
-          const aboutPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS.about);
-          const aboutResp = await fetch(
-            `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(aboutPaths, 'url_path,content')}`,
-            {
-              headers: {
-                apikey: SUPABASE_ANON_KEY,
-                Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-              },
-            },
-          );
-          if (aboutResp.ok) {
-            const aboutData = await aboutResp.json();
-            if (Array.isArray(aboutData) && aboutData.length > 0) {
-              const aboutPage = pickPreferredPageRecord(aboutData, aboutPaths);
-              const aboutContent = aboutPage?.content as Partial<AboutPageContent> | undefined;
-              if (aboutContent?.cta) {
-                mergedContent = {
-                  ...mergedContent,
-                  cta: {
-                    ...mergedContent.cta,
-                    heading: aboutContent.cta.heading || mergedContent.cta.heading,
-                    description: aboutContent.cta.description || mergedContent.cta.description,
-                    primaryButton: { ...mergedContent.cta.primaryButton, ...aboutContent.cta.primaryButton },
-                    secondaryButton: { ...mergedContent.cta.secondaryButton, ...aboutContent.cta.secondaryButton },
-                  },
-                };
-              }
-            }
-          }
-        } catch (aboutErr) {
-          console.warn("[useContactContent] Failed to fetch About page for global CTA:", aboutErr);
-        }
 
         const pageMeta: PageMeta = {
           meta_title: pageData.meta_title,
@@ -217,18 +181,6 @@ function mergeWithDefaults(
       items: cmsContent.officeHours?.items?.length
         ? cmsContent.officeHours.items
         : defaults.officeHours.items,
-    },
-    cta: {
-      ...defaults.cta,
-      ...cmsContent.cta,
-      primaryButton: {
-        ...defaults.cta.primaryButton,
-        ...cmsContent.cta?.primaryButton,
-      },
-      secondaryButton: {
-        ...defaults.cta.secondaryButton,
-        ...cmsContent.cta?.secondaryButton,
-      },
     },
   };
 }
