@@ -129,7 +129,7 @@ export default function AboutUs() {
       </div>
 
       {/* Our Approach Section */}
-      <div className="bg-brand-accent-dark py-[40px] md:py-[60px]">
+      <div className="bg-brand-dark py-[40px] md:py-[60px]">
         <div className="mx-auto flex w-[95%] max-w-[900px] flex-col items-center text-center md:w-[90%]">
           <h2 className="pb-[15px] font-grotesk text-[32px] leading-tight text-brand-accent md:pb-[20px] md:text-[40px]">
             {content.missionVision.heading}
@@ -138,6 +138,9 @@ export default function AboutUs() {
             html={content.missionVision.text}
             className="font-manrope text-[16px] leading-[26px] text-white md:text-[18px] md:leading-[30px] [&_p]:mb-4 [&_p:last-child]:mb-0"
           />
+          <div className="mt-10 flex justify-center md:mt-12" aria-hidden="true">
+            <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+          </div>
         </div>
       </div>
 
