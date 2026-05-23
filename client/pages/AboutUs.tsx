@@ -64,6 +64,7 @@ export default function AboutUs() {
         content={content.story}
         statsLayout="split-third"
         showBottomDivider
+        compactBottomPadding
       />
 
       {/* Mission & Vision Section */}

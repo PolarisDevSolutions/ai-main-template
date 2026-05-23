@@ -9,6 +9,7 @@ interface AboutSectionProps {
   content?: AboutContent;
   statsLayout?: "default" | "split-third";
   showBottomDivider?: boolean;
+  compactBottomPadding?: boolean;
 }
 
 const defaultContent: AboutContent = {
@@ -54,6 +55,7 @@ export default function AboutSection({
   content,
   statsLayout = "default",
   showBottomDivider = false,
+  compactBottomPadding = false,
 }: AboutSectionProps) {
   const data = content || defaultContent;
   const features = data.features || defaultContent.features;
@@ -87,7 +89,11 @@ export default function AboutSection({
   );
 
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section
+      className={compactBottomPadding
+        ? "bg-white pt-20 pb-10 md:pt-28 md:pb-14"
+        : "bg-white py-20 md:py-28"}
+    >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <AnimatedSection className="lg:w-full" direction="left">
@@ -191,12 +197,12 @@ export default function AboutSection({
                   renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
                 )}
               </div>
-              <div className="w-full max-w-[260px]">
+              <div className="w-full max-w-[360px]">
                 {renderStat(
                   stats[2],
                   2,
                   "mx-auto min-h-[128px]",
-                  "max-w-none whitespace-nowrap",
+                  "max-w-none whitespace-nowrap text-[11px] md:text-[12px]",
                 )}
               </div>
             </div>
@@ -209,7 +215,7 @@ export default function AboutSection({
           )}
 
           {showBottomDivider && (
-            <div className="flex justify-center pt-4 md:pt-6" aria-hidden="true">
+            <div className="flex justify-center pt-2 md:pt-3" aria-hidden="true">
               <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
             </div>
           )}
