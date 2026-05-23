@@ -8,6 +8,11 @@ import {
 
 export type ContactHeroContent = SharedHeroContent;
 
+export interface ContactIntroContent {
+  title: string;
+  content: string;
+}
+
 export interface ContactMethodItem {
   icon: string; // Lucide icon name
   title: string; // "Phone", "Email", "Office"
@@ -71,6 +76,7 @@ export interface CTAContent {
 // Complete Contact page content structure
 export interface ContactPageContent {
   hero: ContactHeroContent;
+  intro: ContactIntroContent;
   contactMethods: ContactMethodsContent;
   form: ContactFormContent;
   officeHours: OfficeHoursContent;
@@ -95,6 +101,11 @@ export const defaultContactContent: ContactPageContent = {
     formTitle: "Pošaljite detalje projekta",
     phoneLabel: "Pozovite nas",
   }),
+  intro: {
+    title: "Recite nam više o projektu",
+    content:
+      "<p>Podelite sa nama šta želite da izgradite, unapredite ili pokrenete i dobićete jasan predlog sledećih koraka, preporuku usluga i okvir saradnje.</p>",
+  },
   contactMethods: {
     methods: [
       {

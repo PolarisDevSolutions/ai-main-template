@@ -73,6 +73,23 @@ export default function ContactPage() {
 
       <MarketingHeroSection content={content.hero} />
 
+      <div className="bg-white pt-[40px] md:pt-[60px]">
+        <div className="mx-auto w-[95%] max-w-[900px] md:w-[90%]">
+          <div className="grid grid-cols-1 gap-5 text-center">
+            <h2 className="font-grotesk text-[32px] leading-tight text-black md:text-[40px] lg:text-[48px]">
+              {content.intro.title}
+            </h2>
+            <RichText
+              html={content.intro.content}
+              className="font-manrope text-[16px] leading-[26px] text-black/80 md:text-[18px] md:leading-[30px] [&_p]:mb-4 [&_p:last-child]:mb-0"
+            />
+          </div>
+          <div className="mt-10 flex justify-center pb-[40px] md:mt-12 md:pb-[60px]" aria-hidden="true">
+            <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+          </div>
+        </div>
+      </div>
+
       {/* Contact Methods Section */}
       <div className="bg-white py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">

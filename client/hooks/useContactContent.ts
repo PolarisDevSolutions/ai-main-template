@@ -33,13 +33,10 @@ export function useContactContent(): UseContactContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData(STRUCTURED_PAGE_PATHS.contact);
   const initialContent = injected && isStructuredContent(injected.content)
-    ? {
-        ...(injected.content as ContactPageContent),
-        hero: normalizeSharedHeroContent(
-          (injected.content as ContactPageContent).hero,
-          defaultContactContent.hero,
-        ),
-      }
+    ? mergeWithDefaults(
+        injected.content as Partial<ContactPageContent>,
+        defaultContactContent,
+      )
     : (cachedContent ?? defaultContactContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -107,12 +104,9 @@ export function useContactContent(): UseContactContentResult {
           }
           return;
         }
-        const cmsContent = pageData.content as ContactPageContent;
+        const cmsContent = pageData.content as Partial<ContactPageContent>;
         let mergedContent = isStructuredContent(cmsContent)
-          ? {
-              ...cmsContent,
-              hero: normalizeSharedHeroContent(cmsContent.hero, defaultContactContent.hero),
-            }
+          ? mergeWithDefaults(cmsContent, defaultContactContent)
           : defaultContactContent;
 
         // Fetch About page for globally-shared CTA section
@@ -207,7 +201,8 @@ function mergeWithDefaults(
   if (!cmsContent) return defaults;
 
   return {
-    hero: { ...defaults.hero, ...cmsContent.hero },
+    hero: normalizeSharedHeroContent(cmsContent.hero, defaults.hero),
+    intro: { ...defaults.intro, ...cmsContent.intro },
     contactMethods: {
       ...defaults.contactMethods,
       ...cmsContent.contactMethods,
