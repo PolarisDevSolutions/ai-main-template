@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import type { PracticeAreasPageContent } from "../lib/cms/practiceAreasPageTypes";
-import { defaultPracticeAreasContent } from "../lib/cms/practiceAreasPageTypes";
+import {
+  applyAboutSharedSectionsToPracticeAreas,
+  defaultPracticeAreasContent,
+} from "../lib/cms/practiceAreasPageTypes";
 import { normalizeSharedHeroContent } from "../lib/cms/sharedHero";
 import type { PageMeta } from "../lib/cms/pageMeta";
 import { emptyPageMeta } from "../lib/cms/pageMeta";
@@ -125,34 +128,10 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
             if (Array.isArray(aboutData) && aboutData.length > 0) {
               const aboutPage = pickPreferredPageRecord(aboutData, aboutPaths);
               const aboutContent = aboutPage?.content as Partial<AboutPageContent> | undefined;
-              if (aboutContent?.whyChooseUs) {
-                mergedContent = {
-                  ...mergedContent,
-                  whyChoose: {
-                    sectionLabel: aboutContent.whyChooseUs.sectionLabel || mergedContent.whyChoose.sectionLabel,
-                    heading: aboutContent.whyChooseUs.heading || mergedContent.whyChoose.heading,
-                    subtitle: mergedContent.whyChoose.subtitle,
-                    description: aboutContent.whyChooseUs.description || mergedContent.whyChoose.description,
-                    image: aboutContent.whyChooseUs.image || mergedContent.whyChoose.image,
-                    imageAlt: aboutContent.whyChooseUs.imageAlt || mergedContent.whyChoose.imageAlt,
-                    items: aboutContent.whyChooseUs.items?.length
-                      ? aboutContent.whyChooseUs.items
-                      : mergedContent.whyChoose.items,
-                  },
-                };
-              }
-              if (aboutContent?.cta) {
-                mergedContent = {
-                  ...mergedContent,
-                  cta: {
-                    ...mergedContent.cta,
-                    heading: aboutContent.cta.heading || mergedContent.cta.heading,
-                    description: aboutContent.cta.description || mergedContent.cta.description,
-                    primaryButton: { ...mergedContent.cta.primaryButton, ...aboutContent.cta.primaryButton },
-                    secondaryButton: { ...mergedContent.cta.secondaryButton, ...aboutContent.cta.secondaryButton },
-                  },
-                };
-              }
+              mergedContent = applyAboutSharedSectionsToPracticeAreas(
+                mergedContent,
+                aboutContent,
+              );
             }
           }
         } catch (aboutErr) {

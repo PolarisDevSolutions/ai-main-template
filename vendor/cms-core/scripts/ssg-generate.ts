@@ -3,8 +3,10 @@ import fs from "fs";
 import path from "path";
 import { createClient } from "@supabase/supabase-js";
 import { defaultPracticeAreaPageContent } from "../../../client/lib/cms/practiceAreaPageTypes";
+import { applyAboutSharedSectionsToPracticeAreas } from "../../../client/lib/cms/practiceAreasPageTypes";
 import { renderPage } from "../../../client/entry-server";
 import { resolveSiteSettings } from "../../../client/contexts/SiteSettingsContext";
+import type { AboutPageContent } from "../../../client/lib/cms/aboutPageTypes";
 import type {
   InjectedBlogSidebarData,
   InjectedPageData,
@@ -192,55 +194,6 @@ function resolveBlogSidebar(row?: BlogSidebarRow | null): InjectedBlogSidebarDat
     attorneyImage: row.attorney_image || "",
     awardImages: Array.isArray(row.award_images) ? row.award_images : [],
   };
-}
-
-function mergePracticeAreasContentWithAbout(
-  pageContent: unknown,
-  aboutContent: unknown,
-) {
-  if (!pageContent || typeof pageContent !== "object") {
-    return pageContent;
-  }
-
-  if (!aboutContent || typeof aboutContent !== "object") {
-    return pageContent;
-  }
-
-  const merged = JSON.parse(JSON.stringify(pageContent));
-  const about = aboutContent as any;
-
-  if (about?.whyChooseUs) {
-    merged.whyChoose = {
-      ...merged.whyChoose,
-      sectionLabel: about.whyChooseUs.sectionLabel || merged.whyChoose?.sectionLabel,
-      heading: about.whyChooseUs.heading || merged.whyChoose?.heading,
-      subtitle: merged.whyChoose?.subtitle,
-      description: about.whyChooseUs.description || merged.whyChoose?.description,
-      image: about.whyChooseUs.image || merged.whyChoose?.image,
-      imageAlt: about.whyChooseUs.imageAlt || merged.whyChoose?.imageAlt,
-      items: about.whyChooseUs.items?.length
-        ? about.whyChooseUs.items
-        : merged.whyChoose?.items,
-    };
-  }
-
-  if (about?.cta) {
-    merged.cta = {
-      ...merged.cta,
-      heading: about.cta.heading || merged.cta?.heading,
-      description: about.cta.description || merged.cta?.description,
-      primaryButton: {
-        ...merged.cta?.primaryButton,
-        ...about.cta.primaryButton,
-      },
-      secondaryButton: {
-        ...merged.cta?.secondaryButton,
-        ...about.cta.secondaryButton,
-      },
-    };
-  }
-
-  return merged;
 }
 
 function mergeContactContentWithAbout(pageContent: unknown, aboutContent: unknown) {
@@ -472,8 +425,13 @@ async function generateSSG() {
     const normalizedUrlPath = normalizePageUrl(page.url_path);
     let pageContent = page.content;
 
-    if (normalizedUrlPath === "/practice-areas/") {
-      pageContent = mergePracticeAreasContentWithAbout(pageContent, aboutContent);
+    if (normalizedUrlPath === "/practice-areas/" && pageContent && typeof pageContent === "object") {
+      pageContent = applyAboutSharedSectionsToPracticeAreas(
+        JSON.parse(JSON.stringify(pageContent)),
+        (aboutContent && typeof aboutContent === "object"
+          ? (aboutContent as Partial<AboutPageContent>)
+          : null),
+      );
     }
 
     if (normalizedUrlPath === "/contact/") {

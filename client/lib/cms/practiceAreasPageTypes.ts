@@ -3,6 +3,7 @@ import {
   createDefaultSharedHeroContent,
   type SharedHeroContent,
 } from "./sharedHero";
+import type { AboutPageContent } from "./aboutPageTypes";
 import { defaultHomeContent, type AboutContent, type ProcessContent } from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
@@ -265,3 +266,51 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
     },
   },
 };
+
+export function applyAboutSharedSectionsToPracticeAreas(
+  content: PracticeAreasPageContent,
+  aboutContent?: Partial<AboutPageContent> | null,
+): PracticeAreasPageContent {
+  if (!aboutContent) {
+    return content;
+  }
+
+  return {
+    ...content,
+    whyChoose: aboutContent.whyChooseUs
+      ? {
+          ...content.whyChoose,
+          sectionLabel: aboutContent.whyChooseUs.sectionLabel || content.whyChoose.sectionLabel,
+          heading: aboutContent.whyChooseUs.heading || content.whyChoose.heading,
+          description: aboutContent.whyChooseUs.description || content.whyChoose.description,
+          image: aboutContent.whyChooseUs.image || content.whyChoose.image,
+          imageAlt: aboutContent.whyChooseUs.imageAlt || content.whyChoose.imageAlt,
+          items: aboutContent.whyChooseUs.items?.length
+            ? aboutContent.whyChooseUs.items
+            : content.whyChoose.items,
+        }
+      : content.whyChoose,
+    cta: aboutContent.cta
+      ? {
+          ...content.cta,
+          heading: aboutContent.cta.heading || content.cta.heading,
+          description: aboutContent.cta.description || content.cta.description,
+          primaryButton: {
+            ...content.cta.primaryButton,
+            ...aboutContent.cta.primaryButton,
+          },
+          secondaryButton: {
+            ...content.cta.secondaryButton,
+            ...aboutContent.cta.secondaryButton,
+          },
+        }
+      : content.cta,
+  };
+}
+
+export function stripPracticeAreasLocalSharedSections(
+  content: Partial<PracticeAreasPageContent>,
+) {
+  const { whyChoose, cta, ...rest } = content;
+  return rest;
+}

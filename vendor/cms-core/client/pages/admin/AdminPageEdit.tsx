@@ -11,7 +11,10 @@ import {
 } from "@site/lib/cms/aboutPageTypes";
 import { defaultContactContent } from "@site/lib/cms/contactPageTypes";
 import type { ContactPageContent } from "@site/lib/cms/contactPageTypes";
-import { defaultPracticeAreasContent } from "@site/lib/cms/practiceAreasPageTypes";
+import {
+  defaultPracticeAreasContent,
+  stripPracticeAreasLocalSharedSections,
+} from "@site/lib/cms/practiceAreasPageTypes";
 import type { PracticeAreasPageContent } from "@site/lib/cms/practiceAreasPageTypes";
 import { defaultPracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
 import type { PracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
@@ -166,13 +169,18 @@ export default function AdminPageEdit() {
       ? '/'
       : page.url_path.replace(/\/+$/, '') + '/';
 
+    const contentForSave =
+      pageKind === "practice-areas" && page.content && typeof page.content === "object" && !Array.isArray(page.content)
+        ? stripPracticeAreasLocalSharedSections(page.content as Partial<PracticeAreasPageContent>) as unknown
+        : page.content as unknown;
+
     const { error } = await supabase
       .from("pages")
       .update({
         title: page.title,
         url_path: normalizedSaveUrlPath,
         page_type: page.page_type,
-        content: page.content as unknown,
+        content: contentForSave,
         meta_title: page.meta_title,
         meta_description: page.meta_description,
         canonical_url: page.canonical_url,
@@ -206,6 +214,8 @@ export default function AdminPageEdit() {
           break;
         case "about":
           clearAboutContentCache();
+          clearPracticeAreasContentCache();
+          clearContactContentCache();
           break;
         case "contact":
           clearContactContentCache();
@@ -226,7 +236,7 @@ export default function AdminPageEdit() {
         }
       }
       // Update tracking state after successful save with normalized path
-      setPage(prev => prev ? { ...prev, url_path: normalizedSaveUrlPath } : prev);
+      setPage(prev => prev ? { ...prev, url_path: normalizedSaveUrlPath, content: contentForSave as Page["content"] } : prev);
       setOriginalUrlPath(normalizedSaveUrlPath);
 
       // Trigger rebuild if noindex changed on a published page
@@ -357,6 +367,15 @@ export default function AdminPageEdit() {
   const hasExplicitFaqSchema = parseSchemaTypes(page?.schema_type).includes("FAQPage");
 
   const handleStructuredContentChange = (content: unknown) => {
+    if (pageKind === "practice-areas" && content && typeof content === "object" && !Array.isArray(content)) {
+      updatePage({
+        content: stripPracticeAreasLocalSharedSections(
+          content as Partial<PracticeAreasPageContent>,
+        ) as ContentBlock[],
+      });
+      return;
+    }
+
     updatePage({ content: content as ContentBlock[] });
   };
 
