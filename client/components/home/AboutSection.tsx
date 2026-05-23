@@ -91,7 +91,7 @@ export default function AboutSection({
   return (
     <section
       className={compactBottomPadding
-        ? "bg-white pt-20 pb-10 md:pt-28 md:pb-14"
+        ? "bg-white pt-20 pb-0 md:pt-28 md:pb-0"
         : "bg-white py-20 md:py-28"}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
@@ -189,7 +189,11 @@ export default function AboutSection({
 
       {/* Stats Section */}
       <div className="mt-16 border-t border-brand-dark/8">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-14">
+        <div
+          className={compactBottomPadding
+            ? "max-w-[1400px] mx-auto px-6 lg:px-10 pt-14 pb-4 md:pb-6"
+            : "max-w-[1400px] mx-auto px-6 lg:px-10 py-14"}
+        >
           {useSplitThirdStatsLayout ? (
             <div className="mx-auto flex max-w-[760px] flex-col items-center gap-10">
               <div className="grid w-full max-w-[620px] grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-16">
@@ -197,12 +201,12 @@ export default function AboutSection({
                   renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
                 )}
               </div>
-              <div className="w-full max-w-[360px]">
+              <div className="w-auto max-w-none px-4">
                 {renderStat(
                   stats[2],
                   2,
-                  "mx-auto min-h-[128px]",
-                  "max-w-none whitespace-nowrap text-[11px] md:text-[12px]",
+                  "mx-auto min-h-[128px] w-auto",
+                  "inline-block max-w-none whitespace-nowrap text-[11px] md:text-[12px]",
                 )}
               </div>
             </div>
@@ -215,7 +219,7 @@ export default function AboutSection({
           )}
 
           {showBottomDivider && (
-            <div className="flex justify-center pt-2 md:pt-3" aria-hidden="true">
+            <div className="mt-10 flex justify-center md:mt-12" aria-hidden="true">
               <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
             </div>
           )}
