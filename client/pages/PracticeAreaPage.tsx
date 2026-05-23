@@ -29,11 +29,10 @@ export default function PracticeAreaPage() {
         <div className="bg-brand-dark py-[60px] md:py-[100px]">
           <div className="max-w-[800px] mx-auto text-center px-4">
             <h1 className="font-grotesk text-[36px] md:text-[48px] text-white mb-4">
-              Page Not Found
+              Stranica nije pronađena
             </h1>
             <p className="font-manrope text-[18px] text-white/80">
-              The practice area page you're looking for doesn't exist or hasn't
-              been published yet.
+              Stranica usluge koju tražite ne postoji ili još nije objavljena.
             </p>
           </div>
         </div>
@@ -44,7 +43,7 @@ export default function PracticeAreaPage() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || title || "Practice Area"}
+        title={meta.meta_title || title || "Usluga"}
         description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}

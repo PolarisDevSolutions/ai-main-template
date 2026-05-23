@@ -3,6 +3,7 @@ import Layout from "@site/components/layout/Layout";
 import PracticeAreaCard from "@site/components/practice/PracticeAreaCard";
 import AboutSection from "@site/components/home/AboutSection";
 import ProcessSection from "@site/components/home/ProcessSection";
+import FaqSection from "@site/components/home/FaqSection";
 import * as LucideIcons from "lucide-react";
 import { type LucideIcon } from "lucide-react";
 import { usePracticeAreasContent } from "@site/hooks/usePracticeAreasContent";
@@ -112,6 +113,8 @@ export default function PracticeAreas() {
       <ProcessSection content={content.process} desktopColumns={4} />
 
       <SharedWhyChooseSection content={content.whyChoose} />
+
+      <FaqSection content={content.faq} />
 
       <SharedCtaSection content={content.cta} />
     </Layout>

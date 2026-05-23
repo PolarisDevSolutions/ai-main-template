@@ -9,7 +9,7 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error(
-      "404 Error: User attempted to access non-existent route:",
+      "404 greška: korisnik je pokušao da pristupi nepostojećoj ruti:",
       location.pathname,
     );
   }, [location.pathname]);
@@ -17,8 +17,8 @@ const NotFound = () => {
   return (
     <Layout>
       <Seo
-        title="404 - Page Not Found"
-        description="The page you are looking for does not exist."
+        title="404 - Stranica nije pronađena"
+        description="Stranica koju tražite ne postoji."
         noindex={true}
       />
       
@@ -28,14 +28,14 @@ const NotFound = () => {
             404
           </h1>
           <p className="font-manrope text-[28px] text-white mb-4">
-            Oops! Page not found
+            Ups! Stranica nije pronađena
           </p>
           <p className="font-manrope text-[18px] text-white/70 mb-8">
-            The page you are looking for doesn't exist or has been moved.
+            Stranica koju tražite ne postoji ili je premeštena.
           </p>
           <Button asChild className="bg-brand-accent text-black font-manrope text-[20px] px-8 py-6 h-auto hover:bg-brand-accent/90">
             <Link to="/">
-              Return to Home
+              Nazad na početnu
             </Link>
           </Button>
         </div>

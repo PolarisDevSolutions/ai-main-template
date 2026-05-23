@@ -4,7 +4,12 @@ import {
   type SharedHeroContent,
 } from "./sharedHero";
 import type { AboutPageContent } from "./aboutPageTypes";
-import { defaultHomeContent, type AboutContent, type ProcessContent } from "./homePageTypes";
+import {
+  defaultHomeContent,
+  type AboutContent,
+  type FaqContent,
+  type ProcessContent,
+} from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
 
@@ -65,6 +70,25 @@ export function createDefaultPracticeAreasProcessContent(
   };
 }
 
+function cloneFaqContent(content: FaqContent): FaqContent {
+  return {
+    ...content,
+    items: content.items.map((item) => ({ ...item })),
+  };
+}
+
+export function createDefaultPracticeAreasFaqContent(
+  overrides: Partial<FaqContent> = {},
+): FaqContent {
+  const base = cloneFaqContent(defaultHomeContent.faq);
+
+  return {
+    ...base,
+    ...overrides,
+    items: overrides.items ?? base.items,
+  };
+}
+
 export interface PracticeAreaGridItem {
   icon: string; // Lucide icon name
   title: string; // "Personal Injury"
@@ -120,6 +144,7 @@ export interface PracticeAreasPageContent {
   outro: PracticeAreasIntroContent;
   process: ProcessContent;
   whyChoose: WhyChooseContent;
+  faq: FaqContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "grid.heading") to HTML tag names (e.g. "h2") */
   headingTags?: Record<string, string>;
@@ -251,6 +276,33 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
       },
     ],
   },
+  faq: createDefaultPracticeAreasFaqContent({
+    heading: "Često postavljana pitanja",
+    description:
+      "<p>Ovde možete dodati odgovore na najčešća pitanja o uslugama, procesu saradnje i tome šta klijenti mogu da očekuju.</p>",
+    items: [
+      {
+        question: "Koja usluga je najbolja za moj biznis?",
+        answer:
+          "<p>Izbor zavisi od vaših ciljeva, trenutnog stanja sajta i kanala preko kojih želite da privučete upite. Na osnovu toga predlažemo najkorisniji sledeći korak.</p>",
+      },
+      {
+        question: "Da li mogu da kombinujem više usluga?",
+        answer:
+          "<p>Da. Usluge često najbolje funkcionišu zajedno, na primer izrada sajta, SEO optimizacija i kontinuirano održavanje.</p>",
+      },
+      {
+        question: "Koliko traje realizacija?",
+        answer:
+          "<p>Rok zavisi od obima projekta i sadržaja, ali unapred definišemo faze rada i okvirni vremenski plan kako biste znali šta da očekujete.</p>",
+      },
+      {
+        question: "Da li radite i unapređenje postojećeg sajta?",
+        answer:
+          "<p>Da. Možemo da unapredimo postojeći sajt kroz tehničku optimizaciju, SEO, poboljšanje korisničkog iskustva ili kompletnu novu postavku.</p>",
+      },
+    ],
+  }),
   cta: {
     heading: "Ready to Discuss Your Case?",
     description:

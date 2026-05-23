@@ -241,6 +241,13 @@ function mergeWithDefaults(
         ? cmsContent.whyChoose.items
         : defaults.whyChoose.items,
     },
+    faq: {
+      ...defaults.faq,
+      ...cmsContent.faq,
+      items: cmsContent.faq?.items?.length
+        ? cmsContent.faq.items
+        : defaults.faq.items,
+    },
     cta: {
       ...defaults.cta,
       ...cmsContent.cta,
