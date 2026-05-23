@@ -7,6 +7,8 @@ import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface AboutSectionProps {
   content?: AboutContent;
+  statsLayout?: "default" | "split-third";
+  showBottomDivider?: boolean;
 }
 
 const defaultContent: AboutContent = {
@@ -48,11 +50,34 @@ const defaultContent: AboutContent = {
   ],
 };
 
-export default function AboutSection({ content }: AboutSectionProps) {
+export default function AboutSection({
+  content,
+  statsLayout = "default",
+  showBottomDivider = false,
+}: AboutSectionProps) {
   const data = content || defaultContent;
   const features = data.features || defaultContent.features;
   const stats = data.stats || defaultContent.stats;
-const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPhone();
+  const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } =
+    useGlobalPhone();
+  const useSplitThirdStatsLayout =
+    statsLayout === "split-third" && stats.length === 3;
+
+  const renderStat = (stat: (typeof stats)[number], index: number, className = "") => (
+    <AnimatedSection
+      key={`${stat.value}-${stat.label}-${index}`}
+      delay={index * 0.08}
+      className={`text-center ${className}`.trim()}
+    >
+      <p className="font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light text-brand-dark mb-1 tracking-tight">
+        {stat.value}
+      </p>
+      <div className="w-8 h-[2px] bg-brand-accent mx-auto mb-2" />
+      <p className="font-manrope text-[13px] text-brand-dark/50 leading-snug max-w-[160px] mx-auto">
+        {stat.label}
+      </p>
+    </AnimatedSection>
+  );
 
   return (
     <section className="bg-white py-20 md:py-28">
@@ -150,21 +175,32 @@ const { phoneNumber, phoneAvailability: phoneLabel, phoneDisplay } = useGlobalPh
       </div>
 
       {/* Stats Section */}
-      <div className="border-t border-brand-dark/8 mt-16">
+      <div className="mt-16 border-t border-brand-dark/8">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-14">
-          <div className="flex flex-wrap justify-center gap-x-16 gap-y-10">
-            {stats.map((stat, index) => (
-              <AnimatedSection key={index} delay={index * 0.08} className="text-center w-[180px]">
-                <p className="font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light text-brand-dark mb-1 tracking-tight">
-                  {stat.value}
-                </p>
-                <div className="w-8 h-[2px] bg-brand-accent mx-auto mb-2" />
-                <p className="font-manrope text-[13px] text-brand-dark/50 leading-snug max-w-[160px] mx-auto">
-                  {stat.label}
-                </p>
-              </AnimatedSection>
-            ))}
-          </div>
+          {useSplitThirdStatsLayout ? (
+            <div className="mx-auto flex max-w-[760px] flex-col items-center gap-10">
+              <div className="grid w-full max-w-[620px] grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-16">
+                {stats.slice(0, 2).map((stat, index) =>
+                  renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
+                )}
+              </div>
+              <div className="w-full max-w-[220px]">
+                {renderStat(stats[2], 2, "mx-auto min-h-[128px]")}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-x-16 gap-y-10">
+              {stats.map((stat, index) =>
+                renderStat(stat, index, "w-[180px]"),
+              )}
+            </div>
+          )}
+
+          {showBottomDivider && (
+            <div className="mt-14 flex justify-center" aria-hidden="true">
+              <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+            </div>
+          )}
         </div>
       </div>
     </section>

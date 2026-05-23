@@ -60,7 +60,11 @@ export default function AboutUs() {
 
       <MarketingHeroSection content={content.hero} />
 
-      <AboutSection content={content.story} />
+      <AboutSection
+        content={content.story}
+        statsLayout="split-third"
+        showBottomDivider
+      />
 
       {/* Mission & Vision Section */}
       <div className="bg-brand-accent-dark py-[40px] md:py-[60px]">
