@@ -63,17 +63,24 @@ export default function AboutSection({
   const useSplitThirdStatsLayout =
     statsLayout === "split-third" && stats.length === 3;
 
-  const renderStat = (stat: (typeof stats)[number], index: number, className = "") => (
+  const renderStat = (
+    stat: (typeof stats)[number],
+    index: number,
+    className = "",
+    labelClassName = "",
+  ) => (
     <AnimatedSection
       key={`${stat.value}-${stat.label}-${index}`}
       delay={index * 0.08}
       className={`text-center ${className}`.trim()}
     >
-      <p className="font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light text-brand-dark mb-1 tracking-tight">
+      <p className="mb-1 font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light tracking-tight text-brand-dark">
         {stat.value}
       </p>
-      <div className="w-8 h-[2px] bg-brand-accent mx-auto mb-2" />
-      <p className="font-manrope text-[13px] text-brand-dark/50 leading-snug max-w-[160px] mx-auto">
+      <div className="mx-auto mb-2 h-[2px] w-8 bg-brand-accent" />
+      <p
+        className={`mx-auto max-w-[160px] font-manrope text-[13px] leading-snug text-brand-dark/50 ${labelClassName}`.trim()}
+      >
         {stat.label}
       </p>
     </AnimatedSection>
@@ -184,8 +191,13 @@ export default function AboutSection({
                   renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
                 )}
               </div>
-              <div className="w-full max-w-[220px]">
-                {renderStat(stats[2], 2, "mx-auto min-h-[128px]")}
+              <div className="w-full max-w-[260px]">
+                {renderStat(
+                  stats[2],
+                  2,
+                  "mx-auto min-h-[128px]",
+                  "max-w-none whitespace-nowrap",
+                )}
               </div>
             </div>
           ) : (
@@ -197,7 +209,7 @@ export default function AboutSection({
           )}
 
           {showBottomDivider && (
-            <div className="mt-14 flex justify-center" aria-hidden="true">
+            <div className="flex justify-center pt-4 md:pt-6" aria-hidden="true">
               <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
             </div>
           )}
