@@ -16,7 +16,8 @@ export interface ContactIntroContent {
 export interface ContactMethodItem {
   icon: string; // Lucide icon name
   title: string; // "Phone", "Email", "Office"
-  detail: string; // Primary detail (phone number, email, address line 1)
+  detail: string; // Primary detail (phone number or address line 1)
+  email?: string; // Email address for the email card
   subDetail: string; // Secondary detail (availability, response time, address line 2)
 }
 
@@ -118,6 +119,7 @@ export const defaultContactContent: ContactPageContent = {
         icon: "Mail",
         title: "Email",
         detail: "",
+        email: "",
         subDetail: "We respond within 24 hours",
       },
       {

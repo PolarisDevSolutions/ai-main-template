@@ -23,6 +23,15 @@ const iconMap: Record<string, LucideIcon> = {
   Clock,
 };
 
+function formatTelHref(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "";
+  }
+
+  return `tel:${trimmed.replace(/(?!^)\+/g, "").replace(/[^\d+]/g, "")}`;
+}
+
 export default function ContactPage() {
   const { content, meta } = useContactContent();
   const { phoneNumber, phoneDisplay, phoneLabel } = useGlobalPhone();
@@ -33,20 +42,25 @@ export default function ContactPage() {
     let detail = method.detail;
     let subDetail = method.subDetail;
 
-    // Fallback to Site Settings when CMS fields are empty
-    if (method.title === "Phone" && !detail) {
-      detail = phoneDisplay;
+    if (method.icon === "Phone") {
+      detail = phoneDisplay || detail;
     }
-    if (method.title === "Office") {
+
+    if (method.icon === "Mail") {
+      detail = method.email || detail;
+    }
+
+    if (method.icon === "MapPin") {
       if (!detail) detail = settings.addressLine1 || "";
       if (!subDetail) subDetail = settings.addressLine2 || "";
     }
 
     return {
+      iconKey: method.icon,
       icon: iconMap[method.icon] || Phone,
       title: method.title,
       detail,
-      subdDetail: subDetail,
+      subDetail,
     };
   });
 
@@ -99,30 +113,30 @@ export default function ContactPage() {
               return (
                 <div
                   key={index}
-                  className="bg-brand-card border border-brand-border p-[30px] md:p-[40px] text-center group hover:border-brand-accent transition-all duration-300"
+                  className="border border-brand-accent/40 bg-white p-[24px] md:p-[28px] text-center transition-all duration-300 hover:border-brand-accent"
                 >
-                  <div className="flex justify-center mb-[20px]">
-                    <div className="bg-brand-accent p-[20px] inline-block transition-all duration-300 group-hover:bg-white group-hover:scale-110">
+                  <div className="mb-[16px] flex justify-center">
+                    <div className="flex h-[56px] w-[56px] items-center justify-center border border-brand-accent/40 bg-brand-accent/8">
                       <Icon
-                        className="w-[35px] h-[35px] md:w-[40px] md:h-[40px] text-black"
-                        strokeWidth={1.5}
+                        className="h-[22px] w-[22px] text-brand-accent md:h-[24px] md:w-[24px]"
+                        strokeWidth={1.6}
                       />
                     </div>
                   </div>
-                  <h3 className="font-grotesk text-[24px] md:text-[28px] leading-tight text-brand-accent mb-[15px]">
+                  <h3 className="mb-[10px] font-grotesk text-[20px] md:text-[22px] leading-tight text-brand-dark">
                     {method.title}
                   </h3>
-                  <p className="font-manrope text-[18px] md:text-[20px] text-white mb-[8px]">
-                    {method.title === "Phone" ? (
-                      <a href={`tel:${method.detail.replace(/\D/g, "")}`}>
+                  <p className="mb-[6px] font-manrope text-[15px] md:text-[17px] text-brand-dark">
+                    {method.iconKey === "Phone" ? (
+                      <a href={formatTelHref(phoneNumber || method.detail)} className="hover:text-brand-accent transition-colors duration-300">
                         {method.detail}
                       </a>
                     ) : (
                       method.detail
                     )}
                   </p>
-                  <p className="font-manrope text-[14px] md:text-[16px] text-white/70">
-                    {method.subdDetail}
+                  <p className="font-manrope text-[13px] md:text-[14px] text-brand-dark/65">
+                    {method.subDetail}
                   </p>
                 </div>
               );

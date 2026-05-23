@@ -76,7 +76,7 @@ function ContactMethodsSection({ content, update }: SectionProps) {
         items={content.contactMethods.methods}
         onChange={(items) => update("contactMethods", { methods: items })}
         itemLabel="Method"
-        newItem={() => ({ icon: "Phone", title: "", detail: "", subDetail: "" })}
+        newItem={() => ({ icon: "Phone", title: "", detail: "", email: "", subDetail: "" })}
         renderItem={(item, _, upd) => (
           <div className="grid gap-3">
             <div className="grid grid-cols-4 gap-3">
@@ -91,8 +91,18 @@ function ContactMethodsSection({ content, update }: SectionProps) {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label>Detail</Label>
-                <Input value={item.detail} onChange={(e) => upd({ ...item, detail: e.target.value })} />
+                <Label>{item.icon === "Mail" ? "Email Address" : "Detail"}</Label>
+                <Input
+                  value={item.icon === "Mail" ? item.email ?? "" : item.detail}
+                  onChange={(e) =>
+                    upd({
+                      ...item,
+                      ...(item.icon === "Mail"
+                        ? { email: e.target.value }
+                        : { detail: e.target.value }),
+                    })
+                  }
+                />
               </div>
               <div>
                 <Label>Sub-Detail</Label>
