@@ -72,12 +72,12 @@ export default function AboutUs() {
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start lg:items-stretch">
             <div>
-              <div className="mb-[10px]">
-                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
+              <div className="mb-4">
+                <p className="font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent">
                   {content.whyChooseUs.sectionLabel}
                 </p>
               </div>
-              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
+              <h2 className="mb-6 font-grotesk text-[clamp(2rem,4vw,48px)] font-semibold leading-[1.15] text-brand-dark">
                 {content.whyChooseUs.heading}
               </h2>
               <RichText
