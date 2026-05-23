@@ -242,9 +242,6 @@ function mergeWithDefaults(
       features: cmsContent.aboutSection?.features?.length
         ? cmsContent.aboutSection.features
         : defaults.aboutSection.features,
-      stats: cmsContent.aboutSection?.stats?.length
-        ? cmsContent.aboutSection.stats
-        : defaults.aboutSection.stats,
     },
     whyChoose: {
       ...defaults.whyChoose,

@@ -5,12 +5,17 @@ import { useGlobalPhone } from "@/hooks/useSiteSettings";
 import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
 
+type AboutSectionContent = Omit<AboutContent, "stats"> & {
+  stats?: AboutContent["stats"];
+};
+
 interface AboutSectionProps {
-  content?: AboutContent;
+  content?: AboutSectionContent;
   statsLayout?: "default" | "split-third";
   showBottomDivider?: boolean;
   compactBottomPadding?: boolean;
   theme?: "light" | "dark";
+  showStats?: boolean;
 }
 
 const defaultContent: AboutContent = {
@@ -58,6 +63,7 @@ export default function AboutSection({
   showBottomDivider = false,
   compactBottomPadding = false,
   theme = "light",
+  showStats = true,
 }: AboutSectionProps) {
   const data = content || defaultContent;
   const features = data.features || defaultContent.features;
@@ -98,10 +104,10 @@ export default function AboutSection({
         : `${isDark ? "bg-brand-dark" : "bg-white"} py-20 md:py-28`}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          <AnimatedSection className="lg:w-full" direction="left">
+        <div className={`grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 ${isDark ? "items-center" : "items-start"}`}>
+          <AnimatedSection className={`lg:w-full ${isDark ? "lg:flex lg:min-h-full lg:flex-col lg:justify-center" : ""}`.trim()} direction="left">
             {data.sectionLabel && (
-              <p className="mb-4 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent">
+              <p className={`mb-4 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] ${isDark ? "text-white" : "text-brand-accent"}`}>
                 {data.sectionLabel}
               </p>
             )}
@@ -111,7 +117,7 @@ export default function AboutSection({
               </h2>
               <RichText
                 html={data.description}
-                className={`font-manrope text-[15px] md:text-[17px] leading-7 ${isDark ? "text-white/78" : "text-brand-dark/78"} [&_p]:mb-4 [&_p:last-child]:mb-0`}
+                className={`font-manrope text-[15px] md:text-[17px] leading-7 ${isDark ? "text-white" : "text-brand-dark/78"} [&_p]:mb-4 [&_p:last-child]:mb-0`}
               />
             </div>
 
@@ -190,44 +196,48 @@ export default function AboutSection({
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className={`mt-16 border-t ${isDark ? "border-white/10" : "border-brand-dark/8"}`}>
-        <div
-          className={compactBottomPadding
-            ? "max-w-[1400px] mx-auto px-6 lg:px-10 pt-14 pb-4 md:pb-6"
-            : "max-w-[1400px] mx-auto px-6 lg:px-10 py-14"}
-        >
-          {useSplitThirdStatsLayout ? (
-            <div className="mx-auto flex max-w-[760px] flex-col items-center gap-10">
-              <div className="grid w-full max-w-[620px] grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-16">
-                {stats.slice(0, 2).map((stat, index) =>
-                  renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
-                )}
-              </div>
-              <div className="w-auto max-w-none px-4">
-                {renderStat(
-                  stats[2],
-                  2,
-                  "mx-auto min-h-[128px] w-auto",
-                  "inline-block max-w-none whitespace-nowrap text-[11px] md:text-[12px]",
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-x-16 gap-y-10">
-              {stats.map((stat, index) =>
-                renderStat(stat, index, "w-[180px]"),
+      {showStats && (
+        <>
+          {/* Stats Section */}
+          <div className={`mt-16 border-t ${isDark ? "border-white/10" : "border-brand-dark/8"}`}>
+            <div
+              className={compactBottomPadding
+                ? "max-w-[1400px] mx-auto px-6 lg:px-10 pt-14 pb-4 md:pb-6"
+                : "max-w-[1400px] mx-auto px-6 lg:px-10 py-14"}
+            >
+              {useSplitThirdStatsLayout ? (
+                <div className="mx-auto flex max-w-[760px] flex-col items-center gap-10">
+                  <div className="grid w-full max-w-[620px] grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-16">
+                    {stats.slice(0, 2).map((stat, index) =>
+                      renderStat(stat, index, "mx-auto w-full max-w-[220px] min-h-[128px]"),
+                    )}
+                  </div>
+                  <div className="w-auto max-w-none px-4">
+                    {renderStat(
+                      stats[2],
+                      2,
+                      "mx-auto min-h-[128px] w-auto",
+                      "inline-block max-w-none whitespace-nowrap text-[11px] md:text-[12px]",
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-wrap justify-center gap-x-16 gap-y-10">
+                  {stats.map((stat, index) =>
+                    renderStat(stat, index, "w-[180px]"),
+                  )}
+                </div>
+              )}
+
+              {showBottomDivider && (
+                <div className="mt-10 flex justify-center md:mt-12" aria-hidden="true">
+                  <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+                </div>
               )}
             </div>
-          )}
-
-          {showBottomDivider && (
-            <div className="mt-10 flex justify-center md:mt-12" aria-hidden="true">
-              <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
-            </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </section>
   );
 }

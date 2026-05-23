@@ -123,25 +123,6 @@ function AboutStyleSection({ content, update }: SectionProps) {
           )}
         />
 
-        <h4 className="mt-2 font-medium">Stats</h4>
-        <ArrayEditor
-          items={about.stats}
-          onChange={(items) => set({ stats: items })}
-          itemLabel="Stat"
-          newItem={() => ({ value: "", label: "" })}
-          renderItem={(item, _, upd) => (
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Value</Label>
-                <Input value={item.value} onChange={(e) => upd({ ...item, value: e.target.value })} />
-              </div>
-              <div>
-                <Label>Label</Label>
-                <Input value={item.label} onChange={(e) => upd({ ...item, label: e.target.value })} />
-              </div>
-            </div>
-          )}
-        />
       </div>
     </Section>
   );

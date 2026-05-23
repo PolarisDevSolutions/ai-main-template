@@ -93,7 +93,7 @@ export default function PracticeAreas() {
         </div>
       </div>
 
-      <AboutSection content={content.aboutSection} theme="dark" />
+      <AboutSection content={content.aboutSection} theme="dark" showStats={false} />
 
       {/* Why Choose Our Practice Section */}
       <div className="bg-brand-dark py-[40px] md:py-[60px]">

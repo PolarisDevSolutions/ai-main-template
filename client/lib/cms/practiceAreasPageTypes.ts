@@ -14,24 +14,34 @@ export interface PracticeAreasIntroContent {
   content: string;
 }
 
-function cloneAboutContent(content: AboutContent): AboutContent {
+export type PracticeAreasAboutSectionContent = Omit<AboutContent, "stats">;
+
+function cloneAboutContent(
+  content: AboutContent,
+): PracticeAreasAboutSectionContent {
   return {
-    ...content,
+    sectionLabel: content.sectionLabel,
+    heading: content.heading,
+    description: content.description,
+    phone: content.phone,
+    phoneLabel: content.phoneLabel,
+    contactLabel: content.contactLabel,
+    contactText: content.contactText,
+    attorneyImage: content.attorneyImage,
+    attorneyImageAlt: content.attorneyImageAlt,
     features: content.features.map((feature) => ({ ...feature })),
-    stats: content.stats.map((stat) => ({ ...stat })),
   };
 }
 
 export function createDefaultPracticeAreasAboutContent(
-  overrides: Partial<AboutContent> = {},
-): AboutContent {
+  overrides: Partial<PracticeAreasAboutSectionContent> = {},
+): PracticeAreasAboutSectionContent {
   const base = cloneAboutContent(defaultHomeContent.about);
 
   return {
     ...base,
     ...overrides,
     features: overrides.features ?? base.features,
-    stats: overrides.stats ?? base.stats,
   };
 }
 
@@ -86,7 +96,7 @@ export interface PracticeAreasPageContent {
   hero: PracticeAreasHeroContent;
   intro: PracticeAreasIntroContent;
   grid: PracticeAreasGridContent;
-  aboutSection: AboutContent;
+  aboutSection: PracticeAreasAboutSectionContent;
   whyChoose: WhyChooseContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "grid.heading") to HTML tag names (e.g. "h2") */
@@ -146,12 +156,6 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
         description:
           "<p>Od prve ideje do optimizacije nakon lansiranja, ostajemo uključeni kako bi usluga donosila stvarne rezultate.</p>",
       },
-    ],
-    stats: [
-      { value: "200+", label: "Projekata i kampanja" },
-      { value: "2018", label: "Iskustvo sa američkim tržištem" },
-      { value: "98%", label: "Fokus na zadovoljstvo klijenata" },
-      { value: "24/7", label: "Podrška i brz odgovor" },
     ],
   }),
   whyChoose: {
