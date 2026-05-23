@@ -16,10 +16,10 @@ export default function AboutEditor({ content, onChange }: AboutEditorProps) {
     <div className="space-y-6">
       <HeroSection content={content} update={update} />
       <StorySection content={content} update={update} />
+      <WhyChooseUsSection content={content} update={update} />
       <MissionVisionSection content={content} update={update} />
       <TeamSection content={content} update={update} />
       <ValuesSection content={content} update={update} />
-      <WhyChooseUsSection content={content} update={update} />
       <CTASection content={content} update={update} />
     </div>
   );

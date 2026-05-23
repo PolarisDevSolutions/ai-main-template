@@ -67,6 +67,67 @@ export default function AboutUs() {
         compactBottomPadding
       />
 
+      {/* Why Choose Us Section */}
+      <div className="bg-white pt-[30px] md:pt-[40px] pb-[40px] md:pb-[60px]">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start lg:items-stretch">
+            <div>
+              <div className="mb-[10px]">
+                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
+                  {content.whyChooseUs.sectionLabel}
+                </p>
+              </div>
+              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
+                {content.whyChooseUs.heading}
+              </h2>
+              <RichText
+                html={content.whyChooseUs.description}
+                className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black mb-[30px]"
+              />
+              {content.whyChooseUs.image && (
+                <div className="hidden lg:block">
+                  <img
+                    src={content.whyChooseUs.image}
+                    alt={content.whyChooseUs.imageAlt || "Why Choose Us"}
+                    className="w-full max-w-[400px] h-auto object-cover"
+                    width={400}
+                    height={300}
+                    loading="lazy"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="flex h-full flex-col justify-center gap-5 md:gap-6">
+              {whyChooseUs.map((feature, index) => (
+                <div
+                  key={index}
+                  className="group relative border border-brand-dark/8 bg-white p-6 transition-all duration-300 hover:border-brand-accent/40"
+                >
+                  <span
+                    className="pointer-events-none absolute right-4 top-3 select-none font-grotesk text-[64px] font-light leading-none text-brand-dark/[0.04]"
+                    aria-hidden="true"
+                  >
+                    {feature.number}
+                  </span>
+                  <div className="absolute bottom-0 left-0 top-0 w-[3px] bg-brand-accent/0 transition-all duration-300 group-hover:bg-brand-accent" />
+                  <p className="mb-2 font-manrope text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mb-2 font-grotesk text-[18px] font-medium text-brand-dark">
+                    {feature.title}
+                  </h3>
+                  <RichText
+                    html={feature.description}
+                    className="font-manrope text-[14px] leading-relaxed text-brand-dark/55 [&_p]:mb-3 [&_p:last-child]:mb-0"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Mission & Vision Section */}
       <div className="bg-brand-accent-dark py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
@@ -148,62 +209,6 @@ export default function AboutUs() {
             {coreValues.map((value, index) => (
               <ValueCard key={index} {...value} />
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Why Choose Us Section */}
-      <div className="bg-white pt-[30px] md:pt-[40px] pb-[40px] md:pb-[60px]">
-        <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[8%]">
-            {/* Left Side - Heading + Image */}
-            <div>
-              <div className="mb-[10px]">
-                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-[rgb(107,141,12)]">
-                  {content.whyChooseUs.sectionLabel}
-                </p>
-              </div>
-              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black pb-[20px]">
-                {content.whyChooseUs.heading}
-              </h2>
-              <RichText
-                html={content.whyChooseUs.description}
-                className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black mb-[30px]"
-              />
-              {/* Stock image */}
-              {content.whyChooseUs.image && (
-                <div className="hidden lg:block">
-                  <img
-                    src={content.whyChooseUs.image}
-                    alt={content.whyChooseUs.imageAlt || "Why Choose Us"}
-                    className="w-full max-w-[400px] h-auto object-cover"
-                    width={400}
-                    height={300}
-                    loading="lazy"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Right Side - Features List */}
-            <div className="space-y-[20px] md:space-y-[30px]">
-              {whyChooseUs.map((feature, index) => (
-                <div key={index}>
-                  <div className="mb-[15px] md:mb-[20px]">
-                    <h3 className="font-manrope text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-black pb-[10px]">
-                      {feature.number}. {feature.title}
-                    </h3>
-                    <RichText
-                      html={feature.description}
-                      className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black"
-                    />
-                  </div>
-                  {index < whyChooseUs.length - 1 && (
-                    <div className="h-[1px] bg-brand-border/30"></div>
-                  )}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
