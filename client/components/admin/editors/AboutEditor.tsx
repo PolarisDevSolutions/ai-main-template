@@ -19,6 +19,7 @@ export default function AboutEditor({ content, onChange }: AboutEditorProps) {
       <WhyChooseUsSection content={content} update={update} />
       <MissionVisionSection content={content} update={update} />
       <ProcessSection content={content} update={update} />
+      <FaqSectionEditor content={content} update={update} />
       <CTASection content={content} update={update} />
     </div>
   );
@@ -204,6 +205,43 @@ function ProcessSection({ content, update }: SectionProps) {
                 </div>
               </div>
               <RichTextField label="Description" value={item.description} onChange={(v) => upd({ ...item, description: v })} />
+            </div>
+          )}
+        />
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function FaqSectionEditor({ content, update }: SectionProps) {
+  const faq = content.faq;
+  const set = (patch: Partial<typeof faq>) => update("faq", { ...faq, ...patch });
+  const ht = useHeadingTag(content, update);
+
+  return (
+    <Section title="FAQ Section" defaultOpen={false}>
+      <div className="grid gap-4">
+        <HeadingField
+          label="Heading"
+          value={faq.heading}
+          onChange={(v) => set({ heading: v })}
+          tag={ht.get("faq.heading")}
+          onTagChange={(t) => ht.set("faq.heading", t)}
+        />
+        <RichTextField label="Description" value={faq.description} onChange={(v) => set({ description: v })} />
+        <ArrayEditor
+          items={faq.items}
+          onChange={(items) => set({ items })}
+          itemLabel="FAQ"
+          newItem={() => ({ question: "", answer: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid gap-3">
+              <div>
+                <Label>Question</Label>
+                <Input value={item.question} onChange={(e) => upd({ ...item, question: e.target.value })} />
+              </div>
+              <RichTextField label="Answer" value={item.answer} onChange={(v) => upd({ ...item, answer: v })} />
             </div>
           )}
         />

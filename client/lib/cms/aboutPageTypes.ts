@@ -6,6 +6,7 @@ import {
 import {
   defaultHomeContent,
   type AboutContent,
+  type FaqContent,
   type ProcessContent,
 } from "./homePageTypes";
 
@@ -82,6 +83,25 @@ export function createDefaultAboutProcessContent(
   };
 }
 
+function cloneFaqContent(content: FaqContent): FaqContent {
+  return {
+    ...content,
+    items: content.items.map((item) => ({ ...item })),
+  };
+}
+
+export function createDefaultAboutFaqContent(
+  overrides: Partial<FaqContent> = {},
+): FaqContent {
+  const base = cloneFaqContent(defaultHomeContent.faq);
+
+  return {
+    ...base,
+    ...overrides,
+    items: overrides.items ?? base.items,
+  };
+}
+
 export interface StatItem {
   value: string;
   label: string;
@@ -125,6 +145,7 @@ export interface AboutPageContent {
   story: StoryContent;
   missionVision: MissionVisionContent;
   process: ProcessContent;
+  faq: FaqContent;
   stats: StatsContent;
   whyChooseUs: WhyChooseUsContent;
   cta: CTAContent;
@@ -206,6 +227,33 @@ export const defaultAboutContent: AboutPageContent = {
         title: "Optimizacija i rast",
         description:
           "<p>Nakon lansiranja pratimo rezultate, unapređujemo ključne tačke i gradimo sistem koji podržava dugoročan rast.</p>",
+      },
+    ],
+  }),
+  faq: createDefaultAboutFaqContent({
+    heading: "Često postavljana pitanja",
+    description:
+      "<p>Odgovori na najčešća pitanja o tome kako radimo, koliko traje saradnja i šta možete da očekujete od procesa.</p>",
+    items: [
+      {
+        question: "Kako izgleda početak saradnje?",
+        answer:
+          "<p>Počinjemo kratkim razgovorom u kome upoznajemo vaše ciljeve, trenutnu situaciju i prioritete. Nakon toga predlažemo jasan sledeći korak.</p>",
+      },
+      {
+        question: "Da li radite samo izradu sajtova ili i SEO?",
+        answer:
+          "<p>Radimo kompletna digitalna rešenja, od izrade i redizajna web sajtova do SEO optimizacije i šire strategije digitalnog rasta.</p>",
+      },
+      {
+        question: "Koliko traje realizacija projekta?",
+        answer:
+          "<p>Rok zavisi od obima projekta, sadržaja i potrebnih funkcionalnosti, ali okvir i faze rada definišemo unapred kako bi proces bio jasan i transparentan.</p>",
+      },
+      {
+        question: "Da li možete da unapredite postojeći sajt?",
+        answer:
+          "<p>Da. Možemo da optimizujemo postojeći sajt, poboljšamo performanse, SEO i korisničko iskustvo ili da predložimo kompletnu novu postavku ako je to bolje rešenje.</p>",
       },
     ],
   }),
@@ -361,6 +409,13 @@ export function normalizeAboutPageContent(
       steps: cmsContent.process?.steps?.length
         ? cmsContent.process.steps
         : defaultAboutContent.process.steps,
+    },
+    faq: {
+      ...defaultAboutContent.faq,
+      ...cmsContent.faq,
+      items: cmsContent.faq?.items?.length
+        ? cmsContent.faq.items
+        : defaultAboutContent.faq.items,
     },
     stats: {
       ...defaultAboutContent.stats,

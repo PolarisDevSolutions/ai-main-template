@@ -3,6 +3,7 @@ import Layout from "@site/components/layout/Layout";
 import AboutSection from "@site/components/home/AboutSection";
 import CallBox from "@site/components/shared/CallBox";
 import ProcessSection from "@site/components/home/ProcessSection";
+import FaqSection from "@site/components/home/FaqSection";
 import { Phone, Calendar } from "lucide-react";
 import { useAboutContent } from "@site/hooks/useAboutContent";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
@@ -118,6 +119,7 @@ export default function AboutUs() {
       </div>
 
       <ProcessSection content={content.process} desktopColumns={4} />
+      <FaqSection content={content.faq} />
 
       {/* Call to Action Section */}
       <div className="bg-brand-accent py-[40px] md:py-[60px]">
