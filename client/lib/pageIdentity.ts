@@ -44,7 +44,7 @@ function detectStructuredPageKindFromContent(content: unknown) {
     return "about" satisfies StructuredPageKind;
   }
 
-  if ("contactMethods" in content && "officeHours" in content && "visitOffice" in content) {
+  if ("contactMethods" in content && "officeHours" in content && "form" in content) {
     return "contact" satisfies StructuredPageKind;
   }
 

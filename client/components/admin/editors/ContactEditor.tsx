@@ -19,8 +19,6 @@ export default function ContactEditor({ content, onChange }: ContactEditorProps)
       <ContactMethodsSection content={content} update={update} />
       <FormSection content={content} update={update} />
       <OfficeHoursSection content={content} update={update} />
-      <ProcessSection content={content} update={update} />
-      <VisitOfficeSection content={content} update={update} />
       <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
     </div>
   );
@@ -175,82 +173,6 @@ function OfficeHoursSection({ content, update }: SectionProps) {
         <div>
           <Label>Note</Label>
           <Textarea value={oh.note} onChange={(e) => set({ note: e.target.value })} rows={2} />
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-function ProcessSection({ content, update }: SectionProps) {
-  const p = content.process;
-  const set = (patch: Partial<typeof p>) => update("process", { ...p, ...patch });
-  const ht = useHeadingTag(content, update);
-
-  return (
-    <Section title="Process Steps" defaultOpen={false}>
-      <div className="grid gap-4">
-        <div>
-          <Label>Section Label</Label>
-          <Input value={p.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
-        </div>
-        <HeadingField
-          label="Heading"
-          value={p.heading}
-          onChange={(v) => set({ heading: v })}
-          tag={ht.get("process.heading")}
-          onTagChange={(t) => ht.set("process.heading", t)}
-        />
-        <div>
-          <Label>Subtitle</Label>
-          <Input value={p.subtitle} onChange={(e) => set({ subtitle: e.target.value })} />
-        </div>
-        <ArrayEditor
-          items={p.steps}
-          onChange={(items) => set({ steps: items })}
-          itemLabel="Step"
-          newItem={() => ({ number: String(p.steps.length + 1), title: "", description: "" })}
-          renderItem={(item, _, upd) => (
-            <div className="grid gap-3">
-              <div className="grid grid-cols-4 gap-3">
-                <div>
-                  <Label>Number</Label>
-                  <Input value={item.number} onChange={(e) => upd({ ...item, number: e.target.value })} />
-                </div>
-                <div className="col-span-3">
-                  <Label>Title</Label>
-                  <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
-                </div>
-              </div>
-              <RichTextField label="Description" value={item.description} onChange={(v) => upd({ ...item, description: v })} />
-            </div>
-          )}
-        />
-      </div>
-    </Section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-function VisitOfficeSection({ content, update }: SectionProps) {
-  const vo = content.visitOffice;
-  const set = (patch: Partial<typeof vo>) => update("visitOffice", { ...vo, ...patch });
-  const ht = useHeadingTag(content, update);
-
-  return (
-    <Section title="Visit Our Office" defaultOpen={false}>
-      <div className="grid gap-4">
-        <HeadingField
-          label="Heading"
-          value={vo.heading}
-          onChange={(v) => set({ heading: v })}
-          tag={ht.get("visitOffice.heading")}
-          onTagChange={(t) => ht.set("visitOffice.heading", t)}
-        />
-        <RichTextField label="Subtext" value={vo.subtext} onChange={(v) => set({ subtext: v })} />
-        <div>
-          <Label>Google Maps Embed URL</Label>
-          <Input value={vo.mapEmbedUrl} onChange={(e) => set({ mapEmbedUrl: e.target.value })} placeholder="https://www.google.com/maps/embed?..." />
         </div>
       </div>
     </Section>

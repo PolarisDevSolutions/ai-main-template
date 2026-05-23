@@ -41,25 +41,6 @@ export interface OfficeHoursContent {
   note: string; // Additional note
 }
 
-export interface ProcessStepItem {
-  number: string;
-  title: string;
-  description: string;
-}
-
-export interface ProcessContent {
-  sectionLabel: string; // "– The Process"
-  heading: string; // "What to Expect When You Contact Us"
-  subtitle: string; // Subtitle text
-  steps: ProcessStepItem[];
-}
-
-export interface VisitOfficeContent {
-  heading: string; // "Visit Our Office"
-  subtext: string; // Description text
-  mapEmbedUrl: string; // Google Maps embed URL
-}
-
 export interface CTAContent {
   heading: string; // "Ready to Discuss Your Case?"
   description: string; // Subtitle text
@@ -81,8 +62,6 @@ export interface ContactPageContent {
   contactMethods: ContactMethodsContent;
   form: ContactFormContent;
   officeHours: OfficeHoursContent;
-  process: ProcessContent;
-  visitOffice: VisitOfficeContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "form.heading") to HTML tag names (e.g. "h2") */
   headingTags?: Record<string, string>;
@@ -143,43 +122,6 @@ export const defaultContactContent: ContactPageContent = {
       { day: "Holidays", hours: "24/7 Available" },
     ],
     note: "Our intake team is available 24 hours a day, seven days a week. We understand that legal emergencies don't follow a schedule.",
-  },
-  process: {
-    sectionLabel: "– The Process",
-    heading: "What to Expect When You Contact Us",
-    subtitle: "",
-    steps: [
-      {
-        number: "1",
-        title: "Contact Us",
-        description:
-          "Reach out via phone, email, or our contact form. Our intake team is available 24/7 to take your call.",
-      },
-      {
-        number: "2",
-        title: "Free Consultation",
-        description:
-          "Schedule a no-obligation consultation where we'll review your case, answer questions, and explain your legal options.",
-      },
-      {
-        number: "3",
-        title: "Case Evaluation",
-        description:
-          "Our experienced attorneys will thoroughly evaluate your case and develop a strategic plan tailored to your needs.",
-      },
-      {
-        number: "4",
-        title: "Take Action",
-        description:
-          "Once you decide to work with us, we immediately begin building your case and fighting for the compensation you deserve.",
-      },
-    ],
-  },
-  visitOffice: {
-    heading: "Visit Our Office",
-    subtext:
-      "Our office is conveniently located and easily accessible.",
-    mapEmbedUrl: "",
   },
   cta: {
     heading: "Ready to Discuss Your Case?",

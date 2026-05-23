@@ -218,14 +218,6 @@ function mergeWithDefaults(
         ? cmsContent.officeHours.items
         : defaults.officeHours.items,
     },
-    process: {
-      ...defaults.process,
-      ...cmsContent.process,
-      steps: cmsContent.process?.steps?.length
-        ? cmsContent.process.steps
-        : defaults.process.steps,
-    },
-    visitOffice: { ...defaults.visitOffice, ...cmsContent.visitOffice },
     cta: {
       ...defaults.cta,
       ...cmsContent.cta,
