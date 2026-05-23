@@ -85,11 +85,11 @@ export default function AboutUs() {
                 className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-black mb-[30px]"
               />
               {content.whyChooseUs.image && (
-                <div className="hidden lg:block">
+                <div className="hidden lg:flex justify-center">
                   <img
                     src={content.whyChooseUs.image}
                     alt={content.whyChooseUs.imageAlt || "Why Choose Us"}
-                    className="w-full max-w-[400px] h-auto object-cover"
+                    className="h-auto w-full max-w-[400px] object-cover"
                     width={400}
                     height={300}
                     loading="lazy"
