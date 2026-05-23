@@ -2,6 +2,7 @@ import Seo from "@site/components/Seo";
 import Layout from "@site/components/layout/Layout";
 import PracticeAreaCard from "@site/components/practice/PracticeAreaCard";
 import AboutSection from "@site/components/home/AboutSection";
+import ProcessSection from "@site/components/home/ProcessSection";
 import CallBox from "@site/components/shared/CallBox";
 import * as LucideIcons from "lucide-react";
 import { Phone, Calendar, type LucideIcon } from "lucide-react";
@@ -108,6 +109,11 @@ export default function PracticeAreas() {
           </div>
         </div>
       </div>
+
+      <div className="bg-white -my-10 flex justify-center md:-my-14" aria-hidden="true">
+        <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+      </div>
+      <ProcessSection content={content.process} desktopColumns={4} />
 
       {/* Why Choose Our Practice Section */}
       <div className="bg-brand-dark py-[40px] md:py-[60px]">

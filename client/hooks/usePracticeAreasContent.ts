@@ -247,6 +247,13 @@ function mergeWithDefaults(
       ...defaults.outro,
       ...cmsContent.outro,
     },
+    process: {
+      ...defaults.process,
+      ...cmsContent.process,
+      steps: cmsContent.process?.steps?.length
+        ? cmsContent.process.steps
+        : defaults.process.steps,
+    },
     whyChoose: {
       ...defaults.whyChoose,
       ...cmsContent.whyChoose,

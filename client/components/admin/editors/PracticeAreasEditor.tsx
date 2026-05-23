@@ -19,6 +19,7 @@ export default function PracticeAreasEditor({ content, onChange }: PracticeAreas
       <GridSection content={content} update={update} />
       <AboutStyleSection content={content} update={update} />
       <OutroSection content={content} update={update} />
+      <ProcessSectionEditor content={content} update={update} />
       <GlobalSectionInfo sectionTitle="Why Choose Us" managedIn="About Us" />
       <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
     </div>
@@ -142,6 +143,56 @@ function OutroSection({ content, update }: SectionProps) {
           <Input value={outro.title} onChange={(e) => set({ title: e.target.value })} />
         </div>
         <RichTextField label="Content" value={outro.content} onChange={(v) => set({ content: v })} />
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function ProcessSectionEditor({ content, update }: SectionProps) {
+  const process = content.process;
+  const set = (patch: Partial<typeof process>) => update("process", { ...process, ...patch });
+  const ht = useHeadingTag(content, update);
+
+  return (
+    <Section title="Our Process" defaultOpen={false}>
+      <div className="grid gap-4">
+        <div>
+          <Label>Section Label</Label>
+          <Input value={process.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
+        </div>
+        <HeadingField
+          label="Heading Line 1"
+          value={process.headingLine1}
+          onChange={(v) => set({ headingLine1: v })}
+          tag={ht.get("process.heading")}
+          onTagChange={(t) => ht.set("process.heading", t)}
+        />
+        <div>
+          <Label>Heading Line 2</Label>
+          <Input value={process.headingLine2} onChange={(e) => set({ headingLine2: e.target.value })} />
+        </div>
+        <ArrayEditor
+          items={process.steps}
+          onChange={(items) => set({ steps: items })}
+          itemLabel="Step"
+          newItem={() => ({ number: "", title: "", description: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid gap-3">
+              <div className="grid grid-cols-4 gap-3">
+                <div>
+                  <Label>Number</Label>
+                  <Input value={item.number} onChange={(e) => upd({ ...item, number: e.target.value })} />
+                </div>
+                <div className="col-span-3">
+                  <Label>Title</Label>
+                  <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
+                </div>
+              </div>
+              <RichTextField label="Description" value={item.description} onChange={(v) => upd({ ...item, description: v })} />
+            </div>
+          )}
+        />
       </div>
     </Section>
   );

@@ -3,7 +3,7 @@ import {
   createDefaultSharedHeroContent,
   type SharedHeroContent,
 } from "./sharedHero";
-import { defaultHomeContent, type AboutContent } from "./homePageTypes";
+import { defaultHomeContent, type AboutContent, type ProcessContent } from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
 
@@ -42,6 +42,25 @@ export function createDefaultPracticeAreasAboutContent(
     ...base,
     ...overrides,
     features: overrides.features ?? base.features,
+  };
+}
+
+function cloneProcessContent(content: ProcessContent): ProcessContent {
+  return {
+    ...content,
+    steps: content.steps.map((step) => ({ ...step })),
+  };
+}
+
+export function createDefaultPracticeAreasProcessContent(
+  overrides: Partial<ProcessContent> = {},
+): ProcessContent {
+  const base = cloneProcessContent(defaultHomeContent.process);
+
+  return {
+    ...base,
+    ...overrides,
+    steps: overrides.steps ?? base.steps,
   };
 }
 
@@ -98,6 +117,7 @@ export interface PracticeAreasPageContent {
   grid: PracticeAreasGridContent;
   aboutSection: PracticeAreasAboutSectionContent;
   outro: PracticeAreasIntroContent;
+  process: ProcessContent;
   whyChoose: WhyChooseContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "grid.heading") to HTML tag names (e.g. "h2") */
@@ -164,6 +184,37 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
     content:
       "<p>Ovde možete dodati završni tekst koji povezuje usluge, vaš pristup i poziv korisniku da vas kontaktira ili istraži sledeći korak.</p>",
   },
+  process: createDefaultPracticeAreasProcessContent({
+    sectionLabel: "– Proces",
+    headingLine1: "Kako pristupamo",
+    headingLine2: "svakom projektu",
+    steps: [
+      {
+        number: "01",
+        title: "Analiza ciljeva",
+        description:
+          "<p>Najpre razumemo vaše poslovne ciljeve, ponudu i publiku kako bismo definisali pravac koji donosi realne rezultate.</p>",
+      },
+      {
+        number: "02",
+        title: "Strategija i izrada",
+        description:
+          "<p>Zatim razvijamo strukturu, dizajn i tehničku postavku sajta ili kampanje tako da sve bude usklađeno sa brendom i performansama.</p>",
+      },
+      {
+        number: "03",
+        title: "Optimizacija i rast",
+        description:
+          "<p>Nakon lansiranja pratimo rezultate, unapređujemo ključne tačke i gradimo sistem koji podržava dugoročan rast.</p>",
+      },
+      {
+        number: "04",
+        title: "Podrška i razvoj",
+        description:
+          "<p>Nakon isporuke ostajemo partner u daljoj optimizaciji, merenju rezultata i unapređenju digitalnog prisustva.</p>",
+      },
+    ],
+  }),
   whyChoose: {
     sectionLabel: "– Why Choose Us",
     heading: "Experience Across All Practice Areas",
