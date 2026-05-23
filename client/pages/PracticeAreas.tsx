@@ -11,7 +11,7 @@ import RichText from "@site/components/shared/RichText";
 
 const lucideIconMap = Object.fromEntries(
   Object.entries(LucideIcons)
-    .filter(([, value]) => typeof value === "function")
+    .filter(([key, value]) => /^[A-Z]/.test(key) && (typeof value === "function" || typeof value === "object"))
     .map(([key, value]) => [key.replace(/Icon$/, "").replace(/[-_\s]/g, "").toLowerCase(), value]),
 ) as Record<string, LucideIcon>;
 
@@ -31,6 +31,7 @@ export default function PracticeAreas() {
     image: area.image,
     imageAlt: area.imageAlt,
     link: area.link,
+    linkLabel: area.linkLabel,
   }));
 
   // Map why choose items from CMS content

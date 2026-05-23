@@ -126,6 +126,9 @@
     outline: none;
   }
   .tiptap-editor .ProseMirror p { margin: 0.5em 0; }
+  .tiptap-editor .ProseMirror ul { list-style: disc; margin: 0.75em 0; padding-left: 1.5rem; }
+  .tiptap-editor .ProseMirror ol { list-style: decimal; margin: 0.75em 0; padding-left: 1.5rem; }
+  .tiptap-editor .ProseMirror li { margin: 0.25em 0; }
   .tiptap-editor .ProseMirror h2 { font-size: 1.5em; font-weight: 700; margin: 0.75em 0 0.25em; }
   .tiptap-editor .ProseMirror h3 { font-size: 1.25em; font-weight: 600; margin: 0.6em 0 0.2em; }
   .tiptap-editor .ProseMirror h4 { font-size: 1.1em; font-weight: 600; margin: 0.5em 0 0.15em; }

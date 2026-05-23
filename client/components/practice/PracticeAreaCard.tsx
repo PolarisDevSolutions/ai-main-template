@@ -10,6 +10,7 @@ interface PracticeAreaCardProps {
   image: string;
   imageAlt?: string;
   link?: string;
+  linkLabel?: string;
 }
 
 export default function PracticeAreaCard({
@@ -18,13 +19,13 @@ export default function PracticeAreaCard({
   description,
   image,
   imageAlt,
-  link = "/kontakt/",
+  link,
+  linkLabel,
 }: PracticeAreaCardProps) {
-  return (
-    <Link
-      to={link}
-      className="relative min-h-[450px] overflow-hidden group bg-brand-card border border-brand-border transition-all duration-300 hover:border-brand-accent"
-    >
+  const hasLink = Boolean(link);
+  const cardClassName = "relative min-h-[450px] overflow-hidden group bg-brand-card border border-brand-border transition-all duration-300 hover:border-brand-accent";
+  const content = (
+    <>
       {/* Background Image */}
       <div
         role="img"
@@ -55,20 +56,32 @@ export default function PracticeAreaCard({
             </h3>
             <RichText
               html={description}
-              className="font-manrope text-[14px] leading-[22px] text-white/90 md:text-[16px] md:leading-[24px] [&_p]:mb-3 [&_p:last-child]:mb-0"
+              className="font-manrope text-[14px] leading-[22px] text-white/90 md:text-[16px] md:leading-[24px] [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_li:last-child]:mb-0"
             />
           </div>
         </div>
 
-        <div className="mt-auto pt-6">
-          <div className="flex items-center gap-2 text-brand-accent transition-colors duration-300 group-hover:text-white">
-            <span className="font-manrope text-[14px] md:text-[16px]">
-              Learn More
-            </span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        {hasLink && linkLabel && (
+          <div className="mt-auto pt-6">
+            <div className="flex items-center gap-2 text-brand-accent transition-colors duration-300 group-hover:text-white">
+              <span className="font-manrope text-[14px] md:text-[16px]">
+                {linkLabel}
+              </span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </Link>
+    </>
   );
+
+  if (hasLink) {
+    return (
+      <Link to={link!} className={cardClassName}>
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className={cardClassName}>{content}</div>;
 }

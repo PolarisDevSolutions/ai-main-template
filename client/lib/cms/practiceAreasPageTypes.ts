@@ -20,6 +20,7 @@ export interface PracticeAreaGridItem {
   image: string; // Background image URL
   imageAlt: string; // Image alt text
   link: string; // Link to detail page
+  linkLabel: string;
 }
 
 export interface PracticeAreasGridContent {

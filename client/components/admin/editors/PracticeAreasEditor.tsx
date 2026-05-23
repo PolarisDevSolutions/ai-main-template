@@ -86,7 +86,7 @@ function GridSection({ content, update }: SectionProps) {
           items={grid.areas}
           onChange={(items) => set({ areas: items })}
           itemLabel="Practice Area"
-          newItem={() => ({ icon: "FileText", title: "", description: "", image: "", imageAlt: "", link: "/practice-areas" })}
+          newItem={() => ({ icon: "FileText", title: "", description: "", image: "", imageAlt: "", link: "", linkLabel: "Saznajte više" })}
           renderItem={(item, _, upd) => (
             <div className="grid gap-3">
               <div className="grid grid-cols-4 gap-3">
@@ -108,6 +108,10 @@ function GridSection({ content, update }: SectionProps) {
               <div>
                 <Label>Link</Label>
                 <Input value={item.link} onChange={(e) => upd({ ...item, link: e.target.value })} />
+              </div>
+              <div>
+                <Label>Link Label</Label>
+                <Input value={item.linkLabel ?? ""} onChange={(e) => upd({ ...item, linkLabel: e.target.value })} placeholder="Saznajte više" />
               </div>
             </div>
           )}

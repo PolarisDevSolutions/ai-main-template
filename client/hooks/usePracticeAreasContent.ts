@@ -225,7 +225,15 @@ function mergeWithDefaults(
       ...defaults.grid,
       ...cmsContent.grid,
       areas: cmsContent.grid?.areas?.length
-        ? cmsContent.grid.areas
+        ? cmsContent.grid.areas.map((area) => ({
+            icon: area.icon ?? "",
+            title: area.title ?? "",
+            description: area.description ?? "",
+            image: area.image ?? "",
+            imageAlt: area.imageAlt ?? "",
+            link: area.link ?? "",
+            linkLabel: area.linkLabel ?? "",
+          }))
         : defaults.grid.areas,
     },
     whyChoose: {
