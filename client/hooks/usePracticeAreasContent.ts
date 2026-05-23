@@ -236,6 +236,16 @@ function mergeWithDefaults(
           }))
         : defaults.grid.areas,
     },
+    aboutSection: {
+      ...defaults.aboutSection,
+      ...cmsContent.aboutSection,
+      features: cmsContent.aboutSection?.features?.length
+        ? cmsContent.aboutSection.features
+        : defaults.aboutSection.features,
+      stats: cmsContent.aboutSection?.stats?.length
+        ? cmsContent.aboutSection.stats
+        : defaults.aboutSection.stats,
+    },
     whyChoose: {
       ...defaults.whyChoose,
       ...cmsContent.whyChoose,

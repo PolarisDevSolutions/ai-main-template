@@ -17,6 +17,7 @@ export default function PracticeAreasEditor({ content, onChange }: PracticeAreas
       <HeroSection content={content} update={update} />
       <IntroSection content={content} update={update} />
       <GridSection content={content} update={update} />
+      <AboutStyleSection content={content} update={update} />
       <GlobalSectionInfo sectionTitle="Why Choose Us" managedIn="About Us" />
       <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
     </div>
@@ -60,6 +61,87 @@ function IntroSection({ content, update }: SectionProps) {
           <Input value={intro.title} onChange={(e) => set({ title: e.target.value })} />
         </div>
         <RichTextField label="Content" value={intro.content} onChange={(v) => set({ content: v })} />
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function AboutStyleSection({ content, update }: SectionProps) {
+  const about = content.aboutSection;
+  const set = (patch: Partial<typeof about>) => update("aboutSection", { ...about, ...patch });
+
+  return (
+    <Section title="Usluge - About Section" defaultOpen={false}>
+      <div className="grid gap-4">
+        <div>
+          <Label>Section Label</Label>
+          <Input value={about.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
+        </div>
+        <div>
+          <Label>Heading</Label>
+          <Input value={about.heading} onChange={(e) => set({ heading: e.target.value })} />
+        </div>
+        <RichTextField label="Description" value={about.description} onChange={(v) => set({ description: v })} />
+        <p className="text-xs text-gray-500 italic">Phone number is managed in Site Settings &gt; Contact Info</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>Contact Label</Label>
+            <Input value={about.contactLabel} onChange={(e) => set({ contactLabel: e.target.value })} />
+          </div>
+          <div>
+            <Label>Contact Text</Label>
+            <Input value={about.contactText} onChange={(e) => set({ contactText: e.target.value })} />
+          </div>
+        </div>
+        <ImageField label="Image" value={about.attorneyImage} onChange={(url) => set({ attorneyImage: url })} folder="team" />
+        <div>
+          <Label>Image Alt</Label>
+          <Input value={about.attorneyImageAlt} onChange={(e) => set({ attorneyImageAlt: e.target.value })} />
+        </div>
+
+        <h4 className="mt-2 font-medium">Features</h4>
+        <ArrayEditor
+          items={about.features}
+          onChange={(items) => set({ features: items })}
+          itemLabel="Feature"
+          newItem={() => ({ number: String(about.features.length + 1), title: "", description: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid gap-3">
+              <div className="grid grid-cols-4 gap-3">
+                <div>
+                  <Label>Number</Label>
+                  <Input value={item.number} onChange={(e) => upd({ ...item, number: e.target.value })} />
+                </div>
+                <div className="col-span-3">
+                  <Label>Title</Label>
+                  <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
+                </div>
+              </div>
+              <RichTextField label="Description" value={item.description} onChange={(v) => upd({ ...item, description: v })} />
+            </div>
+          )}
+        />
+
+        <h4 className="mt-2 font-medium">Stats</h4>
+        <ArrayEditor
+          items={about.stats}
+          onChange={(items) => set({ stats: items })}
+          itemLabel="Stat"
+          newItem={() => ({ value: "", label: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Value</Label>
+                <Input value={item.value} onChange={(e) => upd({ ...item, value: e.target.value })} />
+              </div>
+              <div>
+                <Label>Label</Label>
+                <Input value={item.label} onChange={(e) => upd({ ...item, label: e.target.value })} />
+              </div>
+            </div>
+          )}
+        />
       </div>
     </Section>
   );

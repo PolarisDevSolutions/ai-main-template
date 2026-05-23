@@ -10,6 +10,7 @@ interface AboutSectionProps {
   statsLayout?: "default" | "split-third";
   showBottomDivider?: boolean;
   compactBottomPadding?: boolean;
+  theme?: "light" | "dark";
 }
 
 const defaultContent: AboutContent = {
@@ -56,6 +57,7 @@ export default function AboutSection({
   statsLayout = "default",
   showBottomDivider = false,
   compactBottomPadding = false,
+  theme = "light",
 }: AboutSectionProps) {
   const data = content || defaultContent;
   const features = data.features || defaultContent.features;
@@ -64,6 +66,7 @@ export default function AboutSection({
     useGlobalPhone();
   const useSplitThirdStatsLayout =
     statsLayout === "split-third" && stats.length === 3;
+  const isDark = theme === "dark";
 
   const renderStat = (
     stat: (typeof stats)[number],
@@ -76,12 +79,12 @@ export default function AboutSection({
       delay={index * 0.08}
       className={`text-center ${className}`.trim()}
     >
-      <p className="mb-1 font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light tracking-tight text-brand-dark">
+      <p className={`mb-1 font-grotesk text-[clamp(2.2rem,4vw,56px)] font-light tracking-tight ${isDark ? "text-white" : "text-brand-dark"}`}>
         {stat.value}
       </p>
       <div className="mx-auto mb-2 h-[2px] w-8 bg-brand-accent" />
       <p
-        className={`mx-auto max-w-[160px] font-manrope text-[13px] leading-snug text-brand-dark/50 ${labelClassName}`.trim()}
+        className={`mx-auto max-w-[160px] font-manrope text-[13px] leading-snug ${isDark ? "text-white/55" : "text-brand-dark/50"} ${labelClassName}`.trim()}
       >
         {stat.label}
       </p>
@@ -91,24 +94,24 @@ export default function AboutSection({
   return (
     <section
       className={compactBottomPadding
-        ? "bg-white pt-20 pb-0 md:pt-28 md:pb-0"
-        : "bg-white py-20 md:py-28"}
+        ? `${isDark ? "bg-brand-dark" : "bg-white"} pt-20 pb-0 md:pt-28 md:pb-0`
+        : `${isDark ? "bg-brand-dark" : "bg-white"} py-20 md:py-28`}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <AnimatedSection className="lg:w-full" direction="left">
             {data.sectionLabel && (
-              <p className="font-manrope text-[13px] font-semibold tracking-[0.2em] uppercase text-brand-accent mb-4">
+              <p className="mb-4 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent">
                 {data.sectionLabel}
               </p>
             )}
             <div className="mb-8">
-              <h2 className="font-grotesk text-[clamp(2rem,4vw,48px)] font-semibold leading-[1.15] text-brand-dark mb-6">
+              <h2 className={`mb-6 font-grotesk text-[clamp(2rem,4vw,48px)] font-semibold leading-[1.15] ${isDark ? "text-brand-accent" : "text-brand-dark"}`}>
                 {data.heading}
               </h2>
               <RichText
                 html={data.description}
-                className="font-manrope text-[15px] md:text-[17px] leading-7 text-brand-dark/78 [&_p]:mb-4 [&_p:last-child]:mb-0"
+                className={`font-manrope text-[15px] md:text-[17px] leading-7 ${isDark ? "text-white/78" : "text-brand-dark/78"} [&_p]:mb-4 [&_p:last-child]:mb-0`}
               />
             </div>
 
@@ -188,7 +191,7 @@ export default function AboutSection({
       </div>
 
       {/* Stats Section */}
-      <div className="mt-16 border-t border-brand-dark/8">
+      <div className={`mt-16 border-t ${isDark ? "border-white/10" : "border-brand-dark/8"}`}>
         <div
           className={compactBottomPadding
             ? "max-w-[1400px] mx-auto px-6 lg:px-10 pt-14 pb-4 md:pb-6"

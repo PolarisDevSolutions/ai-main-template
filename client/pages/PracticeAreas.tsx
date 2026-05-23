@@ -1,6 +1,7 @@
 import Seo from "@site/components/Seo";
 import Layout from "@site/components/layout/Layout";
 import PracticeAreaCard from "@site/components/practice/PracticeAreaCard";
+import AboutSection from "@site/components/home/AboutSection";
 import CallBox from "@site/components/shared/CallBox";
 import * as LucideIcons from "lucide-react";
 import { Phone, Calendar, type LucideIcon } from "lucide-react";
@@ -91,6 +92,8 @@ export default function PracticeAreas() {
           </div>
         </div>
       </div>
+
+      <AboutSection content={content.aboutSection} theme="dark" />
 
       {/* Why Choose Our Practice Section */}
       <div className="bg-brand-dark py-[40px] md:py-[60px]">

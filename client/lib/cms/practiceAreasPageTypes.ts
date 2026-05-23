@@ -3,6 +3,7 @@ import {
   createDefaultSharedHeroContent,
   type SharedHeroContent,
 } from "./sharedHero";
+import { defaultHomeContent, type AboutContent } from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
 
@@ -11,6 +12,27 @@ export type PracticeAreasHeroContent = SharedHeroContent;
 export interface PracticeAreasIntroContent {
   title: string;
   content: string;
+}
+
+function cloneAboutContent(content: AboutContent): AboutContent {
+  return {
+    ...content,
+    features: content.features.map((feature) => ({ ...feature })),
+    stats: content.stats.map((stat) => ({ ...stat })),
+  };
+}
+
+export function createDefaultPracticeAreasAboutContent(
+  overrides: Partial<AboutContent> = {},
+): AboutContent {
+  const base = cloneAboutContent(defaultHomeContent.about);
+
+  return {
+    ...base,
+    ...overrides,
+    features: overrides.features ?? base.features,
+    stats: overrides.stats ?? base.stats,
+  };
 }
 
 export interface PracticeAreaGridItem {
@@ -64,6 +86,7 @@ export interface PracticeAreasPageContent {
   hero: PracticeAreasHeroContent;
   intro: PracticeAreasIntroContent;
   grid: PracticeAreasGridContent;
+  aboutSection: AboutContent;
   whyChoose: WhyChooseContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "grid.heading") to HTML tag names (e.g. "h2") */
@@ -95,6 +118,42 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
       "Select a practice area to learn more about how our attorneys can help with your specific legal needs.",
     areas: [],
   },
+  aboutSection: createDefaultPracticeAreasAboutContent({
+    sectionLabel: "– Zašto Polaris",
+    heading: "Podrška koja spaja strategiju, izvedbu i rast",
+    description:
+      "<p>Svaku uslugu gradimo tako da odgovara vašem trenutnom cilju — od novog sajta i SEO optimizacije do dugoročnog održavanja i marketinške podrške.</p><p>Ne nudimo generička rešenja, već digitalne sisteme koji izgledaju profesionalno, rade brzo i pomažu vam da dođete do više pravih upita.</p>",
+    contactLabel: "Kontaktirajte nas",
+    contactText: "Zakažite besplatne konsultacije",
+    attorneyImage: "/images/team/attorney-2.png",
+    attorneyImageAlt: "Polaris Development usluge",
+    features: [
+      {
+        number: "1",
+        title: "Jasna strategija usluga",
+        description:
+          "<p>Pomažemo vam da odaberete pravi miks usluga prema fazi poslovanja, ciljevima i tržištu na kome nastupate.</p>",
+      },
+      {
+        number: "2",
+        title: "Fokus na performanse",
+        description:
+          "<p>Svako rešenje postavljamo tako da podrži brzinu, SEO, korisničko iskustvo i dugoročni rast vaše digitalne prisutnosti.</p>",
+      },
+      {
+        number: "3",
+        title: "Partnerstvo kroz ceo proces",
+        description:
+          "<p>Od prve ideje do optimizacije nakon lansiranja, ostajemo uključeni kako bi usluga donosila stvarne rezultate.</p>",
+      },
+    ],
+    stats: [
+      { value: "200+", label: "Projekata i kampanja" },
+      { value: "2018", label: "Iskustvo sa američkim tržištem" },
+      { value: "98%", label: "Fokus na zadovoljstvo klijenata" },
+      { value: "24/7", label: "Podrška i brz odgovor" },
+    ],
+  }),
   whyChoose: {
     sectionLabel: "– Why Choose Us",
     heading: "Experience Across All Practice Areas",
