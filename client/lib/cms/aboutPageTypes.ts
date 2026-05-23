@@ -309,7 +309,7 @@ export const defaultAboutContent: AboutPageContent = {
     secondaryButton: {
       label: "Schedule Now",
       sublabel: "Free Consultation",
-      link: "/contact",
+      link: "/kontakt/",
     },
   },
 };

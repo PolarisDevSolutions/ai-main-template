@@ -10,6 +10,7 @@ import {
   buildPublishedPageLookupQuery,
   getEquivalentStructuredPaths,
   pickPreferredPageRecord,
+  STRUCTURED_PAGE_PATHS,
 } from '../lib/pageIdentity';
 import { getPublicEnv } from '../lib/runtimeEnv';
 
@@ -30,7 +31,7 @@ let cachedMeta: PageMeta | null = null;
 
 export function useContactContent(): UseContactContentResult {
   // Consume SSG-injected data synchronously before first render
-  const injected = consumePageData('/contact/');
+  const injected = consumePageData(STRUCTURED_PAGE_PATHS.contact);
   const initialContent = injected && isStructuredContent(injected.content)
     ? {
         ...(injected.content as ContactPageContent),
@@ -68,7 +69,7 @@ export function useContactContent(): UseContactContentResult {
         }
 
         // Fetch contact page from pages table
-        const contactPaths = getEquivalentStructuredPaths('/contact/');
+        const contactPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS.contact);
         const response = await fetch(
           `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(
             contactPaths,
@@ -116,7 +117,7 @@ export function useContactContent(): UseContactContentResult {
 
         // Fetch About page for globally-shared CTA section
         try {
-          const aboutPaths = getEquivalentStructuredPaths('/about/');
+          const aboutPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS.about);
           const aboutResp = await fetch(
             `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(aboutPaths, 'url_path,content')}`,
             {

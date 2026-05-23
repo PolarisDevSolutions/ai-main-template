@@ -10,7 +10,7 @@ interface PracticeAreasSectionProps {
 const defaultContent: PracticeAreasIntroContent = {
   sectionLabel: "– Practice Areas",
   heading: "Practice Areas",
-  buttonLink: "/practice-areas/",
+  buttonLink: "/usluge/",
 };
 
 export default function PracticeAreasSection({ content }: PracticeAreasSectionProps) {
@@ -33,7 +33,7 @@ export default function PracticeAreasSection({ content }: PracticeAreasSectionPr
 
           <AnimatedSection delay={0.15}>
             <Link
-              to={data.buttonLink || "/practice-areas/"}
+              to={data.buttonLink || "/usluge/"}
               className="flex items-center gap-4 bg-brand-accent p-5 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[320px]"
             >
               <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">

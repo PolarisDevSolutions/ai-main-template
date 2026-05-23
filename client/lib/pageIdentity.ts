@@ -5,33 +5,17 @@ export type StructuredPageKind =
   | "practice-areas"
   | "practice-area";
 
-const STRUCTURED_PAGE_ALIASES = {
-  home: ["/"],
-  about: ["/about/", "/o-nama/"],
-  contact: ["/contact/", "/kontakt/"],
-  "practice-areas": ["/practice-areas/", "/usluge/"],
-} as const satisfies Record<Exclude<StructuredPageKind, "practice-area">, string[]>;
+export const STRUCTURED_PAGE_PATHS = {
+  home: "/",
+  about: "/o-nama/",
+  contact: "/kontakt/",
+  "practice-areas": "/usluge/",
+} as const satisfies Record<Exclude<StructuredPageKind, "practice-area">, string>;
 
-const ALIAS_LOOKUP = Object.entries(STRUCTURED_PAGE_ALIASES).reduce<Record<string, string[]>>(
-  (lookup, [, aliases]) => {
-    const normalizedAliases = aliases.map((alias) => normalizePagePath(alias));
-
-    for (const alias of normalizedAliases) {
-      lookup[alias] = normalizedAliases;
-    }
-
-    return lookup;
-  },
-  {},
-);
-
-const KIND_LOOKUP = Object.entries(STRUCTURED_PAGE_ALIASES).reduce<
+const KIND_LOOKUP = Object.entries(STRUCTURED_PAGE_PATHS).reduce<
   Record<string, Exclude<StructuredPageKind, "practice-area">>
->((lookup, [kind, aliases]) => {
-  for (const alias of aliases) {
-    lookup[normalizePagePath(alias)] = kind as Exclude<StructuredPageKind, "practice-area">;
-  }
-
+>((lookup, [kind, route]) => {
+  lookup[normalizePagePath(route)] = kind as Exclude<StructuredPageKind, "practice-area">;
   return lookup;
 }, {});
 
@@ -43,16 +27,50 @@ export function normalizePagePath(path: string | null | undefined) {
   return `/${path.replace(/^\/+|\/+$/g, "")}/`;
 }
 
+function isStructuredObject(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function detectStructuredPageKindFromContent(content: unknown) {
+  if (!isStructuredObject(content)) {
+    return null;
+  }
+
+  if ("features" in content && "mission" in content) {
+    return "home" satisfies StructuredPageKind;
+  }
+
+  if ("story" in content && "missionVision" in content && "whyChooseUs" in content) {
+    return "about" satisfies StructuredPageKind;
+  }
+
+  if ("contactMethods" in content && "officeHours" in content && "visitOffice" in content) {
+    return "contact" satisfies StructuredPageKind;
+  }
+
+  if ("intro" in content && "grid" in content && "aboutSection" in content) {
+    return "practice-areas" satisfies StructuredPageKind;
+  }
+
+  return null;
+}
+
 export function resolveStructuredPageKind(page: {
   url_path?: string | null;
   page_type?: string | null;
+  content?: unknown;
 }) {
   const normalizedPath = normalizePagePath(page.url_path);
-
   const directKind = KIND_LOOKUP[normalizedPath];
 
   if (directKind) {
     return directKind;
+  }
+
+  const contentKind = detectStructuredPageKindFromContent(page.content);
+
+  if (contentKind) {
+    return contentKind;
   }
 
   if (
@@ -66,8 +84,7 @@ export function resolveStructuredPageKind(page: {
 }
 
 export function getEquivalentStructuredPaths(path: string) {
-  const normalizedPath = normalizePagePath(path);
-  return ALIAS_LOOKUP[normalizedPath] ?? [normalizedPath];
+  return [normalizePagePath(path)];
 }
 
 export function buildPublishedPageLookupQuery(urlPaths: string[], select: string) {

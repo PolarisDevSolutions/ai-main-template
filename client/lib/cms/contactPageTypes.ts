@@ -178,7 +178,7 @@ export const defaultContactContent: ContactPageContent = {
     secondaryButton: {
       label: "Schedule Consultation",
       sublabel: "Free Case Review",
-      link: "/contact",
+      link: "/kontakt/",
     },
   },
 };

@@ -211,7 +211,7 @@ export const defaultHomeContent: HomePageContent = {
   practiceAreasIntro: {
     sectionLabel: "– Practice Areas",
     heading: "Practice Areas",
-    buttonLink: "/practice-areas/",
+    buttonLink: "/usluge/",
   },
   practiceAreas: [],
   whyNeedUs: {

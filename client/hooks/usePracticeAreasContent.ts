@@ -13,6 +13,7 @@ import {
   buildPublishedPageLookupQuery,
   getEquivalentStructuredPaths,
   pickPreferredPageRecord,
+  STRUCTURED_PAGE_PATHS,
 } from '../lib/pageIdentity';
 import { getPublicEnv } from '../lib/runtimeEnv';
 
@@ -33,7 +34,7 @@ let cachedMeta: PageMeta | null = null;
 
 export function usePracticeAreasContent(): UsePracticeAreasContentResult {
   // Consume SSG-injected data synchronously before first render
-  const injected = consumePageData('/practice-areas/');
+  const injected = consumePageData(STRUCTURED_PAGE_PATHS["practice-areas"]);
   const initialContent = injected && isStructuredContent(injected.content)
     ? mergeWithDefaults(
         injected.content as Partial<PracticeAreasPageContent>,
@@ -68,7 +69,7 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
         }
 
         // Fetch practice areas page from pages table
-        const practiceAreasPaths = getEquivalentStructuredPaths('/practice-areas/');
+        const practiceAreasPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS["practice-areas"]);
         const response = await fetch(
           `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(
             practiceAreasPaths,
@@ -113,7 +114,7 @@ export function usePracticeAreasContent(): UsePracticeAreasContentResult {
 
         // Fetch About page for globally-shared sections (whyChooseUs, cta)
         try {
-          const aboutPaths = getEquivalentStructuredPaths('/about/');
+          const aboutPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS.about);
           const aboutResp = await fetch(
             `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(aboutPaths, 'url_path,content')}`,
             {

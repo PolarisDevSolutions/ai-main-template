@@ -11,6 +11,7 @@ import {
   buildPublishedPageLookupQuery,
   getEquivalentStructuredPaths,
   pickPreferredPageRecord,
+  STRUCTURED_PAGE_PATHS,
 } from '../lib/pageIdentity';
 import { getPublicEnv } from '../lib/runtimeEnv';
 
@@ -31,7 +32,7 @@ let cachedMeta: PageMeta | null = null;
 
 export function useAboutContent(): UseAboutContentResult {
   // Consume SSG-injected data synchronously before first render
-  const injected = consumePageData('/about/');
+  const injected = consumePageData(STRUCTURED_PAGE_PATHS.about);
   const initialContent = injected && isStructuredContent(injected.content)
     ? normalizeAboutPageContent(injected.content as Partial<AboutPageContent>)
     : (cachedContent ?? defaultAboutContent);
@@ -63,7 +64,7 @@ export function useAboutContent(): UseAboutContentResult {
         }
 
         // Fetch about page from pages table
-        const aboutPaths = getEquivalentStructuredPaths('/about/');
+        const aboutPaths = getEquivalentStructuredPaths(STRUCTURED_PAGE_PATHS.about);
         const response = await fetch(
           `${SUPABASE_URL}/rest/v1/pages?${buildPublishedPageLookupQuery(
             aboutPaths,

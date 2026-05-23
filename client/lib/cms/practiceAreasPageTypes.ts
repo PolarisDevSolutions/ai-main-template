@@ -262,7 +262,7 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
     secondaryButton: {
       label: "Schedule Now",
       sublabel: "Free Consultation",
-      link: "/contact",
+      link: "/kontakt/",
     },
   },
 };
