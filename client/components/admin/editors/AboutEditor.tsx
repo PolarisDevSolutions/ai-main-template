@@ -18,7 +18,7 @@ export default function AboutEditor({ content, onChange }: AboutEditorProps) {
       <StorySection content={content} update={update} />
       <WhyChooseUsSection content={content} update={update} />
       <MissionVisionSection content={content} update={update} />
-      <ValuesSection content={content} update={update} />
+      <ProcessSection content={content} update={update} />
       <CTASection content={content} update={update} />
     </div>
   );
@@ -163,40 +163,40 @@ function MissionVisionSection({ content, update }: SectionProps) {
 }
 
 /* ------------------------------------------------------------------ */
-function ValuesSection({ content, update }: SectionProps) {
-  const values = content.values;
-  const set = (patch: Partial<typeof values>) => update("values", { ...values, ...patch });
+function ProcessSection({ content, update }: SectionProps) {
+  const process = content.process;
+  const set = (patch: Partial<typeof process>) => update("process", { ...process, ...patch });
   const ht = useHeadingTag(content, update);
 
   return (
-    <Section title="Our Values" defaultOpen={false}>
+    <Section title="Our Process" defaultOpen={false}>
       <div className="grid gap-4">
         <div>
           <Label>Section Label</Label>
-          <Input value={values.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
+          <Input value={process.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
         </div>
         <HeadingField
-          label="Heading"
-          value={values.heading}
-          onChange={(v) => set({ heading: v })}
-          tag={ht.get("values.heading")}
-          onTagChange={(t) => ht.set("values.heading", t)}
+          label="Heading Line 1"
+          value={process.headingLine1}
+          onChange={(v) => set({ headingLine1: v })}
+          tag={ht.get("process.heading")}
+          onTagChange={(t) => ht.set("process.heading", t)}
         />
         <div>
-          <Label>Subtitle</Label>
-          <Input value={values.subtitle} onChange={(e) => set({ subtitle: e.target.value })} />
+          <Label>Heading Line 2</Label>
+          <Input value={process.headingLine2} onChange={(e) => set({ headingLine2: e.target.value })} />
         </div>
         <ArrayEditor
-          items={values.items}
-          onChange={(items) => set({ items })}
-          itemLabel="Value"
-          newItem={() => ({ icon: "Star", title: "", description: "" })}
+          items={process.steps}
+          onChange={(items) => set({ steps: items })}
+          itemLabel="Step"
+          newItem={() => ({ number: "", title: "", description: "" })}
           renderItem={(item, _, upd) => (
             <div className="grid gap-3">
               <div className="grid grid-cols-4 gap-3">
                 <div>
-                  <Label>Icon</Label>
-                  <Input value={item.icon} onChange={(e) => upd({ ...item, icon: e.target.value })} placeholder="Lucide icon name" />
+                  <Label>Number</Label>
+                  <Input value={item.number} onChange={(e) => upd({ ...item, number: e.target.value })} />
                 </div>
                 <div className="col-span-3">
                   <Label>Title</Label>

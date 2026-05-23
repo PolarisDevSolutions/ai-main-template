@@ -3,7 +3,11 @@ import {
   normalizeSharedHeroContent,
   type SharedHeroContent,
 } from "./sharedHero";
-import { defaultHomeContent, type AboutContent } from "./homePageTypes";
+import {
+  defaultHomeContent,
+  type AboutContent,
+  type ProcessContent,
+} from "./homePageTypes";
 
 // Each section maps directly to a static component's data needs
 
@@ -59,17 +63,23 @@ export interface MissionVisionContent {
   text: string;
 }
 
-export interface ValueItem {
-  icon: string;
-  title: string;
-  description: string;
+function cloneProcessContent(content: ProcessContent): ProcessContent {
+  return {
+    ...content,
+    steps: content.steps.map((step) => ({ ...step })),
+  };
 }
 
-export interface ValuesContent {
-  sectionLabel: string;
-  heading: string;
-  subtitle: string;
-  items: ValueItem[];
+export function createDefaultAboutProcessContent(
+  overrides: Partial<ProcessContent> = {},
+): ProcessContent {
+  const base = cloneProcessContent(defaultHomeContent.process);
+
+  return {
+    ...base,
+    ...overrides,
+    steps: overrides.steps ?? base.steps,
+  };
 }
 
 export interface StatItem {
@@ -114,7 +124,7 @@ export interface AboutPageContent {
   hero: AboutHeroContent;
   story: StoryContent;
   missionVision: MissionVisionContent;
-  values: ValuesContent;
+  process: ProcessContent;
   stats: StatsContent;
   whyChooseUs: WhyChooseUsContent;
   cta: CTAContent;
@@ -174,37 +184,31 @@ export const defaultAboutContent: AboutPageContent = {
     heading: "Naš pristup",
     text: "<p>Svaki projekat posmatramo kroz rezultate koje želite da ostvarite — više upita, bolju vidljivost i jasnije pozicioniranje na tržištu.</p><p>Spajamo strategiju, moderan dizajn i tehničku izvedbu kako bismo izgradili digitalno prisustvo koje izgleda profesionalno i radi u korist vašeg biznisa.</p>",
   },
-  values: {
-    sectionLabel: "– Our Values",
-    heading: "Principles That Guide Our Practice",
-    subtitle: "",
-    items: [
+  process: createDefaultAboutProcessContent({
+    sectionLabel: "– Proces",
+    headingLine1: "Kako pristupamo",
+    headingLine2: "svakom projektu",
+    steps: [
       {
-        icon: "Scale",
-        title: "Integrity",
+        number: "01",
+        title: "Analiza ciljeva",
         description:
-          "We uphold the highest ethical standards in every case we handle. Your trust is our foundation, and we never compromise on honesty and transparency.",
+          "<p>Najpre razumemo vaše poslovne ciljeve, ponudu i publiku kako bismo definisali pravac koji donosi realne rezultate.</p>",
       },
       {
-        icon: "Award",
-        title: "Excellence",
+        number: "02",
+        title: "Strategija i izrada",
         description:
-          "Our commitment to excellence drives us to thoroughly prepare every engagement, leverage cutting-edge strategies, and pursue the best possible outcomes.",
+          "<p>Zatim razvijamo strukturu, dizajn i tehničku postavku sajta ili kampanje tako da sve bude usklađeno sa brendom i performansama.</p>",
       },
       {
-        icon: "Users",
-        title: "Client-First Approach",
+        number: "03",
+        title: "Optimizacija i rast",
         description:
-          "Your needs come first. We listen carefully, communicate clearly, and work tirelessly to protect your rights and achieve your goals.",
-      },
-      {
-        icon: "Heart",
-        title: "Compassion",
-        description:
-          "We understand that challenges often arise during difficult times. Our team provides not just expertise, but genuine care and support.",
+          "<p>Nakon lansiranja pratimo rezultate, unapređujemo ključne tačke i gradimo sistem koji podržava dugoročan rast.</p>",
       },
     ],
-  },
+  }),
   stats: {
     stats: [
       { value: "25+", label: "Years Combined Experience" },
@@ -351,12 +355,12 @@ export function normalizeAboutPageContent(
                   : defaultAboutContent.missionVision.text),
           }
         : defaultAboutContent.missionVision,
-    values: {
-      ...defaultAboutContent.values,
-      ...cmsContent.values,
-      items: cmsContent.values?.items?.length
-        ? cmsContent.values.items
-        : defaultAboutContent.values.items,
+    process: {
+      ...defaultAboutContent.process,
+      ...cmsContent.process,
+      steps: cmsContent.process?.steps?.length
+        ? cmsContent.process.steps
+        : defaultAboutContent.process.steps,
     },
     stats: {
       ...defaultAboutContent.stats,

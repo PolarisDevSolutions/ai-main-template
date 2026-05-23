@@ -2,39 +2,16 @@ import Seo from "@site/components/Seo";
 import Layout from "@site/components/layout/Layout";
 import AboutSection from "@site/components/home/AboutSection";
 import CallBox from "@site/components/shared/CallBox";
-import ValueCard from "@site/components/about/ValueCard";
-import {
-  Phone,
-  Calendar,
-  Scale,
-  Award,
-  Users,
-  Heart,
-  type LucideIcon,
-} from "lucide-react";
+import ProcessSection from "@site/components/home/ProcessSection";
+import { Phone, Calendar } from "lucide-react";
 import { useAboutContent } from "@site/hooks/useAboutContent";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import MarketingHeroSection from "@site/components/shared/MarketingHeroSection";
 import RichText from "@site/components/shared/RichText";
 
-// Icon mapping for values section
-const iconMap: Record<string, LucideIcon> = {
-  Scale,
-  Award,
-  Users,
-  Heart,
-};
-
 export default function AboutUs() {
   const { content, meta } = useAboutContent();
   const { phoneNumber, phoneDisplay, phoneLabel } = useGlobalPhone();
-
-  // Map core values from CMS content with icon components
-  const coreValues = content.values.items.map((item) => ({
-    icon: iconMap[item.icon] || Scale,
-    title: item.title,
-    description: item.description,
-  }));
 
   // Map why choose us from CMS content
   const whyChooseUs = content.whyChooseUs.items;
@@ -140,32 +117,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Core Values Section */}
-      <div className="bg-brand-dark py-[40px] md:py-[60px]">
-        <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
-          <div className="text-center mb-[30px] md:mb-[50px]">
-            <div className="mb-[10px]">
-              <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
-                {content.values.sectionLabel}
-              </p>
-            </div>
-            <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white">
-              {content.values.heading}
-            </h2>
-            {content.values.subtitle && (
-              <p className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 mt-[15px]">
-                {content.values.subtitle}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-[5%]">
-            {coreValues.map((value, index) => (
-              <ValueCard key={index} {...value} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <ProcessSection content={content.process} />
 
       {/* Call to Action Section */}
       <div className="bg-brand-accent py-[40px] md:py-[60px]">
