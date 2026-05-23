@@ -119,6 +119,9 @@ export default function AboutUs() {
       </div>
 
       <ProcessSection content={content.process} desktopColumns={4} />
+      <div className="bg-white -my-10 flex justify-center md:-my-14" aria-hidden="true">
+        <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+      </div>
       <FaqSection content={content.faq} />
 
       {/* Call to Action Section */}
