@@ -136,32 +136,28 @@ function StorySection({ content, update }: SectionProps) {
 
 /* ------------------------------------------------------------------ */
 function MissionVisionSection({ content, update }: SectionProps) {
-  const mv = content.missionVision;
-  const set = (patch: Partial<typeof mv>) => update("missionVision", { ...mv, ...patch });
+  const approach = content.missionVision;
   const ht = useHeadingTag(content, update);
+  const headingTag =
+    content.headingTags?.["approach.heading"] ??
+    content.headingTags?.["mission.heading"] ??
+    "h2";
 
   return (
-    <Section title="Mission & Vision" defaultOpen={false}>
+    <Section title="Our Approach" defaultOpen={false}>
       <div className="grid gap-4">
-        <h4 className="font-medium">Mission</h4>
         <HeadingField
           label="Heading"
-          value={mv.mission.heading}
-          onChange={(v) => set({ mission: { ...mv.mission, heading: v } })}
-          tag={ht.get("mission.heading")}
-          onTagChange={(t) => ht.set("mission.heading", t)}
+          value={approach.heading}
+          onChange={(v) => update("missionVision", { ...approach, heading: v })}
+          tag={headingTag}
+          onTagChange={(t) => ht.set("approach.heading", t)}
         />
-        <RichTextField label="Text" value={mv.mission.text} onChange={(v) => set({ mission: { ...mv.mission, text: v } })} />
-        <hr />
-        <h4 className="font-medium">Vision</h4>
-        <HeadingField
-          label="Heading"
-          value={mv.vision.heading}
-          onChange={(v) => set({ vision: { ...mv.vision, heading: v } })}
-          tag={ht.get("vision.heading")}
-          onTagChange={(t) => ht.set("vision.heading", t)}
+        <RichTextField
+          label="Content"
+          value={approach.text}
+          onChange={(v) => update("missionVision", { ...approach, text: v })}
         />
-        <RichTextField label="Text" value={mv.vision.text} onChange={(v) => set({ vision: { ...mv.vision, text: v } })} />
       </div>
     </Section>
   );

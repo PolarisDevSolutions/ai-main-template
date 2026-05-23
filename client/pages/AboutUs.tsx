@@ -128,32 +128,16 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Mission & Vision Section */}
+      {/* Our Approach Section */}
       <div className="bg-brand-accent-dark py-[40px] md:py-[60px]">
-        <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[8%]">
-            {/* Mission */}
-            <div className="text-center lg:text-left">
-              <h2 className="font-grotesk text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
-                {content.missionVision.mission.heading}
-              </h2>
-              <RichText
-                html={content.missionVision.mission.text}
-                className="font-manrope text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
-              />
-            </div>
-
-            {/* Vision */}
-            <div className="text-center lg:text-left">
-              <h2 className="font-grotesk text-[32px] md:text-[40px] leading-tight text-brand-accent pb-[15px] md:pb-[20px]">
-                {content.missionVision.vision.heading}
-              </h2>
-              <RichText
-                html={content.missionVision.vision.text}
-                className="font-manrope text-[16px] md:text-[18px] leading-[26px] md:leading-[30px] text-white"
-              />
-            </div>
-          </div>
+        <div className="mx-auto flex w-[95%] max-w-[900px] flex-col items-center text-center md:w-[90%]">
+          <h2 className="pb-[15px] font-grotesk text-[32px] leading-tight text-brand-accent md:pb-[20px] md:text-[40px]">
+            {content.missionVision.heading}
+          </h2>
+          <RichText
+            html={content.missionVision.text}
+            className="font-manrope text-[16px] leading-[26px] text-white md:text-[18px] md:leading-[30px] [&_p]:mb-4 [&_p:last-child]:mb-0"
+          />
         </div>
       </div>
 

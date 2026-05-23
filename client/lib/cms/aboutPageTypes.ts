@@ -55,14 +55,8 @@ function paragraphsToRichText(paragraphs?: string[]) {
 }
 
 export interface MissionVisionContent {
-  mission: {
-    heading: string;
-    text: string;
-  };
-  vision: {
-    heading: string;
-    text: string;
-  };
+  heading: string;
+  text: string;
 }
 
 export interface TeamMember {
@@ -193,14 +187,8 @@ export const defaultAboutContent: AboutPageContent = {
     ],
   }),
   missionVision: {
-    mission: {
-      heading: "Our Mission",
-      text: "To provide exceptional representation that empowers our clients, protects their rights, and delivers results. We are committed to being accessible, responsive, and relentless in pursuing the best outcomes for those we serve.",
-    },
-    vision: {
-      heading: "Our Vision",
-      text: "To be the most trusted and respected firm in the region, recognized for our unwavering integrity, excellence, and genuine care for our clients. We envision a community where everyone has access to quality service.",
-    },
+    heading: "Naš pristup",
+    text: "<p>Svaki projekat posmatramo kroz rezultate koje želite da ostvarite — više upita, bolju vidljivost i jasnije pozicioniranje na tržištu.</p><p>Spajamo strategiju, moderan dizajn i tehničku izvedbu kako bismo izgradili digitalno prisustvo koje izgleda profesionalno i radi u korist vašeg biznisa.</p>",
   },
   team: {
     sectionLabel: "– Our Team",
@@ -382,16 +370,33 @@ export function normalizeAboutPageContent(
     ...cmsContent,
     hero: normalizeSharedHeroContent(cmsContent.hero, defaultAboutContent.hero),
     story,
-    missionVision: {
-      mission: {
-        ...defaultAboutContent.missionVision.mission,
-        ...cmsContent.missionVision?.mission,
-      },
-      vision: {
-        ...defaultAboutContent.missionVision.vision,
-        ...cmsContent.missionVision?.vision,
-      },
-    },
+    missionVision:
+      cmsContent.missionVision && typeof cmsContent.missionVision === "object"
+        ? {
+            heading:
+              ("heading" in cmsContent.missionVision &&
+              typeof cmsContent.missionVision.heading === "string"
+                ? cmsContent.missionVision.heading
+                : "mission" in cmsContent.missionVision &&
+                    cmsContent.missionVision.mission &&
+                    typeof cmsContent.missionVision.mission === "object" &&
+                    "heading" in cmsContent.missionVision.mission &&
+                    typeof cmsContent.missionVision.mission.heading === "string"
+                  ? cmsContent.missionVision.mission.heading
+                  : defaultAboutContent.missionVision.heading),
+            text:
+              ("text" in cmsContent.missionVision &&
+              typeof cmsContent.missionVision.text === "string"
+                ? cmsContent.missionVision.text
+                : "mission" in cmsContent.missionVision &&
+                    cmsContent.missionVision.mission &&
+                    typeof cmsContent.missionVision.mission === "object" &&
+                    "text" in cmsContent.missionVision.mission &&
+                    typeof cmsContent.missionVision.mission.text === "string"
+                  ? cmsContent.missionVision.mission.text
+                  : defaultAboutContent.missionVision.text),
+          }
+        : defaultAboutContent.missionVision,
     team: {
       ...defaultAboutContent.team,
       ...cmsContent.team,
