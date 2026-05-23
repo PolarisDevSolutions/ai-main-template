@@ -143,16 +143,14 @@ export default function AboutUs() {
               title={phoneLabel}
               subtitle={phoneDisplay}
               phone={phoneNumber}
-              className="bg-brand-accent-dark hover:bg-black"
-              variant="dark"
+              variant="brand-dark-accent"
             />
             <CallBox
               icon={Calendar}
               title={content.cta.secondaryButton.label}
               subtitle={content.cta.secondaryButton.sublabel}
               link={content.cta.secondaryButton.link}
-              className="bg-brand-accent-dark hover:bg-black"
-              variant="dark"
+              variant="brand-dark-accent"
             />
           </div>
         </div>
