@@ -2,51 +2,30 @@ import Seo from "@site/components/Seo";
 import Layout from "@site/components/layout/Layout";
 import PracticeAreaCard from "@site/components/practice/PracticeAreaCard";
 import CallBox from "@site/components/shared/CallBox";
-import {
-  Phone,
-  Calendar,
-  Scale,
-  Car,
-  Briefcase,
-  Users,
-  Home,
-  DollarSign,
-  FileText,
-  Heart,
-  Shield,
-  TrendingUp,
-  Stethoscope,
-  Building,
-  type LucideIcon,
-} from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { Phone, Calendar, type LucideIcon } from "lucide-react";
 import { usePracticeAreasContent } from "@site/hooks/usePracticeAreasContent";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import MarketingHeroSection from "@site/components/shared/MarketingHeroSection";
 import RichText from "@site/components/shared/RichText";
 
-// Icon mapping for practice areas
-const iconMap: Record<string, LucideIcon> = {
-  Car,
-  Stethoscope,
-  Briefcase,
-  Heart,
-  Building,
-  Shield,
-  Scale,
-  FileText,
-  Users,
-  Home,
-  DollarSign,
-  TrendingUp,
-};
+const lucideIconMap = Object.fromEntries(
+  Object.entries(LucideIcons)
+    .filter(([, value]) => typeof value === "function")
+    .map(([key, value]) => [key.replace(/Icon$/, "").replace(/[-_\s]/g, "").toLowerCase(), value]),
+) as Record<string, LucideIcon>;
+
+function resolvePracticeAreaIcon(name: string) {
+  const normalizedName = name.replace(/[-_\s]/g, "").toLowerCase();
+  return lucideIconMap[normalizedName] ?? LucideIcons.Scale;
+}
 
 export default function PracticeAreas() {
   const { content, meta } = usePracticeAreasContent();
   const { phoneNumber, phoneDisplay, phoneLabel } = useGlobalPhone();
 
-  // Map practice areas from CMS content with icon components
   const practiceAreas = content.grid.areas.map((area) => ({
-    icon: iconMap[area.icon] || Scale,
+    icon: resolvePracticeAreaIcon(area.icon),
     title: area.title,
     description: area.description,
     image: area.image,
@@ -74,7 +53,7 @@ export default function PracticeAreas() {
 
       <MarketingHeroSection content={content.hero} />
 
-      <div className="bg-white py-[40px] md:py-[60px]">
+      <div className="bg-white pt-[40px] md:pt-[60px]">
         <div className="mx-auto w-[95%] max-w-[900px] md:w-[90%]">
           <div className="grid grid-cols-1 gap-5 text-center">
             <h2 className="font-grotesk text-[32px] leading-tight text-black md:text-[40px] lg:text-[48px]">
@@ -85,11 +64,14 @@ export default function PracticeAreas() {
               className="font-manrope text-[16px] leading-[26px] text-black/80 md:text-[18px] md:leading-[30px] [&_p]:mb-4 [&_p:last-child]:mb-0"
             />
           </div>
+          <div className="mt-10 flex justify-center pb-[40px] md:mt-12 md:pb-[60px]" aria-hidden="true">
+            <div className="h-12 w-[1px] bg-gradient-to-b from-brand-accent/60 to-transparent" />
+          </div>
         </div>
       </div>
 
       {/* Practice Areas Grid Section */}
-      <div className="bg-white py-[40px] md:py-[60px]">
+      <div className="bg-white pt-0 pb-[40px] md:pb-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[85%]">
           <div className="text-center mb-[30px] md:mb-[50px]">
             <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-black">
