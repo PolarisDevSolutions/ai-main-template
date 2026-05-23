@@ -3,13 +3,13 @@ import Layout from "@site/components/layout/Layout";
 import PracticeAreaCard from "@site/components/practice/PracticeAreaCard";
 import AboutSection from "@site/components/home/AboutSection";
 import ProcessSection from "@site/components/home/ProcessSection";
-import CallBox from "@site/components/shared/CallBox";
 import * as LucideIcons from "lucide-react";
-import { Phone, Calendar, type LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 import { usePracticeAreasContent } from "@site/hooks/usePracticeAreasContent";
-import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import MarketingHeroSection from "@site/components/shared/MarketingHeroSection";
 import RichText from "@site/components/shared/RichText";
+import SharedWhyChooseSection from "@site/components/shared/SharedWhyChooseSection";
+import SharedCtaSection from "@site/components/shared/SharedCtaSection";
 
 const lucideIconMap = Object.fromEntries(
   Object.entries(LucideIcons)
@@ -24,7 +24,6 @@ function resolvePracticeAreaIcon(name: string) {
 
 export default function PracticeAreas() {
   const { content, meta } = usePracticeAreasContent();
-  const { phoneNumber, phoneDisplay, phoneLabel } = useGlobalPhone();
 
   const practiceAreas = content.grid.areas.map((area) => ({
     icon: resolvePracticeAreaIcon(area.icon),
@@ -35,9 +34,6 @@ export default function PracticeAreas() {
     link: area.link,
     linkLabel: area.linkLabel,
   }));
-
-  // Map why choose items from CMS content
-  const whyChooseOurPractice = content.whyChoose.items;
 
   return (
     <Layout>
@@ -115,100 +111,9 @@ export default function PracticeAreas() {
       </div>
       <ProcessSection content={content.process} desktopColumns={4} />
 
-      {/* Why Choose Our Practice Section */}
-      <div className="bg-brand-dark py-[40px] md:py-[60px]">
-        <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[8%]">
-            {/* Left Side - Heading + Image */}
-            <div>
-              <div className="mb-[10px]">
-                <p className="font-manrope text-[18px] md:text-[24px] leading-tight md:leading-[36px] text-brand-accent">
-                  {content.whyChoose.sectionLabel}
-                </p>
-              </div>
-              <h2 className="font-grotesk text-[32px] md:text-[48px] lg:text-[54px] leading-tight md:leading-[54px] text-white pb-[20px]">
-                {content.whyChoose.heading}
-              </h2>
-              {content.whyChoose.subtitle && (
-                <p className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80 pb-[15px]">
-                  {content.whyChoose.subtitle}
-                </p>
-              )}
-              <RichText
-                html={content.whyChoose.description}
-                className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/90 mb-[30px]"
-              />
-              {/* Section image (shared from About page) */}
-              {content.whyChoose.image && (
-                <div className="hidden lg:block">
-                  <img
-                    src={content.whyChoose.image}
-                    alt={content.whyChoose.imageAlt || "Why Choose Us"}
-                    className="w-full max-w-[400px] h-auto object-cover"
-                    width={400}
-                    height={300}
-                    loading="lazy"
-                  />
-                </div>
-              )}
-            </div>
+      <SharedWhyChooseSection content={content.whyChoose} />
 
-            {/* Right Side - Features List */}
-            <div className="space-y-[20px] md:space-y-[30px]">
-              {whyChooseOurPractice.map((feature, index) => (
-                <div key={index}>
-                  <div className="mb-[15px] md:mb-[20px]">
-                    <h3 className="font-manrope text-[22px] md:text-[28px] leading-tight md:leading-[28px] text-white pb-[10px]">
-                      {feature.number}. {feature.title}
-                    </h3>
-                    <RichText
-                      html={feature.description}
-                      className="font-manrope text-[16px] md:text-[18px] leading-[24px] md:leading-[28px] text-white/80"
-                    />
-                  </div>
-                  {index < whyChooseOurPractice.length - 1 && (
-                    <div className="h-[1px] bg-brand-border/50"></div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Call to Action Section */}
-      <div className="bg-brand-accent py-[40px] md:py-[60px]">
-        <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
-          <div className="text-center mb-[30px] md:mb-[40px]">
-            <h2 className="font-grotesk text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-black pb-[15px]">
-              {content.cta.heading}
-            </h2>
-            <RichText
-              html={content.cta.description}
-              className="font-manrope text-[18px] md:text-[22px] leading-[26px] md:leading-[32px] text-black/80"
-            />
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-center items-center md:items-start">
-            <CallBox
-              icon={Phone}
-              title={phoneLabel}
-              subtitle={phoneDisplay}
-              phone={phoneNumber}
-              className="bg-brand-accent-dark hover:bg-black"
-              variant="dark"
-            />
-            <CallBox
-              icon={Calendar}
-              title={content.cta.secondaryButton.label}
-              subtitle={content.cta.secondaryButton.sublabel}
-              link={content.cta.secondaryButton.link}
-              className="bg-brand-accent-dark hover:bg-black"
-              variant="dark"
-            />
-          </div>
-        </div>
-      </div>
+      <SharedCtaSection content={content.cta} />
     </Layout>
   );
 }
