@@ -50,6 +50,14 @@ export default function CallBox({
     variant === "brand-dark-accent"
       ? "w-5 h-5 text-brand-dark transition-colors duration-300"
       : "w-8 h-8 [&>*]:fill-none [&>*]:stroke-black group-hover:[&>*]:stroke-white transition-colors duration-300";
+  const titleClasses =
+    variant === "brand-dark-accent"
+      ? "font-manrope text-[12px] leading-tight"
+      : "font-manrope text-[16px] md:text-[18px] leading-tight";
+  const subtitleClasses =
+    variant === "brand-dark-accent"
+      ? "font-manrope text-[20px] md:text-[22px]"
+      : "font-manrope text-[18px] md:text-[24px]";
 
   const content = (
     <div
@@ -61,12 +69,12 @@ export default function CallBox({
         </div>
         <div className="flex-1">
           <h4
-            className={`font-manrope text-[16px] md:text-[18px] leading-tight ${textColor} ${textHoverColor} pb-[10px]`}
+            className={`${titleClasses} ${textColor} ${textHoverColor} pb-[10px]`}
           >
             {title}
           </h4>
           <p
-            className={`font-manrope text-[18px] md:text-[24px] ${textColor} ${textHoverColor} leading-none whitespace-nowrap`}
+            className={`${subtitleClasses} ${textColor} ${textHoverColor} leading-none whitespace-nowrap`}
           >
             {subtitle}
           </p>
