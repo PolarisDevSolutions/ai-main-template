@@ -18,6 +18,7 @@ export default function PracticeAreasEditor({ content, onChange }: PracticeAreas
       <IntroSection content={content} update={update} />
       <GridSection content={content} update={update} />
       <AboutStyleSection content={content} update={update} />
+      <OutroSection content={content} update={update} />
       <GlobalSectionInfo sectionTitle="Why Choose Us" managedIn="About Us" />
       <GlobalSectionInfo sectionTitle="Call to Action" managedIn="About Us" />
     </div>
@@ -123,6 +124,24 @@ function AboutStyleSection({ content, update }: SectionProps) {
           )}
         />
 
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function OutroSection({ content, update }: SectionProps) {
+  const outro = content.outro;
+  const set = (patch: Partial<typeof outro>) => update("outro", { ...outro, ...patch });
+
+  return (
+    <Section title="Usluge - Outro" defaultOpen={false}>
+      <div className="grid gap-4">
+        <div>
+          <Label>Title</Label>
+          <Input value={outro.title} onChange={(e) => set({ title: e.target.value })} />
+        </div>
+        <RichTextField label="Content" value={outro.content} onChange={(v) => set({ content: v })} />
       </div>
     </Section>
   );

@@ -97,6 +97,7 @@ export interface PracticeAreasPageContent {
   intro: PracticeAreasIntroContent;
   grid: PracticeAreasGridContent;
   aboutSection: PracticeAreasAboutSectionContent;
+  outro: PracticeAreasIntroContent;
   whyChoose: WhyChooseContent;
   cta: CTAContent;
   /** Maps heading keys (e.g. "grid.heading") to HTML tag names (e.g. "h2") */
@@ -158,6 +159,11 @@ export const defaultPracticeAreasContent: PracticeAreasPageContent = {
       },
     ],
   }),
+  outro: {
+    title: "Spremni za sledeći korak?",
+    content:
+      "<p>Ovde možete dodati završni tekst koji povezuje usluge, vaš pristup i poziv korisniku da vas kontaktira ili istraži sledeći korak.</p>",
+  },
   whyChoose: {
     sectionLabel: "– Why Choose Us",
     heading: "Experience Across All Practice Areas",

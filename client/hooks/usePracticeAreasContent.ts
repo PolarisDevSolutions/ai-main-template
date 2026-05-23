@@ -243,6 +243,10 @@ function mergeWithDefaults(
         ? cmsContent.aboutSection.features
         : defaults.aboutSection.features,
     },
+    outro: {
+      ...defaults.outro,
+      ...cmsContent.outro,
+    },
     whyChoose: {
       ...defaults.whyChoose,
       ...cmsContent.whyChoose,

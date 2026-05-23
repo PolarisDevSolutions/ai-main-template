@@ -95,6 +95,20 @@ export default function PracticeAreas() {
 
       <AboutSection content={content.aboutSection} theme="dark" showStats={false} />
 
+      <div className="bg-white py-[40px] md:py-[60px]">
+        <div className="mx-auto w-[95%] max-w-[900px] md:w-[90%]">
+          <div className="grid grid-cols-1 gap-5 text-center">
+            <h2 className="font-grotesk text-[32px] leading-tight text-black md:text-[40px] lg:text-[48px]">
+              {content.outro.title}
+            </h2>
+            <RichText
+              html={content.outro.content}
+              className="font-manrope text-[16px] leading-[26px] text-black/80 md:text-[18px] md:leading-[30px] [&_p]:mb-4 [&_p:last-child]:mb-0"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Why Choose Our Practice Section */}
       <div className="bg-brand-dark py-[40px] md:py-[60px]">
         <div className="max-w-[2560px] mx-auto w-[95%] md:w-[90%] lg:w-[80%]">
