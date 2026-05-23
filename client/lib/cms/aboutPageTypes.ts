@@ -59,21 +59,6 @@ export interface MissionVisionContent {
   text: string;
 }
 
-export interface TeamMember {
-  name: string;
-  title: string;
-  bio: string;
-  image: string;
-  imageAlt: string;
-  specialties: string[];
-}
-
-export interface TeamContent {
-  sectionLabel: string;
-  heading: string;
-  members: TeamMember[];
-}
-
 export interface ValueItem {
   icon: string;
   title: string;
@@ -129,7 +114,6 @@ export interface AboutPageContent {
   hero: AboutHeroContent;
   story: StoryContent;
   missionVision: MissionVisionContent;
-  team: TeamContent;
   values: ValuesContent;
   stats: StatsContent;
   whyChooseUs: WhyChooseUsContent;
@@ -189,36 +173,6 @@ export const defaultAboutContent: AboutPageContent = {
   missionVision: {
     heading: "Naš pristup",
     text: "<p>Svaki projekat posmatramo kroz rezultate koje želite da ostvarite — više upita, bolju vidljivost i jasnije pozicioniranje na tržištu.</p><p>Spajamo strategiju, moderan dizajn i tehničku izvedbu kako bismo izgradili digitalno prisustvo koje izgleda profesionalno i radi u korist vašeg biznisa.</p>",
-  },
-  team: {
-    sectionLabel: "– Our Team",
-    heading: "Experienced Professionals Dedicated to Your Success",
-    members: [
-      {
-        name: "Attorney Name",
-        title: "Senior Partner",
-        bio: "With over 20 years of experience, they have successfully served thousands of clients and achieved outstanding results.",
-        image: "/images/team/team-member-1.png",
-        imageAlt: "",
-        specialties: ["Specialty 1", "Specialty 2", "Specialty 3"],
-      },
-      {
-        name: "Attorney Name",
-        title: "Managing Partner",
-        bio: "A specialist with a proven track record of achieving results that others considered impossible.",
-        image: "/images/team/team-member-1.png",
-        imageAlt: "",
-        specialties: ["Specialty 1", "Specialty 2", "Specialty 3"],
-      },
-      {
-        name: "Attorney Name",
-        title: "Senior Attorney",
-        bio: "An expert who has helped countless clients receive the results they deserve.",
-        image: "/images/team/team-member-1.png",
-        imageAlt: "",
-        specialties: ["Specialty 1", "Specialty 2", "Specialty 3"],
-      },
-    ],
   },
   values: {
     sectionLabel: "– Our Values",
@@ -397,13 +351,6 @@ export function normalizeAboutPageContent(
                   : defaultAboutContent.missionVision.text),
           }
         : defaultAboutContent.missionVision,
-    team: {
-      ...defaultAboutContent.team,
-      ...cmsContent.team,
-      members: cmsContent.team?.members?.length
-        ? cmsContent.team.members
-        : defaultAboutContent.team.members,
-    },
     values: {
       ...defaultAboutContent.values,
       ...cmsContent.values,

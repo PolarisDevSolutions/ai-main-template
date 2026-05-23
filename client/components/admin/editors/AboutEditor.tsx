@@ -18,7 +18,6 @@ export default function AboutEditor({ content, onChange }: AboutEditorProps) {
       <StorySection content={content} update={update} />
       <WhyChooseUsSection content={content} update={update} />
       <MissionVisionSection content={content} update={update} />
-      <TeamSection content={content} update={update} />
       <ValuesSection content={content} update={update} />
       <CTASection content={content} update={update} />
     </div>
@@ -157,64 +156,6 @@ function MissionVisionSection({ content, update }: SectionProps) {
           label="Content"
           value={approach.text}
           onChange={(v) => update("missionVision", { ...approach, text: v })}
-        />
-      </div>
-    </Section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-function TeamSection({ content, update }: SectionProps) {
-  const team = content.team;
-  const set = (patch: Partial<typeof team>) => update("team", { ...team, ...patch });
-  const ht = useHeadingTag(content, update);
-
-  return (
-    <Section title="Team Members" defaultOpen={false}>
-      <div className="grid gap-4">
-        <div>
-          <Label>Section Label</Label>
-          <Input value={team.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} />
-        </div>
-        <HeadingField
-          label="Heading"
-          value={team.heading}
-          onChange={(v) => set({ heading: v })}
-          tag={ht.get("team.heading")}
-          onTagChange={(t) => ht.set("team.heading", t)}
-        />
-        <ArrayEditor
-          items={team.members}
-          onChange={(items) => set({ members: items })}
-          itemLabel="Member"
-          newItem={() => ({ name: "", title: "", bio: "", image: "", imageAlt: "", specialties: [] })}
-          renderItem={(item, _, upd) => (
-            <div className="grid gap-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label>Name</Label>
-                  <Input value={item.name} onChange={(e) => upd({ ...item, name: e.target.value })} />
-                </div>
-                <div>
-                  <Label>Title</Label>
-                  <Input value={item.title} onChange={(e) => upd({ ...item, title: e.target.value })} />
-                </div>
-              </div>
-              <RichTextField label="Bio" value={item.bio} onChange={(v) => upd({ ...item, bio: v })} />
-              <ImageField label="Photo" value={item.image} onChange={(url) => upd({ ...item, image: url })} folder="team" />
-              <div>
-                <Label>Photo Alt Text</Label>
-                <Input value={item.imageAlt} onChange={(e) => upd({ ...item, imageAlt: e.target.value })} placeholder="Describe the photo" />
-              </div>
-              <div>
-                <Label>Specialties (comma-separated)</Label>
-                <Input
-                  value={item.specialties.join(", ")}
-                  onChange={(e) => upd({ ...item, specialties: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
-                />
-              </div>
-            </div>
-          )}
         />
       </div>
     </Section>
