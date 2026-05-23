@@ -4,6 +4,7 @@ import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface ProcessSectionProps {
   content?: ProcessContent;
+  desktopColumns?: 3 | 4;
 }
 
 const defaultContent: ProcessContent = {
@@ -32,9 +33,16 @@ const defaultContent: ProcessContent = {
   ],
 };
 
-export default function ProcessSection({ content }: ProcessSectionProps) {
+export default function ProcessSection({
+  content,
+  desktopColumns = 3,
+}: ProcessSectionProps) {
   const data = content || defaultContent;
   const steps = data.steps?.length ? data.steps : defaultContent.steps;
+  const connectorInset = `calc(100% / ${desktopColumns * 2})`;
+  const desktopGridClass =
+    desktopColumns === 4 ? "md:grid-cols-4" : "md:grid-cols-3";
+  const desktopStepPaddingClass = desktopColumns === 4 ? "md:px-4" : "md:px-8";
 
   return (
     <section className="bg-white py-20 md:py-28">
@@ -60,20 +68,22 @@ export default function ProcessSection({ content }: ProcessSectionProps) {
         <div className="relative">
           {/* Horizontal connector line — desktop only */}
           <div
-            className="hidden md:block absolute top-[40px] left-[calc(100%/6)] right-[calc(100%/6)] h-[1px] z-0"
+            className="absolute top-[40px] z-0 hidden h-[1px] md:block"
             style={{
+              left: connectorInset,
+              right: connectorInset,
               backgroundImage:
                 "linear-gradient(90deg, transparent 0%, rgb(212,175,55) 20%, rgb(212,175,55) 80%, transparent 100%)",
               opacity: 0.3,
             }}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative z-10">
+          <div className={`relative z-10 grid grid-cols-1 gap-0 ${desktopGridClass}`}>
             {steps.map((step, index) => (
               <AnimatedSection
                 key={index}
                 delay={index * 0.12}
-                className="flex flex-col items-center text-center px-8"
+                className={`flex flex-col items-center px-8 text-center ${desktopStepPaddingClass}`}
               >
                 {/* Circle with number */}
                 <div className="relative mb-8">

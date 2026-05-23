@@ -117,7 +117,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <ProcessSection content={content.process} />
+      <ProcessSection content={content.process} desktopColumns={4} />
 
       {/* Call to Action Section */}
       <div className="bg-brand-accent py-[40px] md:py-[60px]">
