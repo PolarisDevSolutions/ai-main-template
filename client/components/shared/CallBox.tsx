@@ -30,7 +30,7 @@ export default function CallBox({
 }: CallBoxProps) {
   const textColor =
     variant === "brand-dark-accent"
-      ? "text-brand-accent"
+      ? "text-brand-dark"
       : variant === "dark"
         ? "text-white"
         : "text-black";
@@ -40,15 +40,15 @@ export default function CallBox({
       : "";
   const boxClasses =
     variant === "brand-dark-accent"
-      ? "bg-brand-dark hover:bg-black"
+      ? "border border-brand-accent bg-brand-accent hover:bg-white"
       : "bg-brand-accent hover:bg-brand-accent-dark";
   const iconWrapperClasses =
     variant === "brand-dark-accent"
-      ? "bg-brand-accent p-3 mt-1 flex items-center justify-center shrink-0 group-hover:bg-white transition-colors duration-300"
+      ? "bg-brand-dark p-3 mt-1 flex items-center justify-center shrink-0 transition-colors duration-300"
       : "bg-white p-[15px] mt-1 flex items-center justify-center group-hover:bg-black transition-colors duration-300";
   const iconClasses =
     variant === "brand-dark-accent"
-      ? "w-5 h-5 text-brand-dark transition-colors duration-300"
+      ? "w-5 h-5 text-brand-accent transition-colors duration-300"
       : "w-8 h-8 [&>*]:fill-none [&>*]:stroke-black group-hover:[&>*]:stroke-white transition-colors duration-300";
   const titleClasses =
     variant === "brand-dark-accent"
@@ -56,25 +56,25 @@ export default function CallBox({
       : "font-manrope text-[16px] md:text-[18px] leading-tight";
   const subtitleClasses =
     variant === "brand-dark-accent"
-      ? "font-manrope text-[20px] md:text-[22px]"
+      ? "font-manrope text-[18px] sm:text-[20px] md:text-[22px]"
       : "font-manrope text-[18px] md:text-[24px]";
 
   const content = (
     <div
-      className={`p-[8px] w-full lg:w-[340px] cursor-pointer transition-all duration-300 group ${boxClasses} ${className}`}
+      className={`w-full min-w-0 cursor-pointer p-3 transition-all duration-300 group lg:w-[340px] ${boxClasses} ${className}`}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex min-w-0 items-start gap-4">
         <div className={iconWrapperClasses}>
           <Icon className={iconClasses} strokeWidth={1.5} />
         </div>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <h4
             className={`${titleClasses} ${textColor} ${textHoverColor} pb-[10px]`}
           >
             {title}
           </h4>
           <p
-            className={`${subtitleClasses} ${textColor} ${textHoverColor} leading-none whitespace-nowrap`}
+            className={`${subtitleClasses} ${textColor} ${textHoverColor} break-words leading-snug`}
           >
             {subtitle}
           </p>
@@ -86,15 +86,15 @@ export default function CallBox({
   // Phone link takes priority over route link
   if (phone) {
     const digits = toRawDigits(phone);
-    return <a href={`tel:${digits}`} className="block">{content}</a>;
+    return <a href={`tel:${digits}`} className="block min-w-0">{content}</a>;
   }
 
   if (link) {
     const normalizedLink = normalizeHref(link);
     if (isExternalHref(normalizedLink)) {
-      return <a href={normalizedLink} className="block">{content}</a>;
+      return <a href={normalizedLink} className="block min-w-0">{content}</a>;
     }
-    return <Link to={normalizedLink} className="block">{content}</Link>;
+    return <Link to={normalizedLink} className="block min-w-0">{content}</Link>;
   }
 
   return content;

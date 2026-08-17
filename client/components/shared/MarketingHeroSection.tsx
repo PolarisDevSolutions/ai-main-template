@@ -89,7 +89,7 @@ export default function MarketingHeroSection({
                       strokeWidth={1.5}
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     {heroPhoneLabel && (
                       <p className="mb-0.5 font-manrope text-[13px] text-brand-dark/70">
                         {heroPhoneLabel}
@@ -111,11 +111,11 @@ export default function MarketingHeroSection({
 
             {trustTexts.length > 0 && (
               <div className="mt-6">
-                <div className="flex flex-wrap items-start justify-center gap-x-6 gap-y-4">
+                <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-4">
                   {trustTexts.map((text, index) => (
-                    <div key={`${text}-${index}`} className="min-w-[110px] text-center">
+                    <div key={`${text}-${index}`} className="min-w-0 basis-[120px] text-center sm:max-w-[150px] sm:flex-1">
                       <div className="mx-auto mb-2 h-[2px] w-6 bg-brand-accent/80" />
-                      <p className="font-manrope text-[11px] uppercase tracking-[0.18em] text-white">
+                      <p className="break-words font-manrope text-[11px] uppercase leading-relaxed tracking-[0.14em] text-white sm:tracking-[0.18em]">
                         {text}
                       </p>
                     </div>
