@@ -50,7 +50,7 @@ export default function NavDropdown({ item }: NavDropdownProps) {
     >
       <Link
         to={item.href}
-        className="font-manrope text-[20px] text-white py-[31px] mr-[20px] whitespace-nowrap hover:opacity-80 transition-opacity duration-400 inline-flex items-center gap-1"
+        className="font-manrope text-[15px] text-white py-[31px] mr-[20px] whitespace-nowrap hover:opacity-80 transition-opacity duration-400 inline-flex items-center gap-1"
       >
         {item.label}
         <ChevronDown
