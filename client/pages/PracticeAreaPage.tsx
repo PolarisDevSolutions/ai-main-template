@@ -6,6 +6,7 @@ import PracticeAreaHero from "@site/components/practice/PracticeAreaHero";
 import PracticeAreaSocialProof from "@site/components/practice/PracticeAreaSocialProof";
 import PracticeAreaContentSection from "@site/components/practice/PracticeAreaContentSection";
 import PracticeAreaFaq from "@site/components/practice/PracticeAreaFaq";
+import Breadcrumbs from "@site/components/shared/Breadcrumbs";
 import { Loader2 } from "lucide-react";
 
 export default function PracticeAreaPage() {
@@ -40,6 +41,12 @@ export default function PracticeAreaPage() {
     );
   }
 
+  const breadcrumbs = [
+    { label: "Početna", href: "/" },
+    { label: "Usluge", href: "/usluge/" },
+    { label: title || "Usluga" },
+  ];
+
   return (
     <Layout>
       <Seo
@@ -53,9 +60,11 @@ export default function PracticeAreaPage() {
         schemaType={meta.schema_type}
         schemaData={meta.schema_data}
         pageContent={content}
+        breadcrumbs={breadcrumbs}
       />
 
       <PracticeAreaHero content={content.hero} />
+      <Breadcrumbs items={breadcrumbs} />
 
       <PracticeAreaSocialProof
         content={content.socialProof}

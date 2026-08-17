@@ -10,6 +10,8 @@
  * Only published, non-noindex content is included.
  */
 
+import { normalizeSiteOrigin } from "../../shared/siteUrl";
+
 interface PageRow {
   url_path: string;
   updated_at: string;
@@ -33,7 +35,7 @@ function escapeXml(str: string): string {
 
 /** Sitemap index that points to /sitemap-pages.xml and /sitemap-posts.xml */
 export function generateSitemapIndex(siteUrl: string): string {
-  const origin = siteUrl.replace(/\/+$/, "");
+  const origin = normalizeSiteOrigin(siteUrl);
   const today = new Date().toISOString().split("T")[0];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -51,7 +53,7 @@ export function generateSitemapIndex(siteUrl: string): string {
 
 /** Sitemap of all published, indexable CMS pages */
 export async function generatePagesSitemap(siteUrl: string): Promise<string> {
-  const origin = siteUrl.replace(/\/+$/, "");
+  const origin = normalizeSiteOrigin(siteUrl);
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
@@ -97,7 +99,7 @@ ${urlEntries.join("\n")}
 
 /** Sitemap of all published, indexable blog posts */
 export async function generatePostsSitemap(siteUrl: string): Promise<string> {
-  const origin = siteUrl.replace(/\/+$/, "");
+  const origin = normalizeSiteOrigin(siteUrl);
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 

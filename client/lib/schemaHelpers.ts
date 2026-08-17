@@ -17,6 +17,11 @@ export interface FaqItem {
   answer: string;
 }
 
+export interface SchemaBreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
 export interface SchemaInput {
   /** Page title (used as name / headline) */
   title: string;
@@ -34,6 +39,8 @@ export interface SchemaInput {
   pageContent?: unknown;
   /** Site-wide settings (phone, address, name, logo, socials) */
   siteSettings?: SiteSettings;
+  /** Visible page breadcrumb items */
+  breadcrumbs?: SchemaBreadcrumbItem[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -141,48 +148,91 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "").trim();
 }
 
+function getSiteOrigin(input: SchemaInput): string {
+  return new URL(input.url).origin;
+}
+
+function getOrganizationId(input: SchemaInput): string {
+  return `${getSiteOrigin(input)}/#organization`;
+}
+
+function getWebsiteId(input: SchemaInput): string {
+  return `${getSiteOrigin(input)}/#website`;
+}
+
 export function buildLocalBusinessSchema(
   input: SchemaInput,
 ): Record<string, unknown> {
   const s = input.siteSettings;
-  const schema: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: s?.siteName || input.title,
-    url: input.url,
-    description: input.description,
-  };
-
-  if (s?.phoneNumber) {
-    schema.telephone = s.phoneDisplay || s.phoneNumber;
-  }
-
-  if (s?.addressLine1) {
-    schema.address = {
-      "@type": "PostalAddress",
-      streetAddress: s.addressLine1,
-      addressLocality: parseCity(s.addressLine2),
-      addressRegion: parseState(s.addressLine2),
-      postalCode: parseZip(s.addressLine2),
-    };
-  }
-
-  if (s?.logoUrl) {
-    schema.logo = s.logoUrl;
-  }
-
-  if (input.image) {
-    schema.image = input.image;
-  }
-
   const socialUrls = s?.socialLinks
-    ?.filter((l) => l.enabled && l.url)
-    .map((l) => l.url);
-  if (socialUrls?.length) {
-    schema.sameAs = socialUrls;
-  }
+    ?.filter((link) => link.enabled && link.url)
+    .map((link) => link.url);
 
-  return schema;
+  return {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "ProfessionalService"],
+    "@id": getOrganizationId(input),
+    name: s?.siteName || input.title,
+    url: `${getSiteOrigin(input)}/`,
+    ...(s?.logoUrl && {
+      logo: {
+        "@type": "ImageObject",
+        url: s.logoUrl,
+      },
+    }),
+    ...(s?.phoneNumber && {
+      telephone: s.phoneDisplay || s.phoneNumber,
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: s.phoneDisplay || s.phoneNumber,
+        contactType: "customer service",
+        availableLanguage: ["sr", "en"],
+      },
+    }),
+    ...(s?.addressLine1 && {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: s.addressLine1,
+        addressLocality: parseCity(s.addressLine2),
+        addressRegion: parseState(s.addressLine2),
+        postalCode: parseZip(s.addressLine2),
+        addressCountry: "RS",
+      },
+    }),
+    areaServed: {
+      "@type": "Country",
+      name: "Srbija",
+    },
+    ...(socialUrls?.length && { sameAs: socialUrls }),
+  };
+}
+
+export function buildWebsiteSchema(input: SchemaInput): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": getWebsiteId(input),
+    url: `${getSiteOrigin(input)}/`,
+    name: input.siteSettings?.siteName || input.title,
+    inLanguage: "sr-RS",
+    publisher: { "@id": getOrganizationId(input) },
+  };
+}
+
+export function buildServiceSchema(input: SchemaInput): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${input.url}#service`,
+    name: input.title,
+    description: input.description,
+    url: input.url,
+    provider: { "@id": getOrganizationId(input) },
+    areaServed: {
+      "@type": "Country",
+      name: "Srbija",
+    },
+  };
 }
 
 export function buildAttorneySchema(
@@ -218,17 +268,33 @@ export function buildWebPageSchema(
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": `${input.url}#webpage`,
     name: input.title,
     description: input.description,
     url: input.url,
+    inLanguage: "sr-RS",
+    isPartOf: { "@id": getWebsiteId(input) },
+    about: { "@id": getOrganizationId(input) },
     ...(input.image && { image: input.image }),
-    ...(input.siteSettings?.siteName && {
-      isPartOf: {
-        "@type": "WebSite",
-        name: input.siteSettings.siteName,
-        url: input.url.replace(/\/[^/]*$/, "/"),
-      },
-    }),
+  };
+}
+
+export function buildBreadcrumbSchema(
+  input: SchemaInput,
+): Record<string, unknown> | null {
+  if (!input.breadcrumbs?.length || !input.url) return null;
+
+  const origin = new URL(input.url).origin;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: input.breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: item.href ? new URL(item.href, origin).toString() : input.url,
+    })),
   };
 }
 
@@ -282,7 +348,10 @@ function buildSimplePageSchema(
  */
 export function buildAllSchemas(input: SchemaInput): Record<string, unknown>[] {
   const types = parseSchemaTypes(input.schemaType);
-  const schemas: Record<string, unknown>[] = [];
+  const schemas: Record<string, unknown>[] = [
+    buildLocalBusinessSchema(input),
+    buildWebsiteSchema(input),
+  ];
 
   // Process all explicitly requested schema types
   for (const type of types) {
@@ -301,6 +370,9 @@ export function buildAllSchemas(input: SchemaInput): Record<string, unknown>[] {
         break;
       case "WebPage":
         schema = buildWebPageSchema(input);
+        break;
+      case "Service":
+        schema = buildServiceSchema(input);
         break;
       case "FAQPage":
         schema = buildFaqSchema(input);
@@ -326,8 +398,19 @@ export function buildAllSchemas(input: SchemaInput): Record<string, unknown>[] {
       if (input.schemaData && Object.keys(input.schemaData).length > 0) {
         Object.assign(schema, input.schemaData);
       }
+      if (schema["@type"] === "Service") {
+        schema.provider = {
+          ...((schema.provider as Record<string, unknown>) || {}),
+          "@id": getOrganizationId(input),
+        };
+      }
       schemas.push(schema);
     }
+  }
+
+  const breadcrumbSchema = buildBreadcrumbSchema(input);
+  if (breadcrumbSchema) {
+    schemas.push(breadcrumbSchema);
   }
 
   // Auto-inject FAQPage when the page content has FAQ items and FAQPage

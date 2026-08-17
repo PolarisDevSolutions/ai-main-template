@@ -12,6 +12,7 @@ import type {
   InjectedPostData,
 } from "../../../client/lib/pageDataInjection";
 import type { Database } from "../client/lib/database.types";
+import { normalizeSiteOrigin } from "../../../shared/siteUrl";
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -480,7 +481,9 @@ async function generateSSG() {
 
   fs.writeFileSync(path.join(process.cwd(), "dist/spa/_redirects"), redirectsContent);
 
-  const siteUrl = (process.env.SITE_URL || siteSettingsRow?.site_url || "").replace(/\/+$/g, "");
+  const siteUrl = normalizeSiteOrigin(
+    process.env.SITE_URL || siteSettingsRow?.site_url,
+  );
 
   if (siteUrl) {
     const robotsTxt = siteSettingsRow?.site_noindex

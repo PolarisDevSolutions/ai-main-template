@@ -1,6 +1,4 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import ContactForm from "@site/components/home/ContactForm";
 import type { ContactContent } from "@site/lib/cms/homePageTypes";
 import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
@@ -20,9 +18,6 @@ const defaultContent: ContactContent = {
   image: "",
   imageAlt: "",
 };
-
-const inputClass =
-  "bg-white/5 border border-brand-border/30 text-white placeholder:text-white/30 h-[44px] text-[14px] font-manrope focus-visible:ring-0 focus-visible:border-brand-accent transition-colors duration-200 rounded-none";
 
 export default function ContactUsSection({ content }: ContactUsSectionProps) {
   const data = content || defaultContent;
@@ -71,93 +66,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
               {data.formHeading}
             </p>
 
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
-              className="space-y-4"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                    Ime *
-                  </label>
-                  <Input
-                    type="text"
-                    name="firstName"
-                    placeholder="Vaše ime *"
-                    required
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                    Prezime *
-                  </label>
-                  <Input
-                    type="text"
-                    name="lastName"
-                    placeholder="Vaše prezime *"
-                    required
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                  Email *
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="vas@email.com *"
-                  required
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                  Telefon *
-                </label>
-                <Input
-                  type="tel"
-                  name="phone"
-                  placeholder="+381 ... *"
-                  required
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className="block font-manrope text-[12px] tracking-widest uppercase text-white/40 mb-1.5">
-                  Poruka *
-                </label>
-                <Textarea
-                  name="message"
-                  placeholder="Kako vam možemo pomoći? *"
-                  required
-                  className={`${inputClass} h-auto min-h-[120px] resize-none`}
-                />
-              </div>
-
-              <div className="absolute invisible" aria-hidden="true">
-                <input type="text" name="bot-field" tabIndex={-1} autoComplete="off" />
-              </div>
-
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  className="w-full border border-brand-accent text-brand-accent bg-transparent hover:bg-brand-accent hover:text-brand-dark font-manrope text-[13px] tracking-widest uppercase h-[44px] transition-all duration-200"
-                >
-                  Pošalji poruku
-                </Button>
-              </div>
-            </form>
+            <ContactForm />
           </AnimatedSection>
         </div>
       </div>

@@ -104,47 +104,6 @@ function injectGA4(measurementId: string): Node[] {
   return injected;
 }
 
-/**
- * Injects Google Ads gtag conversion tracking if configured.
- * Reuses the existing gtag function if GA4 already set it up,
- * otherwise initializes it.
- */
-function injectGoogleAds(
-  adsId: string,
-  conversionLabel: string,
-): Node[] {
-  if (!adsId) return [];
-
-  const injected: Node[] = [];
-
-  // If gtag isn't loaded yet (no GA4), load it via Google Ads tag
-  if (typeof window.gtag !== "function") {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-    window.gtag("js", new Date());
-
-    const script = document.createElement("script");
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${adsId}`;
-    script.async = true;
-    document.head.appendChild(script);
-    injected.push(script);
-  }
-
-  // Configure Google Ads
-  window.gtag("config", adsId);
-
-  // If a conversion label is set, fire a conversion event
-  if (conversionLabel) {
-    window.gtag("event", "conversion", {
-      send_to: `${adsId}/${conversionLabel}`,
-    });
-  }
-
-  return injected;
-}
-
 export default function GlobalScripts() {
   const { settings, isLoading } = useSiteSettings();
   const injectedRef = useRef<Node[]>([]);
@@ -159,31 +118,21 @@ export default function GlobalScripts() {
       allInjected.push(...injectGA4(settings.ga4MeasurementId));
     }
 
-    // 2. Google Ads conversion tracking
-    if (settings.googleAdsId) {
-      allInjected.push(
-        ...injectGoogleAds(
-          settings.googleAdsId,
-          settings.googleAdsConversionLabel,
-        ),
-      );
-    }
-
-    // 3. Head scripts
+    // 2. Head scripts
     if (settings.headScripts) {
       allInjected.push(
         ...injectHtmlSnippet(settings.headScripts, document.head),
       );
     }
 
-    // 4. Footer/body scripts
+    // 3. Footer/body scripts
     if (settings.footerScripts) {
       allInjected.push(
         ...injectHtmlSnippet(settings.footerScripts, document.body),
       );
     }
 
-    // 5. Trigger WhatConverts DNI scan after scripts are injected
+    // 4. Trigger WhatConverts DNI scan after scripts are injected
     refreshWhatConvertsDni("head-scripts-injected", { force: true });
 
     injectedRef.current = allInjected;
@@ -198,8 +147,6 @@ export default function GlobalScripts() {
   }, [
     isLoading,
     settings.ga4MeasurementId,
-    settings.googleAdsId,
-    settings.googleAdsConversionLabel,
     settings.headScripts,
     settings.footerScripts,
   ]);

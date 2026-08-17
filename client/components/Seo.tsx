@@ -1,9 +1,14 @@
 import { Helmet } from 'react-helmet-async/lib/index.esm.js';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
-import { buildAllSchemas, type SchemaInput } from '@site/lib/schemaHelpers';
+import {
+  buildAllSchemas,
+  type SchemaBreadcrumbItem,
+  type SchemaInput,
+} from '@site/lib/schemaHelpers';
 import { useSiteSettings } from '@site/contexts/SiteSettingsContext';
 import { getPublicEnv } from '@site/lib/runtimeEnv';
+import { normalizeSiteOrigin, resolveCanonicalUrl } from '../../shared/siteUrl';
 
 interface SeoProps {
   title?: string;
@@ -23,6 +28,8 @@ interface SeoProps {
   schemaData?: Record<string, unknown> | null;
   /** Structured page content for auto-detecting FAQ items etc. */
   pageContent?: unknown;
+  /** Visible breadcrumb items used to emit BreadcrumbList schema */
+  breadcrumbs?: SchemaBreadcrumbItem[];
 }
 
 export default function Seo({
@@ -37,12 +44,15 @@ export default function Seo({
   schemaType,
   schemaData,
   pageContent,
+  breadcrumbs,
 }: SeoProps) {
   const { pathname } = useLocation();
   const { settings } = useSiteSettings();
 
   // Use admin-configured Site URL, fall back to env var
-  const siteUrl = settings.siteUrl || getPublicEnv('VITE_SITE_URL') || '';
+  const siteUrl = normalizeSiteOrigin(
+    settings.siteUrl || getPublicEnv('VITE_SITE_URL'),
+  );
 
   // Normalise pathname: ensure trailing slash for client-side navigation
   // (server redirects handle it for full-page loads, but React Router link
@@ -53,7 +63,11 @@ export default function Seo({
       : pathname;
 
   // Build full canonical URL
-  const fullCanonical = canonical || (siteUrl ? `${siteUrl}${normalizedPathname}` : undefined);
+  const fullCanonical = resolveCanonicalUrl(
+    canonical,
+    siteUrl,
+    normalizedPathname,
+  );
 
   // Build full title using dynamic site name from settings
   const siteName = settings.siteName || '';
@@ -77,8 +91,6 @@ export default function Seo({
 
   // Build JSON-LD structured data
   const schemas = useMemo(() => {
-    if (!schemaType && !pageContent) return [];
-
     const input: SchemaInput = {
       title: fullTitle,
       description: fullDescription,
@@ -88,10 +100,11 @@ export default function Seo({
       schemaData,
       pageContent,
       siteSettings: settings as any,
+      breadcrumbs,
     };
 
     return buildAllSchemas(input);
-  }, [schemaType, schemaData, pageContent, settings, fullTitle, fullDescription, fullCanonical, resolvedOgImage]);
+  }, [schemaType, schemaData, pageContent, settings, fullTitle, fullDescription, fullCanonical, resolvedOgImage, breadcrumbs]);
 
   return (
     <Helmet>

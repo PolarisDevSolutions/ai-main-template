@@ -4,6 +4,7 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const heroContactFormSchema = z.object({
   firstName: z.string().min(1, "Ime je obavezno"),
@@ -43,11 +44,15 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
         phone: data.phone || "",
       });
 
-      await fetch("/", {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formBody.toString(),
       });
+
+      if (!response.ok) {
+        throw new Error(`Form submission failed with status ${response.status}`);
+      }
 
       toast.success("Hvala! Uskoro ćemo vas kontaktirati.");
       reset();
@@ -149,6 +154,17 @@ export default function HeroContactForm({ title }: HeroContactFormProps) {
             />
           </label>
         </div>
+
+        <p className="font-manrope text-[11px] leading-5 text-white/55">
+          Slanjem obrasca prihvatate našu{" "}
+          <Link
+            to="/politika-privatnosti/"
+            className="text-brand-accent underline underline-offset-4"
+          >
+            Politiku privatnosti
+          </Link>{" "}
+          i saglasni ste da vas kontaktiramo povodom upita.
+        </p>
 
         <Button
           type="submit"
