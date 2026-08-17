@@ -16,6 +16,7 @@ let searchReplaceHandler: any;
 let inviteUserHandler: any;
 let deleteUserHandler: any;
 let triggerQaHandler: any;
+let publishHandler: any;
 let qaGetLatestRunHandler: any;
 let qaRunStatusHandler: any;
 let qaListRunsHandler: any;
@@ -49,12 +50,13 @@ const loadHandlers = async () => {
     }
   };
 
-  const [searchReplace, inviteUser, deleteUser, triggerQa, qaGetLatestRun, qaRunStatus, qaListRuns, qaReport] =
+  const [searchReplace, inviteUser, deleteUser, triggerQa, publish, qaGetLatestRun, qaRunStatus, qaListRuns, qaReport] =
     await Promise.all([
       tryLoad("search-replace"),
       tryLoad("invite-user"),
       tryLoad("delete-user"),
       tryLoad("trigger-qa"),
+      tryLoad("publish"),
       tryLoad("qa-get-latest-run"),
       tryLoad("qa-run-status"),
       tryLoad("qa-list-runs"),
@@ -65,6 +67,7 @@ const loadHandlers = async () => {
   inviteUserHandler = inviteUser?.handler ?? null;
   deleteUserHandler = deleteUser?.handler ?? null;
   triggerQaHandler = triggerQa?.handler ?? null;
+  publishHandler = publish?.handler ?? null;
   qaGetLatestRunHandler = qaGetLatestRun?.handler ?? null;
   qaRunStatusHandler = qaRunStatus?.handler ?? null;
   qaListRunsHandler = qaListRuns?.handler ?? null;
@@ -253,6 +256,44 @@ export function createServer() {
       }
     } catch (err) {
       console.error("Trigger-qa dev proxy error:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Dev adapter for publish Netlify function
+  app.post("/.netlify/functions/publish", async (req, res) => {
+    if (!publishHandler) {
+      return res.status(503).json({ error: "Netlify functions not available" });
+    }
+    try {
+      const result = await publishHandler(
+        {
+          httpMethod: "POST",
+          headers: req.headers as Record<string, string>,
+          body: JSON.stringify(req.body),
+          rawUrl: req.url,
+          rawQuery: "",
+          path: req.path,
+          queryStringParameters: null,
+          multiValueQueryStringParameters: null,
+          multiValueHeaders: {},
+          isBase64Encoded: false,
+        } as any,
+        {} as any,
+      );
+      if (result) {
+        res.status(result.statusCode || 200);
+        if (result.headers) {
+          for (const [key, value] of Object.entries(result.headers)) {
+            if (value) res.setHeader(key, String(value));
+          }
+        }
+        res.send(result.body);
+      } else {
+        res.status(500).json({ error: "No response from handler" });
+      }
+    } catch (err) {
+      console.error("Publish dev proxy error:", err);
       res.status(500).json({ error: "Internal server error" });
     }
   });

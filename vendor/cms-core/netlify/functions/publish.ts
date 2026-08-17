@@ -61,6 +61,20 @@ export const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
+  const { data: cmsUser, error: roleError } = await supabase
+    .from('cms_users')
+    .select('role')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (roleError || cmsUser?.role !== 'admin') {
+    return {
+      statusCode: 403,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Only CMS admins can trigger deployments' }),
+    };
+  }
+
   // Check if build hook is configured
   if (!netlifyBuildHookUrl) {
     return {

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, ArrowRightLeft, Plus, Loader2 } from 'lucide-react';
+import { FileText, ArrowRightLeft, Plus, Loader2, Rocket } from 'lucide-react';
+import { toast } from 'sonner';
+import { useUserRole } from '@/hooks/useUserRole';
 
 interface Stats {
   totalPages: number;
@@ -15,9 +17,48 @@ interface Stats {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDeploying, setIsDeploying] = useState(false);
+  const { isAdmin } = useUserRole();
   useEffect(() => {
     fetchStats();
   }, []);
+
+  const triggerDeploy = async () => {
+    if (!window.confirm('Da li želite da pokrenete novi Netlify deploy?')) {
+      return;
+    }
+
+    setIsDeploying(true);
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.access_token) {
+        throw new Error('Niste prijavljeni. Osvežite stranicu i pokušajte ponovo.');
+      }
+
+      const response = await fetch('/.netlify/functions/publish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Deploy nije mogao da bude pokrenut.');
+      }
+
+      toast.success('Netlify deploy je pokrenut. Objavljivanje obično traje nekoliko minuta.');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Deploy nije mogao da bude pokrenut.');
+    } finally {
+      setIsDeploying(false);
+    }
+  };
 
   const fetchStats = async () => {
     const [pagesResult, redirectsResult] = await Promise.all([
@@ -120,6 +161,21 @@ export default function AdminDashboard() {
                 Manage Redirects
               </Button>
             </Link>
+            {isAdmin && (
+              <Button
+                type="button"
+                className="w-full justify-start bg-slate-900 text-white hover:bg-slate-800"
+                onClick={triggerDeploy}
+                disabled={isDeploying}
+              >
+                {isDeploying ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Rocket className="mr-2 h-4 w-4" />
+                )}
+                {isDeploying ? 'Pokretanje deploy-a...' : 'Objavi izmene na sajtu'}
+              </Button>
+            )}
           </CardContent>
         </Card>
 
