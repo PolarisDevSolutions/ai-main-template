@@ -26,7 +26,14 @@ export default function RichText({
   if (!html) return null;
 
   const Tag = inline ? "span" : "div";
-  const normalizedHtml = normalizeHtmlHrefs(html);
+  const normalizedHtml = normalizeHtmlHrefs(html).replace(
+    /<ol\b[^>]*>[\s\S]*?<\/ol>/gi,
+    (orderedList) =>
+      orderedList.replace(
+        /(<li\b[^>]*>\s*(?:<p\b[^>]*>\s*)?(?:<(?:strong|b)\b[^>]*>\s*)?)\d+[.)]\s*/gi,
+        "$1",
+      ),
+  );
 
   return (
     <Tag
