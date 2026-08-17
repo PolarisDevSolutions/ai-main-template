@@ -163,11 +163,17 @@ function SocialProofSection({ content, update }: SectionProps) {
         {sp.mode === "awards" && (
           <div className="border rounded-lg p-4 bg-gray-50 space-y-4">
             <h4 className="font-medium text-sm text-gray-700">
-              Awards & Badges
+              Logo Slider
             </h4>
-            <p className="text-xs text-gray-500 italic">
-              Logos are displayed in a single horizontal row on the page.
-            </p>
+            <HeadingField
+              label="Slider Heading"
+              value={sp.awards.heading || ""}
+              onChange={(heading) =>
+                set({ awards: { ...sp.awards, heading } })
+              }
+              tag={ht.get("socialProof.awards.heading")}
+              onTagChange={(tag) => ht.set("socialProof.awards.heading", tag)}
+            />
             <ArrayEditor
               items={sp.awards.logos}
               onChange={(items) =>

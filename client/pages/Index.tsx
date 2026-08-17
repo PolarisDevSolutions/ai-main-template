@@ -10,7 +10,7 @@ import GoogleReviewsSection from "@site/components/home/GoogleReviewsSection";
 import FaqSection from "@site/components/home/FaqSection";
 import ContactUsSection from "@site/components/home/ContactUsSection";
 import MarketingHeroSection from "@site/components/shared/MarketingHeroSection";
-import DynamicHeading from "@site/components/shared/DynamicHeading";
+import LogoMarquee from "@site/components/shared/LogoMarquee";
 import { useHomeContent } from "@site/hooks/useHomeContent";
 
 function SectionDivider({ backgroundClass = "bg-white" }: { backgroundClass?: string }) {
@@ -52,36 +52,11 @@ export default function Index() {
         showScrollHint
       />
 
-      {/* ── Partner Logos Marquee ── */}
-      {partnerLogos && partnerLogos.length > 0 && (
-        <div className="w-full overflow-hidden border-y border-brand-dark/8 py-8 bg-white">
-          {content.partnerLogosTitle && (
-            <div className="px-6 lg:px-10 pb-6">
-              <DynamicHeading
-                tag={content.headingTags?.["partnerLogos.title"]}
-                defaultTag="h3"
-                className="text-center font-grotesk text-[clamp(0.95rem,1.6vw,18px)] font-medium leading-tight tracking-[0.24em] uppercase text-brand-dark"
-              >
-                {content.partnerLogosTitle}
-              </DynamicHeading>
-            </div>
-          )}
-          <div className="flex animate-marquee whitespace-nowrap" style={{ width: "max-content" }}>
-            {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-              <div key={index} className="inline-flex h-[88px] w-[190px] items-center justify-center px-8 shrink-0">
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={150}
-                  height={48}
-                  className="h-[48px] w-[150px] object-contain opacity-50 grayscale hover:grayscale-0 hover:opacity-80 transition-opacity duration-200"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <LogoMarquee
+        title={content.partnerLogosTitle}
+        logos={partnerLogos || []}
+        headingTag={content.headingTags?.["partnerLogos.title"]}
+      />
 
       {/* ── Home Sections ── */}
       <AboutSection content={content.about} />

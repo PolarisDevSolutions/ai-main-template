@@ -16,6 +16,7 @@ export interface PracticeAreaTestimonialItem {
 }
 
 export interface PracticeAreaAwardsContent {
+  heading: string;
   logos: Array<{ src: string; alt: string }>;
 }
 
@@ -76,7 +77,10 @@ export const defaultPracticeAreaPageContent: PracticeAreaPageContent = {
   socialProof: {
     mode: "none",
     testimonials: [],
-    awards: { logos: [] },
+    awards: {
+      heading: "Tehnologije i platforme koje koristimo",
+      logos: [],
+    },
   },
   contentSections: [
     {

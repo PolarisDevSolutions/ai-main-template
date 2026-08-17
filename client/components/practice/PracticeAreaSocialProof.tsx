@@ -1,5 +1,6 @@
 import type { PracticeAreaSocialProofContent } from "@site/lib/cms/practiceAreaPageTypes";
 import RichText from "@site/components/shared/RichText";
+import LogoMarquee from "@site/components/shared/LogoMarquee";
 
 interface PracticeAreaSocialProofProps {
   content: PracticeAreaSocialProofContent;
@@ -16,7 +17,13 @@ export default function PracticeAreaSocialProof({
     return <TestimonialsView testimonials={content.testimonials} headingTags={headingTags} />;
   }
 
-  return <AwardsView awards={content.awards} />;
+  return (
+    <LogoMarquee
+      title={content.awards.heading}
+      logos={content.awards.logos || []}
+      headingTag={headingTags?.["socialProof.awards.heading"]}
+    />
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -57,51 +64,6 @@ function TestimonialsView({
               </p>
             </div>
           ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Awards - logo grid matching homepage style                         */
-/* ------------------------------------------------------------------ */
-function AwardsView({
-  awards,
-}: {
-  awards: PracticeAreaSocialProofContent["awards"];
-}) {
-  const logos = awards.logos || [];
-
-  if (logos.length === 0) return null;
-
-  return (
-    <div
-      className="relative pt-[30px] md:pt-[54px] z-[2]"
-      style={{
-        backgroundImage:
-          "linear-gradient(transparent 54%, rgb(255, 255, 255) 54%)",
-      }}
-    >
-      <div className="max-w-[1800px] mx-auto w-[95%] md:w-[90%] lg:w-[90%] relative">
-        <div className="bg-[rgb(239,239,239)] p-[30px] md:p-[50px] relative z-[2]">
-          <div className="flex flex-nowrap justify-center items-center gap-3 md:gap-5 overflow-x-auto lg:overflow-x-visible">
-            {logos.map((logo, index) => (
-              <div
-                key={index}
-                className="bg-white p-2 md:p-3 flex-shrink-0"
-              >
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={240}
-                  height={155}
-                  loading="lazy"
-                  className="max-w-[100px] md:max-w-[130px] lg:max-w-[180px] h-auto"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
