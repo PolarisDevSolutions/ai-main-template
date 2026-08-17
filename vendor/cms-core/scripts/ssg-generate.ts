@@ -2,7 +2,6 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { createClient } from "@supabase/supabase-js";
-import { defaultPracticeAreaPageContent } from "../../../client/lib/cms/practiceAreaPageTypes";
 import { applyAboutSharedSectionsToPracticeAreas } from "../../../client/lib/cms/practiceAreasPageTypes";
 import { renderPage } from "../../../client/entry-server";
 import { resolveSiteSettings } from "../../../client/contexts/SiteSettingsContext";
@@ -108,37 +107,6 @@ interface SiteSettingsRow {
 interface BlogSidebarRow {
   attorney_image: string;
   award_images: { src: string; alt: string }[];
-}
-
-async function ensurePracticeAreaPage() {
-  const practiceAreaUrl = "/practice-areas/practice-area/";
-
-  const { data: existing, error: checkError } = await supabase
-    .from("pages")
-    .select("id")
-    .eq("url_path", practiceAreaUrl)
-    .maybeSingle();
-
-  if (checkError) {
-    console.error("[ensurePracticeAreaPage] Error checking for page:", checkError.message);
-    return;
-  }
-
-  if (existing) {
-    return;
-  }
-
-  const { error: insertError } = await supabase.from("pages").insert({
-    title: "Practice Area",
-    url_path: practiceAreaUrl,
-    page_type: "practice",
-    status: "published",
-    content: defaultPracticeAreaPageContent as unknown as Record<string, unknown>,
-  });
-
-  if (insertError) {
-    console.error("[ensurePracticeAreaPage] Failed to insert page:", insertError.message);
-  }
 }
 
 function pageMetaFromRecord(record: Page | Post) {
@@ -334,16 +302,17 @@ function generatePageHtml({
 
   const helmetHead = getHelmetHead(helmet);
   const dataScript = `<script>window.__PAGE_DATA__=${serializeForScript(payload)}</script>`;
-  const headInjection = [
+  const headInjection = `<!-- SSG_HEAD_START -->\n${[
     analyticsScripts.join("\n"),
     siteSettingsRow?.head_scripts || "",
     dataScript,
     helmetHead,
   ]
     .filter(Boolean)
-    .join("\n");
+    .join("\n")}\n<!-- SSG_HEAD_END -->`;
 
-  let html = template.replace(/<title>.*?<\/title>/s, "");
+  let html = template.replace(/<!-- SSG_HEAD_START -->[\s\S]*?<!-- SSG_HEAD_END -->\s*/g, "");
+  html = html.replace(/<title>.*?<\/title>/s, "");
   html = html.replace(/<script>window\.__PAGE_DATA__=[\s\S]*?<\/script>\s*/g, "");
   html = injectRenderedHtml(html, renderedHtml);
   html = html.replace("</head>", `${headInjection}\n</head>`);
@@ -366,8 +335,6 @@ function escapeHtml(text: string) {
 
 async function generateSSG() {
   console.log("Starting SSG generation...");
-
-  await ensurePracticeAreaPage();
 
   const [{ data: siteSettingsRow }, { data: pages, error: pagesError }, { data: posts, error: postsError }, { data: redirects, error: redirectsError }, { data: blogSidebarRows }] = await Promise.all([
     supabase

@@ -60,7 +60,7 @@ export default function AdminPageNew() {
   const generateUrlPath = (title: string, type: PageType = pageType) => {
     const slug = generateSlug(title);
     if (type === 'practice') {
-      return '/practice-areas/' + slug + '/';
+      return '/usluge/' + slug + '/';
     }
     return '/' + slug + '/';
   };

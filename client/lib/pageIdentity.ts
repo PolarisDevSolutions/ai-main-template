@@ -75,7 +75,7 @@ export function resolveStructuredPageKind(page: {
 
   if (
     page.page_type === "practice" ||
-    normalizedPath.startsWith("/practice-areas/")
+    normalizedPath.startsWith("/usluge/")
   ) {
     return "practice-area" satisfies StructuredPageKind;
   }

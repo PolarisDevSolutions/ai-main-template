@@ -40,6 +40,7 @@ export default function PracticeAreaPageEditor({
       <HeroSection content={content} update={update} />
       <SocialProofSection content={content} update={update} />
       <ContentSectionsEditor content={content} update={update} />
+      <CtaSection content={content} update={update} />
       <FaqSection content={content} update={update} />
     </div>
   );
@@ -216,13 +217,31 @@ function ContentSectionsEditor({ content, update }: SectionProps) {
         onChange={(items) => update("contentSections", items)}
         itemLabel="Content Block"
         newItem={() => ({
-          body: "<p>Enter your content here...</p>",
+          label: "– O usluzi",
+          heading: "",
+          body: "<p>Unesite sadržaj...</p>",
           image: "",
           imageAlt: "",
           imagePosition: "right" as const,
+          theme: "light" as const,
+          showCTAs: true,
         })}
         renderItem={(item, _, upd) => (
           <div className="grid gap-3">
+            <div>
+              <Label>Section Label</Label>
+              <Input
+                value={item.label || ""}
+                onChange={(e) => upd({ ...item, label: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Heading</Label>
+              <Input
+                value={item.heading || ""}
+                onChange={(e) => upd({ ...item, heading: e.target.value })}
+              />
+            </div>
             <RichTextField
               label="Body Content"
               value={item.body}
@@ -241,10 +260,11 @@ function ContentSectionsEditor({ content, update }: SectionProps) {
                 onChange={(e) => upd({ ...item, imageAlt: e.target.value })}
               />
             </div>
-            <div>
-              <Label>Image Position</Label>
-              <Select
-                value={item.imagePosition}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Image Position</Label>
+                <Select
+                  value={item.imagePosition}
                 onValueChange={(v) =>
                   upd({
                     ...item,
@@ -255,11 +275,29 @@ function ContentSectionsEditor({ content, update }: SectionProps) {
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="right">Right</SelectItem>
-                  <SelectItem value="left">Left</SelectItem>
-                </SelectContent>
-              </Select>
+                  <SelectContent>
+                    <SelectItem value="right">Right</SelectItem>
+                    <SelectItem value="left">Left</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Section Theme</Label>
+                <Select
+                  value={item.theme || "light"}
+                  onValueChange={(v) =>
+                    upd({ ...item, theme: v as "light" | "dark" })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="light">Light</SelectItem>
+                    <SelectItem value="dark">Dark Green</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <Switch
@@ -273,6 +311,35 @@ function ContentSectionsEditor({ content, update }: SectionProps) {
           </div>
         )}
       />
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function CtaSection({ content, update }: SectionProps) {
+  const cta = content.cta;
+  const set = (patch: Partial<typeof cta>) => update("cta", { ...cta, ...patch });
+
+  return (
+    <Section title="Call to Action" defaultOpen={false}>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <Label>Phone CTA Label</Label>
+          <Input value={cta.primaryLabel} onChange={(e) => set({ primaryLabel: e.target.value })} />
+        </div>
+        <div>
+          <Label>Contact CTA Label</Label>
+          <Input value={cta.secondaryLabel} onChange={(e) => set({ secondaryLabel: e.target.value })} />
+        </div>
+        <div>
+          <Label>Contact CTA Sublabel</Label>
+          <Input value={cta.secondarySublabel} onChange={(e) => set({ secondarySublabel: e.target.value })} />
+        </div>
+        <div>
+          <Label>Contact CTA Link</Label>
+          <Input value={cta.secondaryLink} onChange={(e) => set({ secondaryLink: e.target.value })} />
+        </div>
+      </div>
     </Section>
   );
 }

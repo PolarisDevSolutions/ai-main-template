@@ -29,7 +29,7 @@ export function usePracticeAreaPageContent(
   slug: string | undefined,
 ): UsePracticeAreaPageContentResult {
   // Consume SSG-injected data synchronously before first render
-  const urlPath = slug ? `/practice-areas/${slug}/` : '';
+  const urlPath = slug ? `/usluge/${slug}/` : '';
   const injected = slug ? consumePageData(urlPath) : null;
   const initialContent = injected && isStructuredContent(injected.content)
     ? {
@@ -72,7 +72,7 @@ export function usePracticeAreaPageContent(
     }
 
     let isMounted = true;
-    const urlPath = `/practice-areas/${slug}/`;
+    const urlPath = `/usluge/${slug}/`;
 
     async function fetchContent() {
       try {
@@ -207,6 +207,7 @@ function mergeWithDefaults(
       ...cms.faq,
       items: cms.faq?.items?.length ? cms.faq.items : defaults.faq.items,
     },
+    cta: { ...defaults.cta, ...cms.cta },
     headingTags: cms.headingTags ?? defaults.headingTags,
   };
 }
@@ -214,7 +215,7 @@ function mergeWithDefaults(
 /** Clear cache for a specific practice area or all practice areas */
 export function clearPracticeAreaPageCache(slug?: string) {
   if (slug) {
-    cache.delete(`/practice-areas/${slug}/`);
+    cache.delete(`/usluge/${slug}/`);
   } else {
     // Clear all practice area caches
     for (const key of cache.keys()) {

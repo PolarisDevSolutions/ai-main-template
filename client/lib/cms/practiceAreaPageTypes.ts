@@ -26,11 +26,13 @@ export interface PracticeAreaSocialProofContent {
 }
 
 export interface PracticeAreaContentSectionItem {
+  label: string;
+  heading: string;
   body: string;
   image: string;
   imageAlt: string;
   imagePosition: "left" | "right";
-  /** Whether to show the CTA call-boxes (phone + contact). Defaults to true. */
+  theme: "light" | "dark";
   showCTAs?: boolean;
 }
 
@@ -41,11 +43,19 @@ export interface PracticeAreaFaqContent {
   items: Array<{ question: string; answer: string }>;
 }
 
+export interface PracticeAreaCtaContent {
+  primaryLabel: string;
+  secondaryLabel: string;
+  secondarySublabel: string;
+  secondaryLink: string;
+}
+
 export interface PracticeAreaPageContent {
   hero: PracticeAreaHeroContent;
   socialProof: PracticeAreaSocialProofContent;
   contentSections: PracticeAreaContentSectionItem[];
   faq: PracticeAreaFaqContent;
+  cta: PracticeAreaCtaContent;
   headingTags?: Record<string, string>;
 }
 
@@ -64,67 +74,37 @@ export const defaultPracticeAreaPageContent: PracticeAreaPageContent = {
     phoneLabel: "Pozovite nas",
   }),
   socialProof: {
-    mode: "awards",
-    testimonials: [
-      {
-        text: "The attorneys were professional, compassionate, and fought tirelessly for my case. I couldn't have asked for better representation.",
-        author: "Client",
-        ratingImage: "/images/logos/rating-stars.png",
-        ratingImageAlt: "5 star rating",
-      },
-      {
-        text: "From the first consultation to the final verdict, the team kept me informed and confident. Highly recommend their services.",
-        author: "Client",
-        ratingImage: "/images/logos/rating-stars.png",
-        ratingImageAlt: "5 star rating",
-      },
-      {
-        text: "They exceeded my expectations in every way. Their dedication to my case was evident throughout the entire process.",
-        author: "Client",
-        ratingImage: "/images/logos/rating-stars.png",
-        ratingImageAlt: "5 star rating",
-      },
-    ],
-    awards: {
-      logos: [
-        { src: "/images/awards/award-1.png", alt: "Award" },
-        { src: "/images/awards/award-2.png", alt: "Award" },
-        { src: "/images/awards/award-3.png", alt: "Award" },
-        { src: "/images/awards/award-4.png", alt: "Award" },
-        { src: "/images/awards/award-5.png", alt: "Award" },
-        { src: "/images/awards/award-6.png", alt: "Award" },
-      ],
-    },
+    mode: "none",
+    testimonials: [],
+    awards: { logos: [] },
   },
   contentSections: [
     {
-      body: "<p>Our attorneys have extensive experience handling cases in this practice area. We understand the complexities of the law and work diligently to build a strong case on your behalf.</p><p>Whether you're dealing with a minor issue or a complex legal matter, we provide personalized attention and aggressive representation to ensure the best possible outcome.</p>",
-      image: "/images/stock/lawyer-consulting.jpg",
-      imageAlt: "Attorney consulting with client",
+      label: "– O usluzi",
+      heading: "Rešenje prilagođeno ciljevima vašeg biznisa",
+      body: "<p>Opišite uslugu, proces rada i rezultate koje klijent može da očekuje.</p>",
+      image: "",
+      imageAlt: "",
       imagePosition: "right",
+      theme: "light",
+      showCTAs: true,
     },
   ],
   faq: {
     enabled: true,
-    heading: "Frequently Asked Questions",
-    description:
-      "Find answers to common questions about this practice area below.",
+    heading: "Često postavljana pitanja",
+    description: "Odgovori na najčešća pitanja o usluzi i procesu saradnje.",
     items: [
       {
-        question: "How much does a consultation cost?",
-        answer:
-          "We offer free initial consultations. There is no obligation and no cost to discuss your case with one of our experienced attorneys.",
-      },
-      {
-        question: "How long will my case take?",
-        answer:
-          "Every case is unique, and the timeline can vary depending on the complexity of your situation. During your consultation, we'll provide a realistic assessment of the expected timeline.",
-      },
-      {
-        question: "What if I can't afford an attorney?",
-        answer:
-          "We work on a contingency fee basis for most cases, which means you don't pay unless we win. Our goal is to make quality legal representation accessible to everyone.",
+        question: "Kako izgleda početak saradnje?",
+        answer: "<p>Saradnja počinje analizom potreba, ciljeva i trenutnog online nastupa.</p>",
       },
     ],
+  },
+  cta: {
+    primaryLabel: "Pozovite nas",
+    secondaryLabel: "Pošaljite upit",
+    secondarySublabel: "Zakažite konsultacije",
+    secondaryLink: "/kontakt/",
   },
 };

@@ -66,6 +66,7 @@ export default function PracticeAreaPage() {
         <PracticeAreaContentSection
           key={index}
           section={section}
+          cta={content.cta}
           index={index}
         />
       ))}
