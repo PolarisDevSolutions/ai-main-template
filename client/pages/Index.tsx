@@ -66,7 +66,7 @@ export default function Index() {
       <PracticeAreasGrid areas={content.practiceAreas} />
       <ServicesOutroSection content={content.servicesOutro} />
       <SectionDivider />
-      <AboutSection content={content.about} showPhone={false} showStats={false} />
+      <AboutSection content={content.about} showPhone={false} showStats />
       <SectionDivider />
       <WhyNeedUsSection content={content.whyNeedUs} headingTag={content.headingTags?.["whyNeedUs.heading"]} />
       <FeaturedProjectsSection content={content.featuredProjects} />
