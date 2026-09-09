@@ -67,8 +67,8 @@ export default function ContactPage() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "Kontakt"}
-        description={meta.meta_description || "Kontaktirajte Polaris i razgovarajte sa nama o izradi sajta, SEO optimizaciji, digitalnom marketingu ili unapređenju postojećeg nastupa na internetu."}
+        title={meta.meta_title || undefined}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

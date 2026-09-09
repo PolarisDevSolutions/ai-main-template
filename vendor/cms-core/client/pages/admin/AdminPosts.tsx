@@ -47,6 +47,7 @@ import {
 import PostCategoriesPanel from "./PostCategoriesPanel";
 import BlogSidebarSettingsPanel from "./BlogSidebarSettingsPanel";
 import { toast } from "sonner";
+import { formatPublishErrors, validatePostForPublish } from "@/lib/publishValidation";
 
 interface PostWithCategory extends Post {
   post_categories: { name: string } | null;
@@ -130,6 +131,16 @@ export default function AdminPosts() {
 
     switch (action) {
       case "publish": {
+        const invalidPost = posts
+          .filter((post) => selectedIds.has(post.id))
+          .map((post) => ({ post, errors: validatePostForPublish(post) }))
+          .find(({ errors }) => errors.length > 0);
+
+        if (invalidPost) {
+          toast.error(`${invalidPost.post.title}: ${formatPublishErrors(invalidPost.errors)}`);
+          return;
+        }
+
         const res = await supabase
           .from("posts")
           .update({

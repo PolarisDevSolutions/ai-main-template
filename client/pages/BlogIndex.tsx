@@ -12,8 +12,8 @@ export default function BlogIndex() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "Blog"}
-        description={meta.meta_description || "Praktični vodiči i stručni saveti o izradi sajtova, SEO optimizaciji, digitalnom marketingu i povećanju konverzija."}
+        title={meta.meta_title || undefined}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

@@ -28,6 +28,7 @@ import RichTextEditor from "@site/components/admin/RichTextEditor";
 import ImageUploader from "../../components/admin/ImageUploader";
 import { toast } from "sonner";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { formatPublishErrors, validatePostForPublish } from "@/lib/publishValidation";
 
 export default function AdminPostEdit() {
   const { id } = useParams<{ id: string }>();
@@ -78,6 +79,15 @@ export default function AdminPostEdit() {
 
   const handleSave = async () => {
     if (!post) return;
+
+    if (post.status === "published") {
+      const errors = validatePostForPublish(post);
+      if (errors.length > 0) {
+        toast.error(formatPublishErrors(errors));
+        return;
+      }
+    }
+
     setSaving(true);
 
     const { error } = await supabase

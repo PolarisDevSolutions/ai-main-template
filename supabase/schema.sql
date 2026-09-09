@@ -231,6 +231,38 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION public.validate_page_before_publish()
+RETURNS trigger LANGUAGE plpgsql SET search_path = public AS $$
+BEGIN
+  IF NEW.status = 'published' THEN
+    IF NULLIF(BTRIM(NEW.title), '') IS NULL THEN RAISE EXCEPTION 'Naslov je obavezan pre objave stranice.'; END IF;
+    IF NULLIF(BTRIM(NEW.url_path), '') IS NULL THEN RAISE EXCEPTION 'URL putanja je obavezna pre objave stranice.'; END IF;
+    IF NULLIF(BTRIM(NEW.meta_title), '') IS NULL THEN RAISE EXCEPTION 'SEO naslov je obavezan pre objave stranice.'; END IF;
+    IF NULLIF(BTRIM(NEW.meta_description), '') IS NULL THEN RAISE EXCEPTION 'Meta opis je obavezan pre objave stranice.'; END IF;
+    IF NEW.content IS NULL OR NEW.content IN ('null'::jsonb, '{}'::jsonb, '[]'::jsonb) OR LENGTH(NEW.content::text) < 80 THEN RAISE EXCEPTION 'Stranica mora imati sadržaj pre objave.'; END IF;
+    IF LOWER(NEW.content::text) ~ '(lorem ipsum|your firm headline|this is an example faq|page headline|enter a description here)' THEN RAISE EXCEPTION 'Uklonite placeholder sadržaj pre objave stranice.'; END IF;
+    IF NULLIF(BTRIM(NEW.canonical_url), '') IS NOT NULL AND NEW.canonical_url !~ '^https://[^[:space:]]+$' THEN RAISE EXCEPTION 'Canonical URL mora biti validan HTTPS URL.'; END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.validate_post_before_publish()
+RETURNS trigger LANGUAGE plpgsql SET search_path = public AS $$
+BEGIN
+  IF NEW.status = 'published' THEN
+    IF NULLIF(BTRIM(NEW.title), '') IS NULL THEN RAISE EXCEPTION 'Naslov je obavezan pre objave članka.'; END IF;
+    IF NULLIF(BTRIM(NEW.slug), '') IS NULL THEN RAISE EXCEPTION 'Slug je obavezan pre objave članka.'; END IF;
+    IF NULLIF(BTRIM(NEW.meta_title), '') IS NULL THEN RAISE EXCEPTION 'SEO naslov je obavezan pre objave članka.'; END IF;
+    IF NULLIF(BTRIM(NEW.meta_description), '') IS NULL THEN RAISE EXCEPTION 'Meta opis je obavezan pre objave članka.'; END IF;
+    IF LENGTH(BTRIM(REGEXP_REPLACE(COALESCE(NEW.body, ''), '<[^>]*>', ' ', 'g'))) < 100 THEN RAISE EXCEPTION 'Članak mora imati sadržaj pre objave.'; END IF;
+    IF LOWER(COALESCE(NEW.body, '')) ~ '(lorem ipsum|this is an example|page headline|enter a description here)' THEN RAISE EXCEPTION 'Uklonite placeholder sadržaj pre objave članka.'; END IF;
+    IF NULLIF(BTRIM(NEW.canonical_url), '') IS NOT NULL AND NEW.canonical_url !~ '^https://[^[:space:]]+$' THEN RAISE EXCEPTION 'Canonical URL mora biti validan HTTPS URL.'; END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
 -- =============================================
 -- 3. TRIGGERS
 -- =============================================
@@ -250,6 +282,14 @@ CREATE TRIGGER posts_updated_at_trigger
 CREATE TRIGGER blog_sidebar_settings_updated_at
   BEFORE UPDATE ON public.blog_sidebar_settings
   FOR EACH ROW EXECUTE FUNCTION public.update_blog_sidebar_settings_updated_at();
+
+CREATE TRIGGER validate_page_publish_trigger
+  BEFORE INSERT OR UPDATE ON public.pages
+  FOR EACH ROW EXECUTE FUNCTION public.validate_page_before_publish();
+
+CREATE TRIGGER validate_post_publish_trigger
+  BEFORE INSERT OR UPDATE ON public.posts
+  FOR EACH ROW EXECUTE FUNCTION public.validate_post_before_publish();
 
 -- =============================================
 -- 4. VIEWS

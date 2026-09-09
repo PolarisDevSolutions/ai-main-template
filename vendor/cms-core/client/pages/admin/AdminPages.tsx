@@ -24,6 +24,7 @@ import { Plus, Search, Edit, Trash2, ExternalLink, Loader2, Square, CheckSquare,
 import { Checkbox } from '@/components/ui/checkbox';
 import BulkActionBar, { BulkAction } from '../../components/admin/BulkActionBar';
 import { toast } from "sonner";
+import { formatPublishErrors, validatePageForPublish } from "@/lib/publishValidation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -118,13 +119,24 @@ export default function AdminPages() {
     let error = null;
 
     switch (action) {
-      case 'publish':
+      case 'publish': {
+        const invalidPage = pages
+          .filter((page) => selectedIds.has(page.id))
+          .map((page) => ({ page, errors: validatePageForPublish(page) }))
+          .find(({ errors }) => errors.length > 0);
+
+        if (invalidPage) {
+          toast.error(`${invalidPage.page.title}: ${formatPublishErrors(invalidPage.errors)}`);
+          return;
+        }
+
         const publishResult = await supabase
           .from('pages')
           .update({ status: 'published', published_at: new Date().toISOString() })
           .in('id', ids);
         error = publishResult.error;
         break;
+      }
 
       case 'unpublish':
         const unpublishResult = await supabase

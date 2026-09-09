@@ -32,8 +32,8 @@ export default function Index() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || "Početna"}
-        description={meta.meta_description || "Polaris pruža izradu sajtova, SEO optimizaciju i digitalni marketing za veću vidljivost, kvalitetnije upite i održiv rast poslovanja."}
+        title={meta.meta_title || undefined}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

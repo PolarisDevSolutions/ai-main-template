@@ -82,9 +82,7 @@ export default function Seo({
 
   const fullDescription = description?.trim() || undefined;
 
-  // Default image
-  const defaultImage = 'https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2Fffd4570362aa4597bdddb3822d12f59a?format=png&width=512&height=512';
-  const fullImage = image || defaultImage;
+  const fullImage = image || settings.logoUrl || undefined;
 
   // OG overrides — fall back to page-level values
   const resolvedOgTitle = ogTitle || fullTitle;

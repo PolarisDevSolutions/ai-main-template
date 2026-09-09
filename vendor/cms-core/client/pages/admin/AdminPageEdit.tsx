@@ -20,6 +20,7 @@ import { defaultPracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTy
 import type { PracticeAreaPageContent } from "@site/lib/cms/practiceAreaPageTypes";
 import { normalizeSharedHeroContent } from "@site/lib/cms/sharedHero";
 import { normalizePagePath, resolveStructuredPageKind, type StructuredPageKind } from "@site/lib/pageIdentity";
+import { formatPublishErrors, validatePageForPublish } from "@/lib/publishValidation";
 import { clearAboutContentCache } from "@site/hooks/useAboutContent";
 import { clearContactContentCache } from "@site/hooks/useContactContent";
 import { clearHomeContentCache } from "@site/hooks/useHomeContent";
@@ -146,6 +147,14 @@ export default function AdminPageEdit() {
 
   const handleSave = async () => {
     if (!page) return;
+
+    if (page.status === "published") {
+      const errors = validatePageForPublish(page);
+      if (errors.length > 0) {
+        toast.error(formatPublishErrors(errors));
+        return;
+      }
+    }
 
     // Check if URL path changed and prompt for redirect
     if (page.url_path !== originalUrlPath && originalUrlPath !== "") {

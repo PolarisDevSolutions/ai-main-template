@@ -50,8 +50,8 @@ export default function PracticeAreaPage() {
   return (
     <Layout>
       <Seo
-        title={meta.meta_title || title || "Usluga"}
-        description={meta.meta_description || `Saznajte kako Polaris ${title || "digitalne usluge"} mogu unaprediti vidljivost, korisničko iskustvo i rezultate vašeg poslovanja.`}
+        title={meta.meta_title || undefined}
+        description={meta.meta_description || undefined}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}
