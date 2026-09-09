@@ -1,6 +1,7 @@
 import type { HomePageContent } from "@/lib/cms/homePageTypes";
 import SharedHeroEditor from "./SharedHeroEditor";
 import { Section, ArrayEditor, ImageField, RichTextField, HeadingField, Input, Label, Textarea } from "./EditorShared";
+import { Switch } from "@/components/ui/switch";
 
 interface HomeEditorProps {
   content: HomePageContent;
@@ -19,8 +20,10 @@ export default function HomeEditor({ content, onChange }: HomeEditorProps) {
       <AboutSectionEditor content={content} update={update} />
       <PracticeAreasIntroSection content={content} update={update} />
       <PracticeAreasItemsSection content={content} update={update} />
+      <ServicesOutroSection content={content} update={update} />
       <WhyNeedUsSection content={content} update={update} />
       {/* Testimonials section removed from frontend — keep data intact */}
+      <FeaturedProjectsSection content={content} update={update} />
       <ProcessSection content={content} update={update} />
       <GoogleReviewsSection content={content} update={update} />
       <FaqSectionEditor content={content} update={update} />
@@ -47,8 +50,16 @@ function HeroSection({ content, update }: SectionProps) {
     <Section title="Hero Section">
       <SharedHeroEditor
         hero={content.hero}
-        onChange={(hero) => update("hero", hero)}
+        onChange={(hero) => update("hero", hero as HomePageContent["hero"])}
       />
+      <div className="grid gap-4 border-t pt-4">
+        <div>
+          <Label>Tagline below H1</Label>
+          <Input value={content.hero.tagline} onChange={(e) => update("hero", { ...content.hero, tagline: e.target.value })} />
+        </div>
+        <h4 className="font-medium">Hero Form</h4>
+        <FormFields value={content.hero.form} onChange={(form) => update("hero", { ...content.hero, form })} />
+      </div>
     </Section>
   );
 }
@@ -108,6 +119,10 @@ function AboutSectionEditor({ content, update }: SectionProps) {
           onTagChange={(t) => ht.set("about.heading", t)}
         />
         <RichTextField label="Description" value={about.description} onChange={(v) => set({ description: v })} />
+        <div>
+          <Label>About Link</Label>
+          <Input value={about.contactLink || ""} onChange={(e) => set({ contactLink: e.target.value })} />
+        </div>
         <p className="text-xs text-gray-500 italic">Phone number is managed in Site Settings &gt; Contact Info</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -189,12 +204,14 @@ function PracticeAreasIntroSection({ content, update }: SectionProps) {
           onTagChange={(t) => ht.set("practiceAreasIntro.sectionLabel", t)}
         />
         <div>
-          <Label>Text</Label>
+          <Label>Heading</Label>
           <Input value={intro.heading} onChange={(e) => set({ heading: e.target.value })} />
         </div>
-        <div>
-          <Label>Button Link ("Discover All Practice Areas")</Label>
-          <Input value={intro.buttonLink} onChange={(e) => set({ buttonLink: e.target.value })} placeholder="/practice-areas/" />
+        <RichTextField label="Description" value={intro.description} onChange={(description) => set({ description })} />
+        <div className="grid gap-4 md:grid-cols-3">
+          <div><Label>Button Eyebrow</Label><Input value={intro.buttonEyebrow} onChange={(e) => set({ buttonEyebrow: e.target.value })} /></div>
+          <div><Label>Button Label</Label><Input value={intro.buttonLabel} onChange={(e) => set({ buttonLabel: e.target.value })} /></div>
+          <div><Label>Button Link</Label><Input value={intro.buttonLink} onChange={(e) => set({ buttonLink: e.target.value })} /></div>
         </div>
       </div>
     </Section>
@@ -209,7 +226,7 @@ function PracticeAreasItemsSection({ content, update }: SectionProps) {
         items={content.practiceAreas}
         onChange={(items) => update("practiceAreas", items)}
         itemLabel="Practice Area"
-        newItem={() => ({ title: "", description: "", image: "", imageAlt: "", link: "/practice-areas" })}
+        newItem={() => ({ title: "", description: "", image: "", imageAlt: "", link: "", linkLabel: "" })}
         renderItem={(item, _, upd) => (
           <div className="grid gap-3">
             <div>
@@ -225,12 +242,25 @@ function PracticeAreasItemsSection({ content, update }: SectionProps) {
               <Label>Image Alt Text</Label>
               <Input value={item.imageAlt} onChange={(e) => upd({ ...item, imageAlt: e.target.value })} placeholder="Describe the image" />
             </div>
-            <div>
-              <Label>Link</Label>
-              <Input value={item.link} onChange={(e) => upd({ ...item, link: e.target.value })} />
+            <div className="grid gap-3 md:grid-cols-2">
+              <div><Label>Link Label</Label><Input value={item.linkLabel || ""} onChange={(e) => upd({ ...item, linkLabel: e.target.value })} /></div>
+              <div><Label>Link</Label><Input value={item.link} onChange={(e) => upd({ ...item, link: e.target.value })} /></div>
             </div>
           </div>
         )}
+      />
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+function ServicesOutroSection({ content, update }: SectionProps) {
+  return (
+    <Section title="Services Outro" defaultOpen={false}>
+      <RichTextField
+        label="Text and links"
+        value={content.servicesOutro.text}
+        onChange={(text) => update("servicesOutro", { text })}
       />
     </Section>
   );
@@ -339,6 +369,46 @@ function TestimonialsSection({ content, update }: SectionProps) {
 }
 
 /* ------------------------------------------------------------------ */
+function FeaturedProjectsSection({ content, update }: SectionProps) {
+  const section = content.featuredProjects;
+  const set = (patch: Partial<typeof section>) => update("featuredProjects", { ...section, ...patch });
+
+  return (
+    <Section title="Featured Projects" defaultOpen={false}>
+      <div className="grid gap-4">
+        <div className="flex items-center justify-between">
+          <Label>Show section publicly</Label>
+          <Switch checked={section.enabled} onCheckedChange={(enabled) => set({ enabled })} />
+        </div>
+        <div><Label>Section Label</Label><Input value={section.sectionLabel} onChange={(e) => set({ sectionLabel: e.target.value })} /></div>
+        <div><Label>Heading</Label><Input value={section.heading} onChange={(e) => set({ heading: e.target.value })} /></div>
+        <ArrayEditor
+          items={section.projects}
+          onChange={(projects) => set({ projects })}
+          itemLabel="Project"
+          newItem={() => ({ name: "", industry: "", goal: "", work: "", image: "", imageAlt: "", link: "", result: "", measurementPeriod: "" })}
+          renderItem={(item, _, upd) => (
+            <div className="grid gap-3">
+              <div className="grid gap-3 md:grid-cols-2">
+                <div><Label>Project / Client</Label><Input value={item.name} onChange={(e) => upd({ ...item, name: e.target.value })} /></div>
+                <div><Label>Industry</Label><Input value={item.industry} onChange={(e) => upd({ ...item, industry: e.target.value })} /></div>
+              </div>
+              <RichTextField label="Goal or problem" value={item.goal} onChange={(goal) => upd({ ...item, goal })} />
+              <RichTextField label="Work delivered" value={item.work} onChange={(work) => upd({ ...item, work })} />
+              <ImageField label="Image" value={item.image} onChange={(image) => upd({ ...item, image })} folder="projects" />
+              <div><Label>Image Alt</Label><Input value={item.imageAlt} onChange={(e) => upd({ ...item, imageAlt: e.target.value })} /></div>
+              <div><Label>Optional Link</Label><Input value={item.link} onChange={(e) => upd({ ...item, link: e.target.value })} /></div>
+              <RichTextField label="Optional measured result" value={item.result} onChange={(result) => upd({ ...item, result })} />
+              <div><Label>Measurement Period</Label><Input value={item.measurementPeriod} onChange={(e) => upd({ ...item, measurementPeriod: e.target.value })} /></div>
+            </div>
+          )}
+        />
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 function ProcessSection({ content, update }: SectionProps) {
   const p = content.process;
   const set = (patch: Partial<typeof p>) => update("process", { ...p, ...patch });
@@ -413,7 +483,7 @@ function GoogleReviewsSection({ content, update }: SectionProps) {
           items={r.reviews}
           onChange={(items) => set({ reviews: items })}
           itemLabel="Review"
-          newItem={() => ({ text: "", author: "", ratingImage: "", ratingImageAlt: "" })}
+          newItem={() => ({ text: "", author: "", ratingImage: "", ratingImageAlt: "", sourceUrl: "" })}
           renderItem={(item, _, upd) => (
             <div className="grid gap-3">
               <div>
@@ -425,6 +495,10 @@ function GoogleReviewsSection({ content, update }: SectionProps) {
               <div>
                 <Label>Rating Image Alt Text</Label>
                 <Input value={item.ratingImageAlt || ""} onChange={(e) => upd({ ...item, ratingImageAlt: e.target.value })} placeholder="e.g. 5 star rating" />
+              </div>
+              <div>
+                <Label>Source URL</Label>
+                <Input value={item.sourceUrl || ""} onChange={(e) => upd({ ...item, sourceUrl: e.target.value })} />
               </div>
             </div>
           )}
@@ -472,6 +546,50 @@ function FaqSectionEditor({ content, update }: SectionProps) {
 }
 
 /* ------------------------------------------------------------------ */
+function FormFields({
+  value,
+  onChange,
+  showExtendedFields = false,
+}: {
+  value: HomePageContent["hero"]["form"] | HomePageContent["contact"]["form"];
+  onChange: (value: any) => void;
+  showExtendedFields?: boolean;
+}) {
+  const set = (patch: Record<string, string>) => onChange({ ...value, ...patch });
+
+  return (
+    <div className="grid gap-4">
+      <div className="grid gap-3 md:grid-cols-2">
+        <div><Label>First Name Placeholder</Label><Input value={value.firstNamePlaceholder} onChange={(e) => set({ firstNamePlaceholder: e.target.value })} /></div>
+        <div><Label>Last Name Placeholder</Label><Input value={value.lastNamePlaceholder} onChange={(e) => set({ lastNamePlaceholder: e.target.value })} /></div>
+        <div><Label>Email Placeholder</Label><Input value={value.emailPlaceholder} onChange={(e) => set({ emailPlaceholder: e.target.value })} /></div>
+        <div><Label>Phone Placeholder</Label><Input value={value.phonePlaceholder} onChange={(e) => set({ phonePlaceholder: e.target.value })} /></div>
+        {showExtendedFields && "websitePlaceholder" in value && (
+          <>
+            <div><Label>Website Placeholder</Label><Input value={value.websitePlaceholder} onChange={(e) => set({ websitePlaceholder: e.target.value })} /></div>
+            <div><Label>Project Placeholder</Label><Input value={value.projectPlaceholder} onChange={(e) => set({ projectPlaceholder: e.target.value })} /></div>
+          </>
+        )}
+      </div>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div><Label>Consent Before Link</Label><Input value={value.consentBefore} onChange={(e) => set({ consentBefore: e.target.value })} /></div>
+        <div><Label>Privacy Link Label</Label><Input value={value.privacyLabel} onChange={(e) => set({ privacyLabel: e.target.value })} /></div>
+        <div><Label>Privacy Link</Label><Input value={value.privacyLink} onChange={(e) => set({ privacyLink: e.target.value })} /></div>
+      </div>
+      <div><Label>Consent After Link</Label><Input value={value.consentAfter} onChange={(e) => set({ consentAfter: e.target.value })} /></div>
+      <div className="grid gap-3 md:grid-cols-2">
+        <div><Label>Submit Label</Label><Input value={value.submitLabel} onChange={(e) => set({ submitLabel: e.target.value })} /></div>
+        <div><Label>Submitting Label</Label><Input value={value.submittingLabel} onChange={(e) => set({ submittingLabel: e.target.value })} /></div>
+        <div><Label>Success Message</Label><Input value={value.successMessage} onChange={(e) => set({ successMessage: e.target.value })} /></div>
+        <div><Label>Error Message</Label><Input value={value.errorMessage} onChange={(e) => set({ errorMessage: e.target.value })} /></div>
+        <div><Label>Required Field Message</Label><Input value={value.requiredMessage} onChange={(e) => set({ requiredMessage: e.target.value })} /></div>
+        <div><Label>Email Error Message</Label><Input value={value.emailMessage} onChange={(e) => set({ emailMessage: e.target.value })} /></div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 function ContactSectionEditor({ content, update }: SectionProps) {
   const c = content.contact;
   const set = (patch: Partial<typeof c>) => update("contact", { ...c, ...patch });
@@ -502,6 +620,8 @@ function ContactSectionEditor({ content, update }: SectionProps) {
           <Label>Form Heading</Label>
           <Input value={c.formHeading} onChange={(e) => set({ formHeading: e.target.value })} />
         </div>
+        <h4 className="font-medium">Contact Form</h4>
+        <FormFields value={c.form} onChange={(form) => set({ form })} showExtendedFields />
       </div>
     </Section>
   );

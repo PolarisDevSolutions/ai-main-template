@@ -2,19 +2,13 @@ import { Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { PracticeAreasIntroContent } from "@/lib/cms/homePageTypes";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
+import RichText from "@site/components/shared/RichText";
 
 interface PracticeAreasSectionProps {
-  content?: PracticeAreasIntroContent;
+  content: PracticeAreasIntroContent;
 }
 
-const defaultContent: PracticeAreasIntroContent = {
-  sectionLabel: "– Practice Areas",
-  heading: "Practice Areas",
-  buttonLink: "/usluge/",
-};
-
-export default function PracticeAreasSection({ content }: PracticeAreasSectionProps) {
-  const data = content || defaultContent;
+export default function PracticeAreasSection({ content: data }: PracticeAreasSectionProps) {
 
   return (
     <section className="bg-brand-dark py-20 md:py-28">
@@ -29,22 +23,30 @@ export default function PracticeAreasSection({ content }: PracticeAreasSectionPr
             <h2 className="font-grotesk text-[clamp(2rem,5vw,56px)] font-light leading-[1.1] text-white">
               {data.heading}
             </h2>
+            {data.description && (
+              <RichText
+                html={data.description}
+                className="mt-6 max-w-[760px] font-manrope text-[15px] leading-7 text-white/70 md:text-[17px]"
+              />
+            )}
           </AnimatedSection>
 
-          <AnimatedSection delay={0.15}>
+          {data.buttonEyebrow && data.buttonLabel && data.buttonLink && (
+            <AnimatedSection delay={0.15}>
             <Link
-              to={data.buttonLink || "/usluge/"}
+              to={data.buttonLink}
               className="flex items-center gap-4 bg-brand-accent p-5 group hover:bg-brand-accent-dark transition-colors duration-300 max-w-[320px]"
             >
               <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
                 <Layers className="w-6 h-6 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" />
               </div>
               <div>
-                <p className="font-manrope text-[13px] text-brand-dark/70 mb-0.5">Otkrijte</p>
-                <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">Sve naše usluge</p>
+                <p className="font-manrope text-[13px] text-brand-dark/70 mb-0.5">{data.buttonEyebrow}</p>
+                <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">{data.buttonLabel}</p>
               </div>
             </Link>
-          </AnimatedSection>
+            </AnimatedSection>
+          )}
         </div>
       </div>
     </section>

@@ -77,11 +77,8 @@ function mergeWithDefaults<T extends Record<string, any>>(
       const defaultValue = defaults[key];
       const cmsValue = cmsContent[key];
 
-      // Handle arrays: use CMS value if it has items, otherwise use defaults
       if (Array.isArray(defaultValue)) {
-        result[key] = Array.isArray(cmsValue) && cmsValue.length > 0
-          ? cmsValue
-          : defaultValue;
+        result[key] = Array.isArray(cmsValue) ? cmsValue : defaultValue;
       }
       // Handle nested objects: merge recursively
       else if (defaultValue && typeof defaultValue === 'object' && !Array.isArray(defaultValue)) {

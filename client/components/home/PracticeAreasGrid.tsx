@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import type { PracticeAreaItem } from "@/lib/homePageTypes";
+import type { PracticeAreaItem } from "@/lib/cms/homePageTypes";
+import { ArrowUpRight } from "lucide-react";
 
 interface PracticeAreasGridProps {
   areas?: PracticeAreaItem[];
@@ -17,7 +18,7 @@ export default function PracticeAreasGrid({ areas }: PracticeAreasGridProps) {
       <div className="w-full">
         {" "}
         {/* Removed max-w-[2560px], mx-auto, w-[90%] */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
           {areas.map((area, index) => (
             <Link
               key={index}
@@ -41,9 +42,15 @@ export default function PracticeAreasGrid({ areas }: PracticeAreasGridProps) {
                     {area.title}
                   </h3>
                   {area.description && (
-                    <p className="mt-3 max-w-[28ch] font-manrope text-[14px] leading-6 text-white/80 transition-colors duration-300 group-hover:text-white">
+                    <p className="mt-3 max-w-[42ch] font-manrope text-[14px] leading-6 text-white/80 transition-colors duration-300 group-hover:text-white">
                       {area.description}
                     </p>
+                  )}
+                  {area.linkLabel && (
+                    <span className="mt-5 inline-flex items-center gap-2 font-manrope text-[13px] font-semibold text-brand-accent">
+                      {area.linkLabel}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
                   )}
                 </div>
               </div>

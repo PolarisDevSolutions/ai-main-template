@@ -9,7 +9,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown, Plus, Trash2, GripVertical } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 import RichTextEditor from "@site/components/admin/RichTextEditor";
 
@@ -70,13 +70,25 @@ export function ArrayEditor<T extends Record<string, unknown>>({
     next[index] = item;
     onChange(next);
   };
+  const moveItem = (index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= items.length) return;
+    const next = [...items];
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  };
 
   return (
     <div className="space-y-4">
       {items.map((item, index) => (
         <div key={index} className="relative border rounded-lg p-4 bg-gray-50">
           <div className="absolute top-2 right-2 flex gap-2">
-            <GripVertical className="h-4 w-4 text-gray-400 cursor-move" />
+            <button type="button" onClick={() => moveItem(index, -1)} disabled={index === 0} className="text-gray-500 hover:text-gray-800 disabled:opacity-30" aria-label={`Move ${itemLabel} up`}>
+              <ChevronUp className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => moveItem(index, 1)} disabled={index === items.length - 1} className="text-gray-500 hover:text-gray-800 disabled:opacity-30" aria-label={`Move ${itemLabel} down`}>
+              <ChevronDown className="h-4 w-4" />
+            </button>
             <button type="button" onClick={() => removeItem(index)} className="text-red-500 hover:text-red-700">
               <Trash2 className="h-4 w-4" />
             </button>

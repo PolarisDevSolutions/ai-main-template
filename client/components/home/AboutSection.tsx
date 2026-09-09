@@ -16,6 +16,7 @@ interface AboutSectionProps {
   compactBottomPadding?: boolean;
   theme?: "light" | "dark";
   showStats?: boolean;
+  showPhone?: boolean;
 }
 
 const defaultContent: AboutContent = {
@@ -64,6 +65,7 @@ export default function AboutSection({
   compactBottomPadding = false,
   theme = "light",
   showStats = true,
+  showPhone = true,
 }: AboutSectionProps) {
   const data = content || defaultContent;
   const features = data.features || defaultContent.features;
@@ -73,6 +75,7 @@ export default function AboutSection({
   const useSplitThirdStatsLayout =
     statsLayout === "split-third" && stats.length === 3;
   const isDark = theme === "dark";
+  const contactLink = data.contactLink || "/kontakt/";
 
   const renderStat = (
     stat: (typeof stats)[number],
@@ -122,7 +125,7 @@ export default function AboutSection({
             </div>
 
             <div className="flex flex-col gap-4 max-w-[340px]">
-              {phoneDisplay && (
+              {showPhone && phoneDisplay && (
                 <a
                   href={`tel:${phoneNumber.replace(/\D/g, "")}`}
                   className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300"
@@ -137,17 +140,17 @@ export default function AboutSection({
                 </a>
               )}
 
-              {data.contactLabel && (
+              {(data.contactLabel || data.contactText) && (
                 <Link
-                  to="/kontakt/"
+                  to={contactLink}
                   className="flex items-start gap-4 bg-brand-accent p-4 group hover:bg-brand-accent-dark transition-colors duration-300"
                 >
                 <div className="bg-brand-dark p-3 shrink-0 group-hover:bg-white transition-colors duration-300">
                   <MessageCircle className="w-5 h-5 text-brand-accent group-hover:text-brand-dark transition-colors duration-300" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="font-manrope text-[12px] text-brand-dark/60 mb-0.5">{data.contactLabel}</p>
-                  <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">{data.contactText}</p>
+                  {data.contactLabel && <p className="font-manrope text-[12px] text-brand-dark/60 mb-0.5">{data.contactLabel}</p>}
+                  {data.contactText && <p className="font-grotesk text-[20px] font-medium text-brand-dark leading-tight">{data.contactText}</p>}
                 </div>
               </Link>
             )}

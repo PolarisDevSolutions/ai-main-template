@@ -21,9 +21,11 @@ const defaultContent: GoogleReviewsContent = {
 
 export default function GoogleReviewsSection({ content }: GoogleReviewsSectionProps) {
   const data = content || defaultContent;
-  const reviews = data.reviews?.length ? data.reviews : defaultContent.reviews;
+  const reviews = data.reviews || [];
   const [activeIndex, setActiveIndex] = useState(0);
   const total = reviews.length;
+
+  if (total === 0) return null;
 
   const prev = () => setActiveIndex((i) => (i - 1 + total) % total);
   const next = () => setActiveIndex((i) => (i + 1) % total);
@@ -83,7 +85,13 @@ export default function GoogleReviewsSection({ content }: GoogleReviewsSectionPr
                   )}
                   <RichText html={review.text} className="font-manrope text-[15px] leading-relaxed text-white/70 flex-1 mb-6" />
                   <div className="flex items-center justify-between border-t border-brand-border/20 pt-4">
-                    <strong className="font-manrope font-semibold text-[13px] text-white/80">{review.author}</strong>
+                    {review.sourceUrl ? (
+                      <a href={review.sourceUrl} target="_blank" rel="noreferrer" className="font-manrope text-[13px] font-semibold text-white/80 underline decoration-brand-accent/50 underline-offset-4">
+                        {review.author}
+                      </a>
+                    ) : (
+                      <strong className="font-manrope font-semibold text-[13px] text-white/80">{review.author}</strong>
+                    )}
                     <img src="/images/logos/google-icon.png" alt="Google" width={18} height={18} loading="lazy" className="opacity-40" />
                   </div>
                 </div>

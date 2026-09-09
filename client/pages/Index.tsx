@@ -11,6 +11,8 @@ import FaqSection from "@site/components/home/FaqSection";
 import ContactUsSection from "@site/components/home/ContactUsSection";
 import MarketingHeroSection from "@site/components/shared/MarketingHeroSection";
 import LogoMarquee from "@site/components/shared/LogoMarquee";
+import ServicesOutroSection from "@site/components/home/ServicesOutroSection";
+import FeaturedProjectsSection from "@site/components/home/FeaturedProjectsSection";
 import { useHomeContent } from "@site/hooks/useHomeContent";
 
 function SectionDivider({ backgroundClass = "bg-white" }: { backgroundClass?: string }) {
@@ -50,6 +52,8 @@ export default function Index() {
         fullHeight
         overlapHeader
         showScrollHint
+        tagline={heroContent.tagline}
+        formContent={heroContent.form}
       />
 
       <LogoMarquee
@@ -58,16 +62,16 @@ export default function Index() {
         headingTag={content.headingTags?.["partnerLogos.title"]}
       />
 
-      {/* ── Home Sections ── */}
-      <AboutSection content={content.about} />
-      <SectionDivider />
       <PracticeAreasSection content={content.practiceAreasIntro} />
-      <SectionDivider backgroundClass="bg-brand-dark" />
       <PracticeAreasGrid areas={content.practiceAreas} />
+      <ServicesOutroSection content={content.servicesOutro} />
+      <SectionDivider />
+      <AboutSection content={content.about} showPhone={false} showStats={false} />
       <SectionDivider />
       <WhyNeedUsSection content={content.whyNeedUs} headingTag={content.headingTags?.["whyNeedUs.heading"]} />
+      <FeaturedProjectsSection content={content.featuredProjects} />
       <SectionDivider />
-      <ProcessSection content={content.process} />
+      <ProcessSection content={content.process} desktopColumns={4} />
       <SectionDivider />
       <GoogleReviewsSection content={content.googleReviews} />
       <SectionDivider backgroundClass="bg-brand-dark" />

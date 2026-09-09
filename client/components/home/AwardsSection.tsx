@@ -30,7 +30,7 @@ const defaultContent: WhyNeedUsContent = {
 
 export default function WhyNeedUsSection({ content, headingTag }: WhyNeedUsSectionProps) {
   const data = content || defaultContent;
-  const cards = data.cards?.length ? data.cards : defaultContent.cards;
+  const cards = data.cards || [];
 
   return (
     <section className="bg-white py-20 md:py-28">

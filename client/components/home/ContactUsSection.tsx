@@ -4,23 +4,10 @@ import RichText from "@site/components/shared/RichText";
 import AnimatedSection from "@site/components/shared/AnimatedSection";
 
 interface ContactUsSectionProps {
-  content?: ContactContent;
+  content: ContactContent;
 }
 
-const defaultContent: ContactContent = {
-  sectionLabel: "– Kontaktirajte nas",
-  heading: "Zakažite besplatnu konsultaciju danas.",
-  description: "",
-  phone: "",
-  phoneLabel: "",
-  address: "",
-  formHeading: "Kontaktirajte nas danas",
-  image: "",
-  imageAlt: "",
-};
-
-export default function ContactUsSection({ content }: ContactUsSectionProps) {
-  const data = content || defaultContent;
+export default function ContactUsSection({ content: data }: ContactUsSectionProps) {
 
   return (
     <section className="bg-brand-dark py-20 md:py-28">
@@ -66,7 +53,7 @@ export default function ContactUsSection({ content }: ContactUsSectionProps) {
               {data.formHeading}
             </p>
 
-            <ContactForm />
+            <ContactForm content={data.form} />
           </AnimatedSection>
         </div>
       </div>

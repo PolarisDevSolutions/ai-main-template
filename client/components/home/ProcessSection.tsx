@@ -38,7 +38,7 @@ export default function ProcessSection({
   desktopColumns = 3,
 }: ProcessSectionProps) {
   const data = content || defaultContent;
-  const steps = data.steps?.length ? data.steps : defaultContent.steps;
+  const steps = data.steps || [];
   const connectorInset = `calc(100% / ${desktopColumns * 2})`;
   const desktopGridClass =
     desktopColumns === 4 ? "md:grid-cols-4" : "md:grid-cols-3";

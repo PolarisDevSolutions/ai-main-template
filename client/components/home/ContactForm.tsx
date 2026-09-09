@@ -6,12 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import type { ContactFormContent } from "@site/lib/cms/homePageTypes";
 
 const contactFormSchema = z.object({
   firstName: z.string().min(1, "Ime je obavezno"),
   lastName: z.string().min(1, "Prezime je obavezno"),
   email: z.string().email("Unesite validnu email adresu"),
   phone: z.string().min(1, "Broj telefona je obavezan"),
+  website: z.string().optional(),
   message: z.string().min(1, "Poruka je obavezna"),
   honeypot: z.string().max(0),
 });
@@ -21,7 +23,11 @@ type ContactFormData = z.infer<typeof contactFormSchema>;
 const inputClass =
   "bg-white/5 border border-brand-border/40 text-white placeholder:text-white/40 h-[46px] text-[15px] font-manrope focus-visible:ring-0 focus-visible:border-brand-accent transition-colors duration-200 rounded-none";
 
-export default function ContactForm() {
+interface ContactFormProps {
+  content?: ContactFormContent;
+}
+
+export default function ContactForm({ content }: ContactFormProps) {
   const {
     register,
     handleSubmit,
@@ -40,6 +46,8 @@ export default function ContactForm() {
         lastName: data.lastName,
         email: data.email,
         phone: data.phone || "",
+        website: data.website || "",
+        project: data.message,
         message: data.message,
       });
 
@@ -53,11 +61,11 @@ export default function ContactForm() {
         throw new Error(`Form submission failed with status ${response.status}`);
       }
 
-      toast.success("Hvala! Uskoro ćemo vas kontaktirati.");
+      toast.success(content?.successMessage || "Hvala! Uskoro ćemo vas kontaktirati.");
       reset();
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Nešto je pošlo po krivu. Pokušajte ponovo.");
+      toast.error(content?.errorMessage || "Nešto je pošlo po krivu. Pokušajte ponovo.");
     }
   };
 
@@ -78,13 +86,13 @@ export default function ContactForm() {
             {...register("firstName")}
             name="firstName"
             type="text"
-            placeholder="Ime *"
+            placeholder={content?.firstNamePlaceholder || "Ime *"}
             required
             className={inputClass}
             aria-invalid={errors.firstName ? "true" : "false"}
           />
           {errors.firstName && (
-            <p className="text-red-400 text-xs mt-1">{errors.firstName.message}</p>
+            <p className="text-red-400 text-xs mt-1">{content?.requiredMessage || errors.firstName.message}</p>
           )}
         </div>
         <div>
@@ -92,13 +100,13 @@ export default function ContactForm() {
             {...register("lastName")}
             name="lastName"
             type="text"
-            placeholder="Prezime *"
+            placeholder={content?.lastNamePlaceholder || "Prezime *"}
             required
             className={inputClass}
             aria-invalid={errors.lastName ? "true" : "false"}
           />
           {errors.lastName && (
-            <p className="text-red-400 text-xs mt-1">{errors.lastName.message}</p>
+            <p className="text-red-400 text-xs mt-1">{content?.requiredMessage || errors.lastName.message}</p>
           )}
         </div>
       </div>
@@ -108,13 +116,13 @@ export default function ContactForm() {
           {...register("email")}
           name="email"
           type="email"
-          placeholder="Email adresa *"
+          placeholder={content?.emailPlaceholder || "Email adresa *"}
           required
           className={inputClass}
           aria-invalid={errors.email ? "true" : "false"}
         />
         {errors.email && (
-          <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>
+          <p className="text-red-400 text-xs mt-1">{content?.emailMessage || errors.email.message}</p>
         )}
       </div>
 
@@ -123,27 +131,39 @@ export default function ContactForm() {
           {...register("phone")}
           name="phone"
           type="tel"
-          placeholder="Broj telefona *"
+          placeholder={content?.phonePlaceholder || "Broj telefona *"}
           required
           className={inputClass}
           aria-invalid={errors.phone ? "true" : "false"}
         />
         {errors.phone && (
-          <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>
+          <p className="text-red-400 text-xs mt-1">{content?.requiredMessage || errors.phone.message}</p>
         )}
       </div>
+
+      {content?.websitePlaceholder && (
+        <div>
+          <Input
+            {...register("website")}
+            name="website"
+            type="url"
+            placeholder={content.websitePlaceholder}
+            className={inputClass}
+          />
+        </div>
+      )}
 
       <div>
         <Textarea
           {...register("message")}
-          name="message"
-          placeholder="Poruka *"
+          name="project"
+          placeholder={content?.projectPlaceholder || "Poruka *"}
           required
           className={`${inputClass} h-auto min-h-[120px] resize-y`}
           aria-invalid={errors.message ? "true" : "false"}
         />
         {errors.message && (
-          <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>
+          <p className="text-red-400 text-xs mt-1">{content?.requiredMessage || errors.message.message}</p>
         )}
       </div>
 
@@ -161,23 +181,35 @@ export default function ContactForm() {
         </label>
       </div>
 
-      <p className="font-manrope text-[12px] leading-5 text-white/55">
-        Slanjem obrasca potvrđujete da ste pročitali našu{" "}
-        <Link
-          to="/politika-privatnosti/"
-          className="text-brand-accent underline underline-offset-4"
-        >
-          Politiku privatnosti
-        </Link>{" "}
-        i saglasni ste da vas kontaktiramo u vezi sa vašim upitom.
-      </p>
+      {content ? (
+        <p className="font-manrope text-[12px] leading-5 text-white/55">
+          {content.consentBefore}{" "}
+          <Link
+            to={content.privacyLink}
+            className="text-brand-accent underline underline-offset-4"
+          >
+            {content.privacyLabel}
+          </Link>{" "}
+          {content.consentAfter}
+        </p>
+      ) : (
+        <p className="font-manrope text-[12px] leading-5 text-white/55">
+          Slanjem obrasca potvrđujete da ste pročitali našu{" "}
+          <Link to="/politika-privatnosti/" className="text-brand-accent underline underline-offset-4">
+            Politiku privatnosti
+          </Link>{" "}
+          i saglasni ste da vas kontaktiramo u vezi sa vašim upitom.
+        </p>
+      )}
 
       <Button
         type="submit"
         disabled={isSubmitting}
         className="w-full border border-brand-accent text-brand-accent bg-transparent hover:bg-brand-accent hover:text-brand-dark font-manrope text-[14px] tracking-widest uppercase h-[46px] transition-all duration-200"
       >
-        {isSubmitting ? "Slanje..." : "Pošalji"}
+        {isSubmitting
+          ? (content?.submittingLabel || "Slanje...")
+          : (content?.submitLabel || "Pošalji")}
       </Button>
     </form>
   );

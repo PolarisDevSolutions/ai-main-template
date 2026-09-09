@@ -3,6 +3,7 @@ import HeroContactForm from "@site/components/home/HeroContactForm";
 import RichText from "@site/components/shared/RichText";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import type { SharedHeroContent } from "@site/lib/cms/sharedHero";
+import type { HeroFormContent } from "@site/lib/cms/homePageTypes";
 import { Phone } from "lucide-react";
 
 interface MarketingHeroSectionProps {
@@ -10,6 +11,8 @@ interface MarketingHeroSectionProps {
   fullHeight?: boolean;
   overlapHeader?: boolean;
   showScrollHint?: boolean;
+  tagline?: string;
+  formContent?: HeroFormContent;
 }
 
 export default function MarketingHeroSection({
@@ -17,6 +20,8 @@ export default function MarketingHeroSection({
   fullHeight = false,
   overlapHeader = false,
   showScrollHint = false,
+  tagline,
+  formContent,
 }: MarketingHeroSectionProps) {
   const { phoneNumber, phoneDisplay, phoneLabel: globalPhoneLabel } =
     useGlobalPhone();
@@ -71,6 +76,12 @@ export default function MarketingHeroSection({
               )}
             </h1>
 
+            {tagline && (
+              <p className="mb-5 font-grotesk text-[clamp(1.35rem,2.5vw,28px)] font-medium leading-tight text-brand-accent">
+                {tagline}
+              </p>
+            )}
+
             {content.description && (
               <RichText
                 html={content.description}
@@ -81,7 +92,7 @@ export default function MarketingHeroSection({
             {phoneDisplay && (
               <div className="max-w-[520px]">
                 <a
-                  href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                  href={`tel:${phoneNumber.replace(/[^\d+]/g, "")}`}
                   className="inline-flex w-full max-w-[360px] items-start gap-4 bg-brand-accent p-4 transition-colors duration-300 hover:bg-brand-accent-dark group"
                 >
                   <div className="shrink-0 bg-brand-dark p-3 transition-colors duration-300 group-hover:bg-white">
@@ -107,7 +118,7 @@ export default function MarketingHeroSection({
 
           <div className="shrink-0 lg:w-[420px]">
             <div className="border border-brand-border/40 bg-brand-card/80 p-6 backdrop-blur-sm lg:p-8">
-              <HeroContactForm title={content.formTitle} />
+              <HeroContactForm title={content.formTitle} content={formContent} />
             </div>
 
             {trustTexts.length > 0 && (

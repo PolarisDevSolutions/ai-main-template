@@ -26,13 +26,7 @@ export function useHomeContent(): UseHomeContentResult {
   // Consume SSG-injected data synchronously before first render
   const injected = consumePageData('/');
   const initialContent = injected && isStructuredContent(injected.content)
-    ? {
-        ...(injected.content as HomePageContent),
-        hero: normalizeSharedHeroContent(
-          (injected.content as HomePageContent).hero,
-          defaultHomeContent.hero,
-        ),
-      }
+    ? mergeWithDefaults(injected.content as Partial<HomePageContent>, defaultHomeContent)
     : (cachedContent ?? defaultHomeContent);
   const initialMeta = injected?.meta ?? (cachedMeta ?? emptyPageMeta);
 
@@ -91,10 +85,7 @@ export function useHomeContent(): UseHomeContentResult {
         const pageData = data[0];
         const cmsContent = pageData.content as HomePageContent;
         const mergedContent = isStructuredContent(cmsContent)
-          ? {
-              ...cmsContent,
-              hero: normalizeSharedHeroContent(cmsContent.hero, defaultHomeContent.hero),
-            }
+          ? mergeWithDefaults(cmsContent, defaultHomeContent)
           : defaultHomeContent;
 
         // Extract meta fields
@@ -154,65 +145,64 @@ function mergeWithDefaults(
 ): HomePageContent {
   if (!cmsContent) return defaults;
 
+  const normalizedHero = normalizeSharedHeroContent(cmsContent.hero, defaults.hero);
+
   return {
-    hero: { ...defaults.hero, ...cmsContent.hero },
-    partnerLogosTitle: cmsContent.partnerLogosTitle ?? defaults.partnerLogosTitle,
-    partnerLogos: cmsContent.partnerLogos?.length
-      ? cmsContent.partnerLogos
-      : defaults.partnerLogos,
+    ...defaults,
+    ...cmsContent,
+    hero: {
+      ...normalizedHero,
+      tagline: cmsContent.hero?.tagline ?? defaults.hero.tagline,
+      form: { ...defaults.hero.form, ...cmsContent.hero?.form },
+    },
+    partnerLogos: cmsContent.partnerLogos ?? defaults.partnerLogos,
     about: {
       ...defaults.about,
       ...cmsContent.about,
-      features: cmsContent.about?.features?.length
-        ? cmsContent.about.features
-        : defaults.about.features,
-      stats: cmsContent.about?.stats?.length
-        ? cmsContent.about.stats
-        : defaults.about.stats,
+      features: cmsContent.about?.features ?? defaults.about.features,
+      stats: cmsContent.about?.stats ?? defaults.about.stats,
     },
     practiceAreasIntro: {
       ...defaults.practiceAreasIntro,
       ...cmsContent.practiceAreasIntro,
     },
-    practiceAreas: cmsContent.practiceAreas?.length
-      ? cmsContent.practiceAreas
-      : defaults.practiceAreas,
+    practiceAreas: cmsContent.practiceAreas ?? defaults.practiceAreas,
+    servicesOutro: { ...defaults.servicesOutro, ...cmsContent.servicesOutro },
     whyNeedUs: {
       ...defaults.whyNeedUs,
       ...cmsContent.whyNeedUs,
-      cards: cmsContent.whyNeedUs?.cards?.length
-        ? cmsContent.whyNeedUs.cards
-        : defaults.whyNeedUs.cards,
+      cards: cmsContent.whyNeedUs?.cards ?? defaults.whyNeedUs.cards,
     },
     testimonials: {
       ...defaults.testimonials,
       ...cmsContent.testimonials,
-      items: cmsContent.testimonials?.items?.length
-        ? cmsContent.testimonials.items
-        : defaults.testimonials.items,
+      items: cmsContent.testimonials?.items ?? defaults.testimonials.items,
+    },
+    featuredProjects: {
+      ...defaults.featuredProjects,
+      ...cmsContent.featuredProjects,
+      projects: cmsContent.featuredProjects?.projects ?? defaults.featuredProjects.projects,
     },
     process: {
       ...defaults.process,
       ...cmsContent.process,
-      steps: cmsContent.process?.steps?.length
-        ? cmsContent.process.steps
-        : defaults.process.steps,
+      steps: cmsContent.process?.steps ?? defaults.process.steps,
     },
     googleReviews: {
       ...defaults.googleReviews,
       ...cmsContent.googleReviews,
-      reviews: cmsContent.googleReviews?.reviews?.length
-        ? cmsContent.googleReviews.reviews
-        : defaults.googleReviews.reviews,
+      reviews: cmsContent.googleReviews?.reviews ?? defaults.googleReviews.reviews,
     },
     faq: {
       ...defaults.faq,
       ...cmsContent.faq,
-      items: cmsContent.faq?.items?.length
-        ? cmsContent.faq.items
-        : defaults.faq.items,
+      items: cmsContent.faq?.items ?? defaults.faq.items,
     },
-    contact: { ...defaults.contact, ...cmsContent.contact },
+    contact: {
+      ...defaults.contact,
+      ...cmsContent.contact,
+      form: { ...defaults.contact.form, ...cmsContent.contact?.form },
+    },
   };
 }
 
