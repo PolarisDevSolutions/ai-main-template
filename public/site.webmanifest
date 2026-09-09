@@ -3,14 +3,16 @@
   "short_name": "Polaris",
   "icons": [
     {
-      "src": "https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2F4a50c7b6b66348e3a521b50cbb1563bb?format=webp&width=800&height=1200",
+      "src": "https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2Fffd4570362aa4597bdddb3822d12f59a?format=png&width=192&height=192",
       "sizes": "192x192",
-      "type": "image/webp"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2F4a50c7b6b66348e3a521b50cbb1563bb?format=webp&width=800&height=1200",
+      "src": "https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2Fffd4570362aa4597bdddb3822d12f59a?format=png&width=512&height=512",
       "sizes": "512x512",
-      "type": "image/webp"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#0f2a1f",

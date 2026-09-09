@@ -81,7 +81,7 @@ export default function Seo({
   const fullDescription = description?.trim() || undefined;
 
   // Default image
-  const defaultImage = 'https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2F4a50c7b6b66348e3a521b50cbb1563bb?format=webp&width=800&height=1200';
+  const defaultImage = 'https://cdn.builder.io/api/v1/image/assets%2F63b17c17cd28402ebbde4e53779092d0%2Fffd4570362aa4597bdddb3822d12f59a?format=png&width=512&height=512';
   const fullImage = image || defaultImage;
 
   // OG overrides — fall back to page-level values
