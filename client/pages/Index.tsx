@@ -33,7 +33,7 @@ export default function Index() {
     <Layout>
       <Seo
         title={meta.meta_title || "Početna"}
-        description={meta.meta_description || undefined}
+        description={meta.meta_description || "Polaris pruža izradu sajtova, SEO optimizaciju i digitalni marketing za veću vidljivost, kvalitetnije upite i održiv rast poslovanja."}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

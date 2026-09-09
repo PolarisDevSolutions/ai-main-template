@@ -17,7 +17,7 @@ export default function BlogPostHero({
 }: BlogPostHeroProps) {
   const { phoneDisplay, phoneNumber, phoneLabel } = useGlobalPhone();
 
-  const formattedDate = new Date(publishedDate).toLocaleDateString("en-US", {
+  const formattedDate = new Date(publishedDate).toLocaleDateString("sr-Latn-RS", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -78,7 +78,7 @@ export default function BlogPostHero({
             className="inline-flex items-center gap-3 border border-white/40 px-5 py-3 text-white font-manrope font-medium hover:bg-white/10 transition-colors duration-300"
           >
             <CalendarIcon className="h-5 w-5" strokeWidth={1.5} />
-            <span>Book a Consultation</span>
+            <span>Zakažite konsultacije</span>
           </Link>
         </div>
       </div>

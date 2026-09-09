@@ -53,9 +53,29 @@
   to = "/.netlify/functions/api/:splat"
 
 [[redirects]]
-  from = "/*"
+  from = "/about/"
+  to = "/o-nama/"
+  status = 301
+
+[[redirects]]
+  from = "/practice-areas/"
+  to = "/usluge/"
+  status = 301
+
+[[redirects]]
+  from = "/contact/"
+  to = "/kontakt/"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
 
 # --- Cache headers for static assets ---
 

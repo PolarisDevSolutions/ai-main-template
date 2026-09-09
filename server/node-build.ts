@@ -19,6 +19,14 @@ app.get("*", (req, res) => {
     return res.status(404).json({ error: "API endpoint not found" });
   }
 
+  if (req.path.length > 1 && !req.path.endsWith("/") && !path.extname(req.path)) {
+    return res.redirect(308, `${req.path}/${req.url.slice(req.path.length)}`);
+  }
+
+  if (req.path.startsWith("/admin/")) {
+    return res.sendFile(path.join(distPath, "index.html"));
+  }
+
   const routePath = req.path.replace(/^\/+|\/+$/g, "");
   if (routePath && !routePath.split("/").includes("..")) {
     const prerenderedPath = path.join(distPath, routePath, "index.html");
@@ -27,7 +35,7 @@ app.get("*", (req, res) => {
     }
   }
 
-  res.sendFile(path.join(distPath, "index.html"));
+  res.status(404).sendFile(path.join(distPath, "index.html"));
 });
 
 app.listen(port, () => {

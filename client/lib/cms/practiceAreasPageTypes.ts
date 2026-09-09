@@ -327,36 +327,39 @@ export function applyAboutSharedSectionsToPracticeAreas(
     return content;
   }
 
+  const whyChoose = content.whyChoose || defaultPracticeAreasContent.whyChoose;
+  const cta = content.cta || defaultPracticeAreasContent.cta;
+
   return {
     ...content,
     whyChoose: aboutContent.whyChooseUs
       ? {
-          ...content.whyChoose,
-          sectionLabel: aboutContent.whyChooseUs.sectionLabel || content.whyChoose.sectionLabel,
-          heading: aboutContent.whyChooseUs.heading || content.whyChoose.heading,
-          description: aboutContent.whyChooseUs.description || content.whyChoose.description,
-          image: aboutContent.whyChooseUs.image || content.whyChoose.image,
-          imageAlt: aboutContent.whyChooseUs.imageAlt || content.whyChoose.imageAlt,
+          ...whyChoose,
+          sectionLabel: aboutContent.whyChooseUs.sectionLabel || whyChoose.sectionLabel,
+          heading: aboutContent.whyChooseUs.heading || whyChoose.heading,
+          description: aboutContent.whyChooseUs.description || whyChoose.description,
+          image: aboutContent.whyChooseUs.image || whyChoose.image,
+          imageAlt: aboutContent.whyChooseUs.imageAlt || whyChoose.imageAlt,
           items: aboutContent.whyChooseUs.items?.length
             ? aboutContent.whyChooseUs.items
-            : content.whyChoose.items,
+            : whyChoose.items,
         }
-      : content.whyChoose,
+      : whyChoose,
     cta: aboutContent.cta
       ? {
-          ...content.cta,
-          heading: aboutContent.cta.heading || content.cta.heading,
-          description: aboutContent.cta.description || content.cta.description,
+          ...cta,
+          heading: aboutContent.cta.heading || cta.heading,
+          description: aboutContent.cta.description || cta.description,
           primaryButton: {
-            ...content.cta.primaryButton,
+            ...cta.primaryButton,
             ...aboutContent.cta.primaryButton,
           },
           secondaryButton: {
-            ...content.cta.secondaryButton,
+            ...cta.secondaryButton,
             ...aboutContent.cta.secondaryButton,
           },
         }
-      : content.cta,
+      : cta,
   };
 }
 

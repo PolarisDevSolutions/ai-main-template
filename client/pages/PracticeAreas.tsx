@@ -40,7 +40,7 @@ export default function PracticeAreas() {
     <Layout>
       <Seo
         title={meta.meta_title || "Usluge"}
-        description={meta.meta_description || undefined}
+        description={meta.meta_description || "Istražite Polaris usluge izrade sajtova, SEO optimizacije, digitalnog oglašavanja, sadržaja, društvenih mreža, održavanja i optimizacije konverzija."}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

@@ -1,6 +1,5 @@
 import HeroBackground from "@site/components/home/HeroBackground";
 import HeroContactForm from "@site/components/home/HeroContactForm";
-import DynamicHeading from "@site/components/shared/DynamicHeading";
 import RichText from "@site/components/shared/RichText";
 import { useGlobalPhone } from "@site/contexts/SiteSettingsContext";
 import type { SharedHeroContent } from "@site/lib/cms/sharedHero";
@@ -26,6 +25,7 @@ export default function MarketingHeroSection({
   const headlineWords = (content.headline || "").split(" ").filter(Boolean);
   const trustTexts = [content.trustText1, content.trustText2, content.trustText3].filter(Boolean);
   const heroPhoneLabel = content.phoneLabel || globalPhoneLabel;
+  const hasMainHeadline = highlightWords.length > 0 || headlineWords.length > 0;
 
   return (
     <section
@@ -42,33 +42,34 @@ export default function MarketingHeroSection({
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-16 pt-28 lg:px-10">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
           <div className="min-w-0 flex-1">
-            {content.h1Title && (
-              <DynamicHeading
-                defaultTag="h1"
-                className="mb-6 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent"
-              >
+            {content.h1Title && hasMainHeadline && (
+              <p className="mb-6 font-manrope text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-accent">
                 {content.h1Title}
-              </DynamicHeading>
+              </p>
             )}
 
-            <p className="mb-6 font-grotesk text-[clamp(2.5rem,6vw,72px)] font-light leading-[1.1] text-white">
-              <>
-                {highlightWords.map((word, index) => (
-                  <span
-                    key={`highlight-${word}-${index}`}
-                    className="mr-[0.25em] inline-block text-brand-accent"
-                  >
-                    {word}
-                  </span>
-                ))}
-                {highlightWords.length > 0 && headlineWords.length > 0 && <br />}
-                {headlineWords.map((word, index) => (
-                  <span key={`headline-${word}-${index}`} className="mr-[0.25em] inline-block">
-                    {word}
-                  </span>
-                ))}
-              </>
-            </p>
+            <h1 className="mb-6 font-grotesk text-[clamp(2.5rem,6vw,72px)] font-light leading-[1.1] text-white">
+              {hasMainHeadline ? (
+                <>
+                  {highlightWords.map((word, index) => (
+                    <span
+                      key={`highlight-${word}-${index}`}
+                      className="mr-[0.25em] inline-block text-brand-accent"
+                    >
+                      {word}
+                    </span>
+                  ))}
+                  {highlightWords.length > 0 && headlineWords.length > 0 && <br />}
+                  {headlineWords.map((word, index) => (
+                    <span key={`headline-${word}-${index}`} className="mr-[0.25em] inline-block">
+                      {word}
+                    </span>
+                  ))}
+                </>
+              ) : (
+                content.h1Title
+              )}
+            </h1>
 
             {content.description && (
               <RichText

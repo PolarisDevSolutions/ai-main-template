@@ -16,7 +16,7 @@ export default function AboutUs() {
     <Layout>
       <Seo
         title={meta.meta_title || "O Nama"}
-        description={meta.meta_description || undefined}
+        description={meta.meta_description || "Upoznajte Polaris tim, naš pristup izradi sajtova, SEO optimizaciji i digitalnom marketingu, kao i način na koji podržavamo rast klijenata."}
         canonical={meta.canonical_url || undefined}
         noindex={meta.noindex}
         ogTitle={meta.og_title || undefined}

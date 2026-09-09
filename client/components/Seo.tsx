@@ -22,6 +22,7 @@ interface SeoProps {
   ogDescription?: string;
   /** Override OG image */
   ogImage?: string;
+  ogType?: 'website' | 'article';
   /** Schema.org type(s) — string, comma-separated, JSON array, or native array */
   schemaType?: string | string[] | null;
   /** Custom schema overrides from admin JSON editor */
@@ -41,6 +42,7 @@ export default function Seo({
   ogTitle,
   ogDescription,
   ogImage,
+  ogType = 'website',
   schemaType,
   schemaData,
   pageContent,
@@ -118,7 +120,7 @@ export default function Seo({
       {/* Open Graph */}
       <meta property="og:title" content={resolvedOgTitle} />
       {resolvedOgDescription && <meta property="og:description" content={resolvedOgDescription} />}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={ogType} />
       {fullCanonical && <meta property="og:url" content={fullCanonical} />}
       {resolvedOgImage && <meta property="og:image" content={resolvedOgImage} />}
       {resolvedOgImage && <meta property="og:image:secure_url" content={resolvedOgImage} />}

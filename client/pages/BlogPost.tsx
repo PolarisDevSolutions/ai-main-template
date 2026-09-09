@@ -103,6 +103,14 @@ export default function BlogPost() {
         ogTitle={post.og_title || undefined}
         ogDescription={post.og_description || undefined}
         ogImage={post.og_image || post.featured_image || undefined}
+        ogType="article"
+        schemaType="BlogPosting"
+        schemaData={{
+          headline: post.title,
+          datePublished: displayDate,
+          ...(post.canonical_url ? { mainEntityOfPage: post.canonical_url } : {}),
+          ...(post.featured_image ? { image: post.featured_image } : {}),
+        }}
       />
 
       {/* Section 1: Hero */}
@@ -122,7 +130,7 @@ export default function BlogPost() {
             className="inline-flex items-center gap-2 text-sm text-[#183658] hover:text-[#6b8d0c] transition-colors mb-8"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+            Nazad na blog
           </Link>
 
           {/* Two-column layout */}
@@ -144,7 +152,7 @@ export default function BlogPost() {
                 </p>
               ) : (
                 <p className="text-gray-400 italic">
-                  This post has no content yet.
+                  Ovaj članak još nema sadržaj.
                 </p>
               )}
             </article>

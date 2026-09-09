@@ -13,16 +13,16 @@ import type {
 } from "../../../client/lib/pageDataInjection";
 import type { Database } from "../client/lib/database.types";
 import { normalizeSiteOrigin } from "../../../shared/siteUrl";
+import { STRUCTURED_PAGE_PATHS } from "../../../client/lib/pageIdentity";
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceRoleKey) {
-  console.log("Supabase credentials not configured. Skipping SSG generation.");
-  console.log(
-    "To enable SSG, set VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.",
+  console.error(
+    "SSG requires VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY. Refusing to build indexable fallback pages.",
   );
-  process.exit(0);
+  process.exit(1);
 }
 
 const supabase = createClient<Database>(supabaseUrl, supabaseServiceRoleKey);
@@ -334,6 +334,37 @@ function escapeHtml(text: string) {
     .replace(/'/g, "&#039;");
 }
 
+const placeholderPatterns = [
+  /lorem ipsum/i,
+  /your firm headline/i,
+  /this is an example faq/i,
+  /page headline/i,
+  /enter a description here/i,
+];
+
+function validateGeneratedHtml(urlPath: string, html: string, noindex: boolean) {
+  const errors: string[] = [];
+  const h1Count = (html.match(/<h1\b/gi) || []).length;
+
+  if (h1Count !== 1) {
+    errors.push(`expected exactly one H1, found ${h1Count}`);
+  }
+
+  if (!noindex && !/<meta\b[^>]*\bname="description"[^>]*\bcontent="[^"]+"/i.test(html)) {
+    errors.push("missing meta description");
+  }
+
+  for (const pattern of placeholderPatterns) {
+    if (pattern.test(html)) {
+      errors.push(`contains placeholder content matching ${pattern}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`SEO validation failed for ${urlPath}: ${errors.join("; ")}`);
+  }
+}
+
 async function generateSSG() {
   console.log("Starting SSG generation...");
 
@@ -383,7 +414,9 @@ async function generateSSG() {
   const blogSidebar = resolveBlogSidebar(blogSidebarRows?.[0] as BlogSidebarRow | undefined);
   const postsList = (posts || []) as Post[];
   const injectedPosts = postsList.map(toInjectedPost);
-  const aboutPage = (pages || []).find((page) => page.url_path === "/about/");
+  const aboutPage = (pages || []).find(
+    (page) => normalizePageUrl(page.url_path) === STRUCTURED_PAGE_PATHS.about,
+  );
   const aboutContent = aboutPage?.content;
 
   console.log(`Found ${pages?.length || 0} published pages`);
@@ -393,7 +426,7 @@ async function generateSSG() {
     const normalizedUrlPath = normalizePageUrl(page.url_path);
     let pageContent = page.content;
 
-    if (normalizedUrlPath === "/practice-areas/" && pageContent && typeof pageContent === "object") {
+    if (normalizedUrlPath === STRUCTURED_PAGE_PATHS["practice-areas"] && pageContent && typeof pageContent === "object") {
       pageContent = applyAboutSharedSectionsToPracticeAreas(
         JSON.parse(JSON.stringify(pageContent)),
         (aboutContent && typeof aboutContent === "object"
@@ -402,7 +435,7 @@ async function generateSSG() {
       );
     }
 
-    if (normalizedUrlPath === "/contact/") {
+    if (normalizedUrlPath === STRUCTURED_PAGE_PATHS.contact) {
       pageContent = mergeContactContentWithAbout(pageContent, aboutContent);
     }
 
@@ -420,6 +453,8 @@ async function generateSSG() {
       payload,
       siteSettingsRow: siteSettingsRow || null,
     });
+
+    validateGeneratedHtml(normalizedUrlPath, html, page.noindex || siteSettings.siteNoindex);
 
     const outputPath =
       normalizedUrlPath === "/"
@@ -454,6 +489,8 @@ async function generateSSG() {
       siteSettingsRow: siteSettingsRow || null,
     });
 
+    validateGeneratedHtml(urlPath, html, post.noindex || siteSettings.siteNoindex);
+
     const outputPath = path.join(process.cwd(), "dist/spa", "blog", normalizedPostSlug, "index.html");
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, html);
@@ -475,7 +512,13 @@ async function generateSSG() {
     .map((redirect: Redirect) => `${redirect.from_path} ${redirect.to_path} ${redirect.status_code}`)
     .join("\n");
 
-  const redirectsContent = [functionRedirects, cmsRedirects, "/* /index.html 200"]
+  const redirectsContent = [
+    functionRedirects,
+    "/about/ /o-nama/ 301\n/practice-areas/ /usluge/ 301\n/contact/ /kontakt/ 301",
+    cmsRedirects,
+    "/admin/* /index.html 200",
+    "/* /index.html 404",
+  ]
     .filter(Boolean)
     .join("\n");
 
