@@ -1,0 +1,39 @@
+{
+  "siteId": "d5c991c8-319d-46f4-8b52-dd3399f5beea",
+  "destination": "https://polarisdevsolutions.com",
+  "pages": {
+    "/": "/sr/",
+    "/o-nama/": "/sr/o-nama/",
+    "/usluge/": "/sr/usluge/",
+    "/kontakt/": "/sr/kontakt/",
+    "/politika-privatnosti/": "/sr/politika-privatnosti/",
+    "/uslovi-koriscenja/": "/sr/uslovi-koriscenja/",
+    "/usluge/izrada-web-sajtova/": "/sr/usluge/izrada-web-sajtova/",
+    "/usluge/seo-optimizacija/": "/sr/usluge/seo-optimizacija/",
+    "/usluge/vodjenje-drustvenih-mreza/": "/sr/usluge/vodjenje-drustvenih-mreza/",
+    "/usluge/google-ads/": "/sr/usluge/google-ads/",
+    "/usluge/meta-ads/": "/sr/usluge/meta-ads/",
+    "/usluge/content-marketing-seo-sadrzaj/": "/sr/usluge/content-marketing-seo-sadrzaj/",
+    "/usluge/odrzavanje-sajtova/": "/sr/usluge/odrzavanje-sajtova/",
+    "/usluge/optimizacija-performansi-konverzija/": "/sr/usluge/optimizacija-performansi-konverzija/",
+    "/usluge/digitalni-marketing/": "/sr/usluge/digitalni-marketing/"
+  },
+  "aliases": {
+    "/about/": "/sr/o-nama/",
+    "/services/": "/sr/usluge/",
+    "/contact/": "/sr/kontakt/",
+    "/privacy-policy/": "/sr/politika-privatnosti/",
+    "/terms/": "/sr/uslovi-koriscenja/",
+    "/services/web-design-development/": "/sr/usluge/izrada-web-sajtova/",
+    "/services/seo/": "/sr/usluge/seo-optimizacija/",
+    "/services/social-media-management/": "/sr/usluge/vodjenje-drustvenih-mreza/",
+    "/services/google-ads/": "/sr/usluge/google-ads/",
+    "/services/meta-ads/": "/sr/usluge/meta-ads/",
+    "/services/content-marketing/": "/sr/usluge/content-marketing-seo-sadrzaj/",
+    "/services/website-maintenance/": "/sr/usluge/odrzavanje-sajtova/",
+    "/services/performance-conversion-optimization/": "/sr/usluge/optimizacija-performansi-konverzija/",
+    "/services/digital-marketing/": "/sr/usluge/digitalni-marketing/",
+    "/practice-areas/": "/sr/usluge/",
+    "/services/content-marketing-and-seo-content/": "/sr/usluge/content-marketing-seo-sadrzaj/"
+  }
+}

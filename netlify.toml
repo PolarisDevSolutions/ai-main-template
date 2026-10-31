@@ -123,3 +123,7 @@
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Retire only the original Polaris .rs Netlify project; other template users keep their normal build.
+[[plugins]]
+  package = "./plugins/polaris-legacy-redirects"
